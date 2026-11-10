@@ -1,0 +1,1417 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AI × 手機生活實戰訓練營 | 隨身智慧指南</title>
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            deepSea: {
+              950: '#030712',
+              900: '#071126',
+              850: '#0b1938',
+              800: '#0f234d',
+              700: '#173673',
+            },
+            cyanPop: '#00f2fe',
+            tealMint: '#05d5b3',
+            amberSun: '#fbbf24',
+            coralAlert: '#ff5e7e',
+            lineGreen: '#06c755'
+          },
+          fontFamily: {
+            sans: ['Inter', 'Noto Sans TC', 'PingFang TC', 'Microsoft JhengHei', 'sans-serif'],
+            mono: ['JetBrains Mono', 'Fira Code', 'monospace']
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    /* Custom Scrollbar */
+    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar-track { background: #071126; }
+    ::-webkit-scrollbar-thumb { background: #173673; border-radius: 9999px; }
+    ::-webkit-scrollbar-thumb:hover { background: #00f2fe; }
+
+    .ocean-gradient {
+      background: radial-gradient(circle at 50% 12%, #0c2b54 0%, #071126 60%, #030712 100%);
+    }
+    .blur-glass {
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+    }
+    .text-glow {
+      text-shadow: 0 0 12px rgba(0, 242, 254, 0.45);
+    }
+    /* Simulated redacting canvas cursor */
+    .crosshair-brush {
+      cursor: crosshair;
+    }
+  </style>
+</head>
+<body class="bg-deepSea-950 text-slate-100 font-sans min-h-screen ocean-gradient overflow-x-hidden selection:bg-cyan-500 selection:text-black">
+
+  <!-- Ambient Bubbles -->
+  <div id="ambient-bubbles" class="fixed inset-0 pointer-events-none z-0 overflow-hidden"></div>
+
+  <!-- Main Container -->
+  <div id="app" class="relative z-10 flex flex-col min-h-screen">
+    
+    <!-- Top HUD Navigation -->
+    <header class="sticky top-0 z-40 bg-deepSea-900/90 blur-glass border-b border-cyan-500/20 px-4 py-3 sm:px-6">
+      <div class="max-w-7xl mx-auto flex flex-wrap items-center justify-between gap-3">
+        
+        <!-- Logo & Depth Level -->
+        <div class="flex items-center space-x-3">
+          <div class="w-10 h-10 rounded-2xl bg-gradient-to-tr from-cyan-500 to-tealMint p-[2px] shadow-lg shadow-cyan-500/20">
+            <div class="w-full h-full bg-deepSea-900 rounded-[14px] flex items-center justify-center">
+              <i data-lucide="smartphone" class="w-5 h-5 text-cyanPop"></i>
+            </div>
+          </div>
+          <div>
+            <div class="flex items-center gap-2">
+              <h1 class="font-bold text-base sm:text-lg tracking-wide text-white flex items-center gap-1.5">
+                AI × 手機生活實戰營
+                <span class="text-[10px] px-2 py-0.5 rounded-full bg-cyan-500/10 text-cyan-300 border border-cyan-500/30 font-mono font-medium">白話實戰版</span>
+              </h1>
+            </div>
+            <p class="text-xs text-slate-400 flex items-center gap-1">
+              <i data-lucide="compass" class="w-3.5 h-3.5 text-tealMint"></i>
+              目前站點：<span id="hud-current-depth" class="text-cyanPop font-semibold">10m (跟工讀生講話技巧)</span>
+            </p>
+          </div>
+        </div>
+
+        <!-- Diver Stats and Utility Tools -->
+        <div class="flex items-center gap-2 sm:gap-4">
+          <!-- Total XP -->
+          <div class="flex items-center bg-deepSea-850/80 border border-slate-700/60 rounded-xl px-3 py-1.5 gap-2">
+            <div class="p-1 rounded-lg bg-amberSun/10 text-amberSun">
+              <i data-lucide="award" class="w-4 h-4"></i>
+            </div>
+            <div class="text-left">
+              <div class="text-[10px] text-slate-400">生活智慧積分</div>
+              <div class="text-xs sm:text-sm font-bold font-mono text-cyanPop flex items-center gap-0.5">
+                <span id="hud-xp">0</span> <span class="text-[10px] text-slate-400">XP</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Rank Badge -->
+          <div class="hidden md:flex items-center bg-deepSea-850/80 border border-slate-700/60 rounded-xl px-3 py-1.5 gap-2">
+            <div class="text-left">
+              <div class="text-[10px] text-slate-400">目前等級</div>
+              <div id="hud-rank" class="text-xs font-bold text-tealMint">生活摸索新人</div>
+            </div>
+          </div>
+
+          <!-- Utility Quick Actions -->
+          <div class="flex items-center gap-1.5">
+            <button id="btn-sound-toggle" onclick="toggleAudio()" title="切換提示音效" 
+              class="p-2 rounded-xl bg-deepSea-800 hover:bg-deepSea-700 text-slate-300 hover:text-cyanPop border border-slate-700/80 transition-all">
+              <i id="sound-icon" data-lucide="volume-2" class="w-4 h-4"></i>
+            </button>
+            <button onclick="openModal('handbook-modal')" title="生活金律手冊" 
+              class="flex items-center gap-1.5 px-3 py-2 rounded-xl bg-deepSea-800 hover:bg-cyan-950 text-cyan-200 border border-cyan-500/30 text-xs font-medium transition-all">
+              <i data-lucide="book-open" class="w-4 h-4 text-cyanPop"></i>
+              <span class="hidden sm:inline">隨身備忘手冊</span>
+            </button>
+            <button onclick="openModal('redact-lab-modal')" title="相機照片塗黑模擬器" 
+              class="flex items-center gap-1.5 px-3 py-2 rounded-xl bg-rose-950/40 hover:bg-rose-900/60 text-rose-300 border border-rose-500/30 text-xs font-medium transition-all">
+              <i data-lucide="shield-check" class="w-4 h-4 text-rose-400"></i>
+              <span class="hidden sm:inline">照片塗黑演練</span>
+            </button>
+            <button onclick="confirmResetProgress()" title="重新開始探索" 
+              class="p-2 rounded-xl bg-deepSea-800 hover:bg-rose-950/60 text-slate-400 hover:text-rose-400 border border-slate-700/60 transition-all">
+              <i data-lucide="rotate-ccw" class="w-4 h-4"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Linear Depth Progress Strip -->
+      <div class="max-w-7xl mx-auto mt-2.5">
+        <div class="w-full bg-slate-800/80 rounded-full h-1.5 overflow-hidden">
+          <div id="hud-progress-bar" class="bg-gradient-to-r from-cyanPop via-tealMint to-blue-500 h-full w-[12%] transition-all duration-500"></div>
+        </div>
+      </div>
+    </header>
+
+    <!-- Main Content Area -->
+    <main class="flex-1 max-w-7xl mx-auto w-full px-4 sm:px-6 py-6 grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+      
+      <!-- Left Column: 8 Stages Map -->
+      <aside class="lg:col-span-4 xl:col-span-3 bg-deepSea-900/60 border border-slate-800 rounded-2xl p-4 blur-glass lg:sticky lg:top-24">
+        <div class="flex items-center justify-between pb-3 border-b border-slate-800 mb-3">
+          <span class="text-xs font-semibold uppercase tracking-wider text-slate-400 flex items-center gap-1.5">
+            <i data-lucide="map" class="w-3.5 h-3.5 text-cyanPop"></i>
+            生活深潛航道 (8 站)
+          </span>
+          <span id="side-stars-summary" class="text-xs font-mono text-amberSun flex items-center gap-1">
+            <i data-lucide="star" class="w-3.5 h-3.5 fill-current"></i> 0/24
+          </span>
+        </div>
+
+        <div id="depth-nav-list" class="space-y-2">
+          <!-- Dynamically populated stages -->
+        </div>
+
+        <div class="mt-4 pt-3 border-t border-slate-800">
+          <button onclick="renderReportModal()" 
+            class="w-full py-2.5 px-3 rounded-xl bg-gradient-to-r from-cyan-900/50 to-teal-900/40 hover:from-cyan-800/60 hover:to-teal-800/50 border border-cyan-500/30 text-cyan-200 text-xs font-semibold flex items-center justify-center gap-2 transition-all">
+            <i data-lucide="file-check-2" class="w-4 h-4 text-cyanPop"></i>
+            生活應用結業評定卡
+          </button>
+        </div>
+      </aside>
+
+      <!-- Right Column: Interactive Stage Workspace -->
+      <section class="lg:col-span-8 xl:col-span-9 space-y-6">
+        
+        <!-- Active Stage Main Card -->
+        <div class="relative overflow-hidden rounded-2xl bg-gradient-to-br from-deepSea-850 via-deepSea-900 to-deepSea-950 border border-cyan-500/25 p-5 sm:p-7 shadow-xl">
+          <div class="absolute -right-10 -top-10 w-48 h-48 bg-cyan-500/10 rounded-full blur-3xl pointer-events-none"></div>
+          <div class="absolute -left-10 -bottom-10 w-48 h-48 bg-teal-500/10 rounded-full blur-3xl pointer-events-none"></div>
+
+          <!-- Header info -->
+          <div class="flex flex-wrap items-start justify-between gap-4">
+            <div>
+              <div class="flex items-center gap-2 mb-1.5">
+                <span id="stage-badge-depth" class="px-2.5 py-0.5 rounded-full text-xs font-mono font-bold bg-cyan-500/20 text-cyan-300 border border-cyan-400/40">10m 潮間層</span>
+                <span id="stage-stars-row" class="flex text-amberSun text-xs"></span>
+              </div>
+              <h2 id="stage-title" class="text-xl sm:text-2xl font-bold text-white tracking-wide">關卡名稱</h2>
+              <p id="stage-subtitle" class="text-xs sm:text-sm text-slate-300 mt-1 max-w-2xl leading-relaxed">引言載入中...</p>
+            </div>
+            
+            <div class="bg-deepSea-800/90 border border-slate-700/80 rounded-xl px-4 py-2 text-right font-mono min-w-[100px]">
+              <div class="text-[10px] text-slate-400">過關獎勵</div>
+              <div id="stage-xp-reward" class="text-base sm:text-lg font-bold text-tealMint">+150 XP</div>
+            </div>
+          </div>
+
+          <!-- Tab Selection: 白話心法卡 vs 生活情境題 -->
+          <div class="flex gap-2 mt-6 border-b border-slate-800">
+            <button id="tab-intel-btn" onclick="switchStageTab('intel')" 
+              class="pb-2.5 px-3 text-xs sm:text-sm font-semibold border-b-2 border-cyanPop text-cyanPop flex items-center gap-1.5 transition-all">
+              <i data-lucide="lightbulb" class="w-4 h-4"></i>
+              生活實戰心法 (看這張就懂)
+            </button>
+            <button id="tab-exam-btn" onclick="switchStageTab('exam')" 
+              class="pb-2.5 px-3 text-xs sm:text-sm font-semibold border-b-2 border-transparent text-slate-400 hover:text-slate-200 flex items-center gap-1.5 transition-all">
+              <i data-lucide="check-square" class="w-4 h-4"></i>
+              日常狀況挑戰題
+              <span id="exam-badge-count" class="px-1.5 py-0.2 text-[10px] bg-slate-800 text-slate-300 rounded-full font-mono">0/2</span>
+            </button>
+          </div>
+
+          <!-- TAB 1: Intel Knowledge Card -->
+          <div id="stage-intel-tab" class="mt-5 space-y-4">
+            <div class="p-4 sm:p-5 rounded-xl bg-deepSea-800/70 border border-cyan-500/20">
+              <div class="flex items-center gap-2 text-cyan-300 font-semibold text-xs sm:text-sm mb-3">
+                <i data-lucide="sparkles" class="w-4 h-4 text-cyanPop"></i>
+                本站生活實用心法整理
+              </div>
+              <div id="stage-intel-points" class="grid grid-cols-1 md:grid-cols-2 gap-3 text-xs sm:text-sm text-slate-300">
+                <!-- Dynamically populated points -->
+              </div>
+
+              <!-- Golden Takeaway Quote -->
+              <div class="mt-4 pt-3 border-t border-slate-700/60 flex items-start gap-2.5 bg-cyan-950/30 p-3 rounded-xl border border-cyan-500/20">
+                <i data-lucide="quote" class="w-4 h-4 text-cyan-400 shrink-0 mt-0.5"></i>
+                <div>
+                  <div class="text-[11px] uppercase tracking-wider text-cyan-400 font-semibold font-mono">一句話生活白話銘言</div>
+                  <p id="stage-golden-rule" class="text-xs sm:text-sm text-slate-200 italic font-medium mt-0.5">「...」</p>
+                </div>
+              </div>
+            </div>
+
+            <!-- Call to action button to test right away -->
+            <div class="flex justify-end pt-1">
+              <button onclick="switchStageTab('exam')" class="px-5 py-2.5 rounded-xl bg-gradient-to-r from-cyan-500 to-tealMint hover:from-cyan-400 hover:to-teal-300 text-deepSea-950 font-bold text-xs sm:text-sm flex items-center gap-2 shadow-lg shadow-cyan-500/20 transition-all active:scale-95">
+                <span>進入情境實戰測驗</span>
+                <i data-lucide="arrow-right" class="w-4 h-4"></i>
+              </button>
+            </div>
+          </div>
+
+          <!-- TAB 2: Exam Questions -->
+          <div id="stage-exam-tab" class="mt-5 hidden space-y-6">
+            <div id="questions-container" class="space-y-5">
+              <!-- Dynamically populated scenario challenge questions -->
+            </div>
+
+            <!-- Stage Completion & Progression Box -->
+            <div id="stage-completion-box" class="hidden p-5 rounded-2xl bg-gradient-to-r from-teal-950/80 to-cyan-950/80 border border-teal-500/40 text-center space-y-3">
+              <div class="w-11 h-11 mx-auto rounded-full bg-teal-500/20 text-tealMint flex items-center justify-center border border-teal-400/40">
+                <i data-lucide="check-circle" class="w-6 h-6"></i>
+              </div>
+              <h3 id="stage-complete-title" class="text-base font-bold text-white">本站考驗達標！</h3>
+              <p id="stage-complete-msg" class="text-xs sm:text-sm text-slate-300 max-w-md mx-auto">恭喜你搞懂日常避雷要領，解鎖前往下一個生活深度水域！</p>
+              <div class="flex flex-wrap items-center justify-center gap-3 pt-2">
+                <button id="btn-next-stage" onclick="goToNextStage()" class="px-6 py-2.5 rounded-xl bg-gradient-to-r from-tealMint to-cyanPop hover:from-teal-300 hover:to-cyan-400 text-deepSea-950 font-bold text-xs sm:text-sm flex items-center gap-2 shadow-lg shadow-teal-500/25 transition-all">
+                  <span>前往下一站</span>
+                  <i data-lucide="chevrons-down" class="w-4 h-4"></i>
+                </button>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- Interactive 生活提問大改造 Widget -->
+        <div class="p-5 rounded-2xl bg-deepSea-900/60 border border-slate-800">
+          <div class="flex items-center justify-between mb-3">
+            <div class="flex items-center gap-2">
+              <i data-lucide="wrench" class="w-4 h-4 text-cyanPop"></i>
+              <h3 class="text-xs sm:text-sm font-semibold text-white">生活指令改造器（白話示範）</h3>
+            </div>
+            <span class="text-[11px] text-slate-400 font-mono">給限制 + 給身份 + 要它挑毛病</span>
+          </div>
+          
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div>
+              <label class="block text-xs text-rose-400 mb-1 flex items-center gap-1">
+                <i data-lucide="x-circle" class="w-3.5 h-3.5"></i> 模糊發散的廢話指令（AI 只會吐罐頭回答）
+              </label>
+              <select id="quick-prompt-selector" onchange="applyQuickPromptTemplate()" 
+                class="w-full bg-deepSea-950 border border-slate-700 rounded-xl px-3 py-2 text-xs text-slate-300 focus:outline-none focus:border-cyan-500">
+                <option value="p_eat">出遊找吃的：「幫我想台南赤崁樓吃什麼」</option>
+                <option value="p_buy">買家電猶豫：「這台掃地機器人好不好用？」</option>
+                <option value="p_repair">水電故障：「馬桶一直流水怎麼辦？」</option>
+                <option value="p_trip">長輩出國：「幫我排 4 天東京行程」</option>
+                <option value="p_line">回覆催告：「管委會要我移走走廊鞋櫃，幫我回覆」</option>
+              </select>
+              <div id="quick-prompt-input" class="mt-2 p-2.5 rounded-xl bg-deepSea-950/80 border border-rose-500/20 text-xs text-rose-200 font-mono min-h-[58px]">
+                「幫我想台南赤崁樓吃什麼」
+              </div>
+            </div>
+
+            <div>
+              <label class="block text-xs text-tealMint mb-1 flex items-center gap-1">
+                <i data-lucide="check-circle" class="w-3.5 h-3.5"></i> 改造後的生活神級指令（精準、實用、不踩坑）
+              </label>
+              <div id="quick-prompt-output" class="p-2.5 rounded-xl bg-deepSea-950/90 border border-teal-500/40 text-xs text-teal-200 font-mono min-h-[85px] leading-relaxed select-all">
+                <!-- Template Populated -->
+              </div>
+              <button onclick="copyTransformedPrompt()" class="mt-2 px-3 py-1.5 rounded-xl bg-deepSea-800 hover:bg-slate-700 text-xs text-cyan-300 border border-cyan-500/20 flex items-center gap-1.5 transition-all">
+                <i data-lucide="copy" class="w-3.5 h-3.5"></i> 複製改造後的指令
+              </button>
+            </div>
+          </div>
+        </div>
+
+      </section>
+    </main>
+
+    <!-- Modal: 相機塗黑演練室 (Redaction Lab) -->
+    <div id="redact-lab-modal" class="fixed inset-0 z-50 bg-black/85 blur-glass hidden flex items-center justify-center p-4">
+      <div class="bg-deepSea-900 border border-rose-500/40 rounded-2xl max-w-xl w-full p-5 sm:p-6 shadow-2xl space-y-4">
+        <div class="flex items-center justify-between border-b border-slate-800 pb-3">
+          <div class="flex items-center gap-2">
+            <div class="p-1.5 rounded-lg bg-rose-500/20 text-rose-400">
+              <i data-lucide="brush" class="w-5 h-5"></i>
+            </div>
+            <div>
+              <h3 class="text-sm sm:text-base font-bold text-white">相機照片隱私「純黑塗滿」互動演練</h3>
+              <p class="text-xs text-slate-400">標準 SOP：先在手機相簿塗黑＋遮條碼 ➔ 存檔 ➔ 才上傳給 AI</p>
+            </div>
+          </div>
+          <button onclick="closeModal('redact-lab-modal')" class="text-slate-400 hover:text-white">
+            <i data-lucide="x" class="w-5 h-5"></i>
+          </button>
+        </div>
+
+        <p class="text-xs text-slate-300 leading-relaxed">
+          請點擊模擬相片中<strong class="text-rose-400">紅色虛線框</strong>的「身分證號」、「病歷號」與「條碼」，將它們全部以純黑色塊遮蔽。千萬不要使用半透明螢光筆！
+        </p>
+
+        <!-- Simulated Medical Report Card -->
+        <div class="p-4 rounded-xl bg-slate-900 border border-slate-700 text-xs font-mono space-y-2.5 relative select-none">
+          <div class="text-center font-bold text-slate-200 border-b border-slate-800 pb-1.5 text-sm">
+            健檢／診斷報告書（示意範本）
+          </div>
+          
+          <div class="flex items-center justify-between">
+            <div>姓名：<span class="text-slate-200">陳大明</span></div>
+            <!-- Redactable ID -->
+            <div id="box-id" onclick="toggleRedact('box-id')" class="border border-dashed border-rose-400/80 px-2 py-1 rounded cursor-pointer transition-all bg-rose-950/20 text-rose-300 hover:bg-rose-900/40">
+              身分證：A123456789 (點擊遮蔽)
+            </div>
+          </div>
+
+          <div class="flex items-center justify-between">
+            <!-- Redactable Medical Record -->
+            <div id="box-record" onclick="toggleRedact('box-record')" class="border border-dashed border-rose-400/80 px-2 py-1 rounded cursor-pointer transition-all bg-rose-950/20 text-rose-300 hover:bg-rose-900/40">
+              病歷號：MR-889021 (點擊遮蔽)
+            </div>
+            <div>就診科別：胃腸肝膽科</div>
+          </div>
+
+          <!-- Safe Content (Should NOT be redacted, AI needs these) -->
+          <div class="p-2.5 rounded bg-deepSea-950 border border-teal-500/20 text-slate-300 text-[11px] leading-relaxed">
+            【檢查數據（AI 需要讀取的純內容）】<br>
+            - AST (GOT): 54 U/L (紅字偏高)<br>
+            - ALT (GPT): 68 U/L (紅字偏高)<br>
+            - 腹部超音波：輕度脂肪肝徵象，膽囊壁無增厚
+          </div>
+
+          <!-- Redactable Barcode -->
+          <div class="pt-1 flex items-center justify-between">
+            <span class="text-[10px] text-slate-500">掃描條碼（常隱含個資）:</span>
+            <div id="box-barcode" onclick="toggleRedact('box-barcode')" class="border border-dashed border-rose-400/80 px-4 py-1.5 rounded cursor-pointer transition-all bg-rose-950/20 text-rose-300 hover:bg-rose-900/40 font-mono tracking-widest">
+              ||| | |||| | ||| 889021 (點擊遮蔽)
+            </div>
+          </div>
+        </div>
+
+        <div id="redact-feedback" class="p-3 rounded-xl bg-deepSea-950 border border-slate-800 text-xs text-slate-300 flex items-center gap-2">
+          <i data-lucide="info" class="w-4 h-4 text-cyanPop shrink-0"></i>
+          <span>還有項目未遮蔽！請將身分證號、病歷號與條碼全部塗黑。</span>
+        </div>
+
+        <div class="flex justify-end gap-2 pt-1">
+          <button onclick="resetRedactLab()" class="px-3 py-1.5 rounded-lg bg-deepSea-800 hover:bg-slate-700 text-xs text-slate-300">重設</button>
+          <button onclick="closeModal('redact-lab-modal')" class="px-4 py-1.5 rounded-lg bg-cyan-500 hover:bg-cyan-400 text-deepSea-950 font-bold text-xs">我知道了，關閉</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modal: 生活金律手冊 (Handbook) -->
+    <div id="handbook-modal" class="fixed inset-0 z-50 bg-black/85 blur-glass hidden flex items-center justify-center p-4">
+      <div class="bg-deepSea-900 border border-cyan-500/40 rounded-2xl max-w-3xl w-full max-h-[85vh] flex flex-col shadow-2xl overflow-hidden">
+        <div class="px-6 py-4 border-b border-slate-800 flex items-center justify-between bg-deepSea-850">
+          <div class="flex items-center gap-2.5">
+            <div class="p-1.5 rounded-lg bg-cyan-500/20 text-cyanPop">
+              <i data-lucide="book-open" class="w-5 h-5"></i>
+            </div>
+            <div>
+              <h3 class="text-sm sm:text-base font-bold text-white">AI × 手機隨身生活金律備忘錄</h3>
+              <p class="text-xs text-slate-400">平常出門在外、遇到疑難雜症時翻開看一眼</p>
+            </div>
+          </div>
+          <button onclick="closeModal('handbook-modal')" class="text-slate-400 hover:text-white">
+            <i data-lucide="x" class="w-5 h-5"></i>
+          </button>
+        </div>
+
+        <div class="p-6 overflow-y-auto space-y-6 text-xs sm:text-sm text-slate-300">
+          
+          <!-- 3 不原則 -->
+          <div class="p-4 rounded-xl bg-rose-950/30 border border-rose-500/30 space-y-2">
+            <h4 class="text-xs font-bold uppercase tracking-wider text-coralAlert flex items-center gap-1.5">
+              <i data-lucide="shield-alert" class="w-4 h-4"></i> 手機拍照上傳的「三不原則」（牢記保平安）
+            </h4>
+            <ul class="space-y-1 text-xs text-rose-200 list-disc list-inside">
+              <li><strong>不拍正臉與證件：</strong>身分證、駕照、護照、全家福正臉，沒事千萬不要丟。</li>
+              <li><strong>不拍密碼與金融：</strong>存摺帳號、提款卡背面三碼、家裡 Wi-Fi 密碼貼紙。</li>
+              <li><strong>不直接照單全收：</strong>法律合約、健康用藥劑量、大筆金錢決策，AI 負責幫你「看懂與整理問題」，最後決定永遠找真人專家確認。</li>
+            </ul>
+          </div>
+
+          <!-- LINE 7 個神技能 -->
+          <div>
+            <h4 class="text-xs font-bold uppercase tracking-wider text-lineGreen flex items-center gap-1.5 mb-2.5">
+              <i data-lucide="message-square" class="w-4 h-4"></i> LINE 天天用得上的 7 個實戰技巧
+            </h4>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-2.5 text-xs">
+              <div class="p-2.5 rounded-lg bg-deepSea-950 border border-slate-800">
+                <strong class="text-white">1. 照片 [A] 轉文字：</strong>點開照片按右上角 [A]，直接框選文字複製，不用手打。
+              </div>
+              <div class="p-2.5 rounded-lg bg-deepSea-950 border border-slate-800">
+                <strong class="text-white">2. 無聲訊息：</strong>設定 ➔ LINE Labs 開啟。長按送出鍵選「無聲訊息」，半夜清晨傳訊不擾人。
+              </div>
+              <div class="p-2.5 rounded-lg bg-deepSea-950 border border-slate-800">
+                <strong class="text-white">3. 匿名截圖：</strong>長按訊息選截圖 ➔ 左下角「匿名處理」，人名頭貼秒變可愛小動物。
+              </div>
+              <div class="p-2.5 rounded-lg bg-deepSea-950 border border-slate-800">
+                <strong class="text-white">4. 設為公告釘選：</strong>聚會時間、匯款帳號長按設為公告，置頂免翻找。
+              </div>
+              <div class="p-2.5 rounded-lg bg-deepSea-950 border border-slate-800">
+                <strong class="text-white">5. 官方查證機器人：</strong>加「LINE訊息查證」或「MyGoPen」，長輩可疑連結一鍵辨真偽。
+              </div>
+              <div class="p-2.5 rounded-lg bg-deepSea-950 border border-slate-800">
+                <strong class="text-white">6. 刪除快取瘦身：</strong>設定 ➔ 聊天 ➔ 刪除資料 ➔ 勾選「快取」，瞬間清出好幾 GB。
+              </div>
+            </div>
+          </div>
+
+          <!-- 提問四字訣 -->
+          <div class="p-3.5 rounded-xl bg-deepSea-950 border border-cyan-500/30">
+            <h4 class="text-xs font-bold uppercase tracking-wider text-cyanPop mb-2 flex items-center gap-1.5">
+              <i data-lucide="compass" class="w-4 h-4"></i> 說話好用公式（把 AI 當新來工讀生）
+            </h4>
+            <p class="text-xs text-slate-300 leading-relaxed">
+              <strong>背景＋目的＋限制＋挑毛病：</strong><br>
+              「我們兩大一小去台南，小孩不吃辣、要有冷氣、預算 1000 內，列 3 間離赤崁樓走路 10 分鐘以內的小吃；並告訴我買哪樣最容易排隊排到後悔。」
+            </p>
+          </div>
+
+        </div>
+
+        <div class="px-6 py-3 bg-deepSea-850 border-t border-slate-800 flex justify-end">
+          <button onclick="closeModal('handbook-modal')" class="px-4 py-1.5 rounded-xl bg-deepSea-700 hover:bg-slate-700 text-xs text-white">關閉</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modal: 結業能力與生活評定卡 (Report) -->
+    <div id="report-modal" class="fixed inset-0 z-50 bg-black/85 blur-glass hidden flex items-center justify-center p-4">
+      <div class="bg-deepSea-900 border border-cyan-400/50 rounded-2xl max-w-xl w-full p-6 sm:p-7 shadow-2xl relative space-y-5">
+        <button onclick="closeModal('report-modal')" class="absolute top-4 right-4 text-slate-400 hover:text-white">
+          <i data-lucide="x" class="w-5 h-5"></i>
+        </button>
+
+        <div class="text-center space-y-1.5">
+          <div class="inline-flex p-3 rounded-2xl bg-cyan-500/10 border border-cyan-500/30 text-cyanPop mb-1">
+            <i data-lucide="award" class="w-7 h-7"></i>
+          </div>
+          <h2 class="text-lg sm:text-xl font-bold text-white tracking-wide">生活 AI × 手機實戰能力認證</h2>
+          <p class="text-xs text-slate-400">你的日常問題解決力與安全防護指數</p>
+        </div>
+
+        <div class="grid grid-cols-2 sm:grid-cols-4 gap-2.5 text-center">
+          <div class="p-3 rounded-xl bg-deepSea-950 border border-slate-800">
+            <div class="text-[10px] text-slate-400">生活省力指數</div>
+            <div id="radar-score-lazy" class="text-base sm:text-lg font-bold text-cyanPop font-mono mt-0.5">88%</div>
+            <div class="text-[9px] text-slate-500 mt-0.5">解讀/問法</div>
+          </div>
+          <div class="p-3 rounded-xl bg-deepSea-950 border border-slate-800">
+            <div class="text-[10px] text-slate-400">相機與塗黑安全</div>
+            <div id="radar-score-redact" class="text-base sm:text-lg font-bold text-rose-400 font-mono mt-0.5">92%</div>
+            <div class="text-[9px] text-slate-500 mt-0.5">隱私防護力</div>
+          </div>
+          <div class="p-3 rounded-xl bg-deepSea-950 border border-slate-800">
+            <div class="text-[10px] text-slate-400">LINE 內建技能</div>
+            <div id="radar-score-line" class="text-base sm:text-lg font-bold text-lineGreen font-mono mt-0.5">85%</div>
+            <div class="text-[9px] text-slate-500 mt-0.5">效率與防騷擾</div>
+          </div>
+          <div class="p-3 rounded-xl bg-deepSea-950 border border-slate-800">
+            <div class="text-[10px] text-slate-400">防詐與批判查證</div>
+            <div id="radar-score-fraud" class="text-base sm:text-lg font-bold text-amberSun font-mono mt-0.5">90%</div>
+            <div class="text-[9px] text-slate-500 mt-0.5">雙軌回撥原則</div>
+          </div>
+        </div>
+
+        <div class="p-3.5 rounded-xl bg-deepSea-950/70 border border-slate-800 space-y-1.5">
+          <div class="text-xs font-semibold text-slate-300 flex items-center gap-1.5">
+            <i data-lucide="check-circle" class="w-4 h-4 text-cyanPop"></i>
+            生活教練小回饋：
+          </div>
+          <p id="radar-recommendation" class="text-xs text-slate-300 leading-relaxed">
+            表現優異！你已經具備「先塗黑個資再丟 AI」、「叫 AI 當挑毛病對手」以及「善用 LINE 轉文字與無聲訊息」的高手習慣。
+          </p>
+        </div>
+
+        <div class="flex items-center justify-between pt-1">
+          <div class="text-xs text-slate-500 font-mono">
+            憑證字號：<span class="text-slate-400 font-bold">LIFE-AI-2026-OK</span>
+          </div>
+          <button onclick="closeModal('report-modal')" class="px-5 py-2 rounded-xl bg-cyan-500 hover:bg-cyan-400 text-deepSea-950 font-bold text-xs">
+            收下憑證
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Notification Toast -->
+    <div id="toast-notify" class="fixed bottom-6 right-6 z-50 bg-deepSea-900 border border-cyan-500/40 text-cyan-200 px-4 py-2.5 rounded-xl shadow-2xl text-xs flex items-center gap-2 transform translate-y-20 opacity-0 transition-all duration-300 pointer-events-none">
+      <i data-lucide="info" class="w-4 h-4 text-cyanPop"></i>
+      <span id="toast-text">通知訊息</span>
+    </div>
+
+  </div>
+
+  <script>
+    /**
+     * AI × 手機生活實戰營
+     * Complete Gamified Engine for Everyday Scenarios
+     */
+
+    // --- Web Audio Synthesizer ---
+    class SoundEngine {
+      constructor() {
+        this.ctx = null;
+        this.enabled = true;
+      }
+      init() {
+        if (!this.ctx) {
+          const AudioContext = window.AudioContext || window.webkitAudioContext;
+          if (AudioContext) this.ctx = new AudioContext();
+        }
+      }
+      playTone(freq, type, duration, gainValue = 0.08) {
+        if (!this.enabled) return;
+        try {
+          this.init();
+          if (this.ctx.state === 'suspended') this.ctx.resume();
+          const osc = this.ctx.createOscillator();
+          const gain = this.ctx.createGain();
+          osc.type = type;
+          osc.frequency.setValueAtTime(freq, this.ctx.currentTime);
+          gain.gain.setValueAtTime(gainValue, this.ctx.currentTime);
+          gain.gain.exponentialRampToValueAtTime(0.0001, this.ctx.currentTime + duration);
+          osc.connect(gain);
+          gain.connect(this.ctx.destination);
+          osc.start();
+          osc.stop(this.ctx.currentTime + duration);
+        } catch(e) {
+          console.warn("Audio error", e);
+        }
+      }
+      click() { this.playTone(850, 'sine', 0.06, 0.03); }
+      success() {
+        this.playTone(523.25, 'sine', 0.1, 0.05);
+        setTimeout(() => this.playTone(783.99, 'sine', 0.2, 0.06), 70);
+      }
+      buzz() { this.playTone(190, 'sawtooth', 0.18, 0.04); }
+      fanfare() {
+        [440, 554, 659, 880].forEach((f, i) => {
+          setTimeout(() => this.playTone(f, 'sine', 0.3, 0.05), i * 80);
+        });
+      }
+    }
+    const sound = new SoundEngine();
+
+    // --- 8 Life-Centric Stages Data ---
+    const DEPTH_STAGES = [
+      {
+        id: 1,
+        depth: '10m',
+        name: '潮間層：像跟新人工讀生交代事情',
+        subtitle: '別再丟一句「幫我想週末吃什麼」，學會給身分、講目的、設條件。',
+        intelPoints: [
+          '<strong>給身分＋目的＋限制：</strong>「兩大一小去台南，小孩不吃辣、要有冷氣、預算 1000 內，列 3 間離赤崁樓走路 10 分鐘以內的小吃」，遠比「推薦美食」好十倍。',
+          '<strong>丟範例照語氣學：</strong>貼一段你覺得很暖或很客氣的簡訊，要求「照這個客氣但明確的口氣幫我回覆阿姨」。',
+          '<strong>叫它當「討厭鬼」挑毛病：</strong>買車買家電別問「這台好不好」，改問「我是精打細算的家庭主婦，列出買這台最容易後悔的 3 個缺點」。',
+          '<strong>直接在同一個對話改：</strong>覺得太長說「太囉嗦了，講 3 行重點就好」，不要按重開重新發問。'
+        ],
+        goldenRule: '「把 AI 當聰明但完全不了解你家狀況的工讀生：講清楚條件、檢查成果、不給金庫鑰匙。」',
+        xpReward: 150,
+        questions: [
+          {
+            id: 'q1_1',
+            text: '週末想帶家人出門吃飯，哪一種問法能一口氣得到最能立刻出發的建議？',
+            options: [
+              { text: 'A. 幫我推薦這週末台北哪裡有好吃的餐廳。', isCorrect: false, feedback: '太發散！AI 只會列出大家都知道的網紅排隊店，根本不知道你的家庭限制。' },
+              { text: 'B. 我們家 2 個大人 1 個五歲小孩，開車去大安區，要有地下停車場、室內冷氣、小孩能吃清淡烏龍麵，預算 1500 內，列出 2 家並註明營業時間。', isCorrect: true, feedback: '太漂亮了！給齊成員、交通、停車、飲食限制與預算，產出的建議才能直接導航出發！' },
+              { text: 'C. 請問台北一共有多少家餐廳有賣烏龍麵？', isCorrect: false, feedback: '這只是一般資訊檢索，沒辦法幫你解決今天吃什麼的問題。' }
+            ]
+          },
+          {
+            id: 'q1_2',
+            text: '當 AI 寫出來的回覆信件太長、讀起來像在寫公文時，最快修正的方式是什麼？',
+            options: [
+              { text: 'A. 在當前對話直接回覆：「太嚴肅了，改成 3 行以內、像朋友傳 LINE 的口氣」。', isCorrect: true, feedback: '完全正確！「就地修正不要重開」，讓 AI 根據上下文微調是最省時間的做法。' },
+              { text: 'B. 刪除整個 APP 重新安裝。', isCorrect: false, feedback: '這完全沒有必要，而且浪費時間。' },
+              { text: 'C. 重新開一個新對話框，再把所有事情從頭打字交代一次。', isCorrect: false, feedback: '重新交代會遺漏前面的細節，直接要求修改最快。' }
+            ]
+          }
+        ]
+      },
+      {
+        id: 2,
+        depth: '20m',
+        name: '透光層：手機相機拍照與「先塗黑」鐵律',
+        subtitle: '最關鍵的安全動作：拍照丟給 AI 前，在手機相簿裡花 10 秒純黑遮蔽。',
+        intelPoints: [
+          '<strong>千萬不要邊拍邊傳：</strong>只要原始照片一送出，你的姓名、身分證號、病歷號就已經傳到雲端伺服器對話紀錄裡。',
+          '<strong>標準 SOP 三步驟：</strong>1. 拍好照先在相簿打開 ➔ 2. 用內建編輯工具「純黑畫筆」或「實心方塊」遮蔽 ➔ 3. 儲存後才開 AI 上傳。',
+          '<strong>條碼與 QR Code 也要塗：</strong>單據下方的長條碼（Barcode）常常隱含病歷號或身分證號，記得一起遮掉。',
+          '<strong>別用半透明螢光筆：</strong>螢光筆會透光，調整對比度後底下字體一清二楚，請務必使用 100% 實心純黑色塊。'
+        ],
+        goldenRule: '「先拍好 ➔ 在相簿純黑塗滿個資條碼 ➔ 存檔 ➔ 才開 AI 上傳，這 10 秒保你一輩子平安。」',
+        xpReward: 160,
+        questions: [
+          {
+            id: 'q2_1',
+            text: '收到健檢報告有紅字看不懂，想請 AI 用白話文解釋，下列哪個流程最安全？',
+            options: [
+              { text: 'A. 直接拿起相機對著整張報告拍照，直接點傳送給 AI。', isCorrect: false, feedback: '危險！上面的名字、身分證字號、就診院所條碼全被送上雲端記錄了。' },
+              { text: 'B. 先在手機相簿打開照片，用編輯裡的黑色筆刷把姓名、身分證、病歷號與條碼塗成純黑，確認存檔後再上傳。', isCorrect: true, feedback: '標準大師操作！AI 只需要讀取紅字數據與檢查項目，個人隱私完全留在手機裡。' },
+              { text: 'C. 用黃色螢光筆在姓名上塗一下就丟給 AI。', isCorrect: false, feedback: '螢光筆是半透明的！在螢幕上拉高對比度依然看得一清二楚。' }
+            ]
+          },
+          {
+            id: 'q2_2',
+            text: '為什麼文件底部的「黑白條碼 (Barcode) 或 QR Code」也要跟著塗黑？',
+            options: [
+              { text: 'A. 因為條碼含有強大磁力會損壞手機鏡頭。', isCorrect: false, feedback: '完全不是這個原因。' },
+              { text: 'B. 因為條碼掃描一下，往往就是你的身分證字號或病歷代號，光塗名字是不夠的。', isCorrect: true, feedback: '賓果！很多醫院與公家機關單據的條碼就是個資代碼，一定要一起塗黑。' },
+              { text: 'C. 因為 AI 看到條碼會當機關閉。', isCorrect: false, feedback: 'AI 能辨識條碼與文字，但為了安全必須遮蔽。' }
+            ]
+          }
+        ]
+      },
+      {
+        id: 3,
+        depth: '30m',
+        name: '珊瑚礁層：生活救急與疑難雜症',
+        subtitle: '家電故障代碼、藥袋交互作用初篩、水電維修防敲竹槓。',
+        intelPoints: [
+          '<strong>洗衣機／家電故障亮燈：</strong>拍照拍面板代碼（例如 E3、水箱燈閃爍），問 AI：「這通常是濾網堵住能自己清，還是必須叫修？」',
+          '<strong>多科藥袋防交互作用：</strong>長輩同時看心臟科與感冒，拍下藥袋上的「藥品名/成分名」（姓名先折掉），問 AI：「這幾種藥有沒有重複吃或需要間隔時間？」再拿去問藥師。',
+          '<strong>水電維修心裡有底：</strong>拍馬桶水箱內部或漏水龍頭，問 AI 可能壞了哪個零件名稱，避免叫修時被當外行亂開天價。'
+        ],
+        goldenRule: '「AI 是生活的預檢員：幫你翻譯專業名詞、理清頭緒，讓你跟師傅或醫生談話時心裡有底。」',
+        xpReward: 170,
+        questions: [
+          {
+            id: 'q3_1',
+            text: '長輩拿了三包不同診所開的感冒藥與慢性病藥，擔心混在一起吃會傷胃或起衝突，最好的做法是？',
+            options: [
+              { text: 'A. 塗黑姓名後拍照問 AI 找出重複成分與注意事項，帶著 AI 整理好的清單到附近藥局向藥師求證。', isCorrect: true, feedback: '滿分應對！發揮 AI 的快速比對能力，最後由專業合格藥師拍板確認，安全又安心。' },
+              { text: 'B. AI 說沒事，就直接讓長輩一口氣全部吞下去。', isCorrect: false, feedback: '危險！牽涉到人體藥效，AI 不能代替醫師與藥師承擔責任。' },
+              { text: 'C. 把所有的藥丸全部丟掉不吃。', isCorrect: false, feedback: '隨意停藥可能引發慢性病病情波動。' }
+            ]
+          },
+          {
+            id: 'q3_2',
+            text: '家裡冷氣突然不冷且面板燈號一直閃爍，打電話找水電師傅之前，怎麼做最省事？',
+            options: [
+              { text: 'A. 拍下冷氣機側面的規格型號貼紙與閃爍的燈號，問 AI：「這個錯誤代碼最常見原因是什麼？有哪些是我自己拔插頭或清濾網能排除的？」', isCorrect: true, feedback: '太棒了！先初步排除簡單濾網或重開機問題，就算要報修也能精準報出型號與狀況。' },
+              { text: 'B. 拿榔頭敲敲看冷氣機。', isCorrect: false, feedback: '這只會把冷氣敲壞。' },
+              { text: 'C. 直接在網路上隨便找評分最低的二手冷氣買一台。', isCorrect: false, feedback: '衝動消費耗財又費力。' }
+            ]
+          }
+        ]
+      },
+      {
+        id: 4,
+        depth: '40m',
+        name: '次中層：手機原生功能大串接',
+        subtitle: '語音碎念整理、相機看圖點餐、手機「分享鍵」直接丟 AI。',
+        intelPoints: [
+          '<strong>出國拍菜單避雷：</strong>拍看不懂的日文、法文菜單，問：「哪些含有牛肉或海鮮過敏原？在地人最常點的招牌是哪道？」',
+          '<strong>開車走路語音碎念：</strong>雜亂念出待辦事項，指令接一句：「整理成：1. 今天必做、2. 購物清單、3. 時間表」。',
+          '<strong>網頁「分享鍵」直通：</strong>看長篇旅遊部落格或新聞，點分享 ➔ 選 AI App，問：「列出這篇推的私房景點與營業時間」。',
+          '<strong>成分表避過敏：</strong>買零食或保養品拍背面化學式，直接抓出過敏原。'
+        ],
+        goldenRule: '「動嘴語音、抬手拍照、善用分享鍵，把手機從低頭打字機變成隨身助理。」',
+        xpReward: 180,
+        questions: [
+          {
+            id: 'q4_1',
+            text: '你在日本自由行，看到一間老店菜單全都是看不懂的日文片假名，你對蝦蟹嚴重過敏，這時該怎麼做？',
+            options: [
+              { text: 'A. 隨便亂指一個最貴的餐點賭賭看。', isCorrect: false, feedback: '嚴重過敏隨時可能引發休克，絕不可拿健康開玩笑。' },
+              { text: 'B. 手機相機拍下菜單丟給 AI，問：「我有蝦蟹嚴重過敏，這張菜單哪幾道絕對不含海鮮？請把日文店員指引翻成一句短句給我看」。', isCorrect: true, feedback: '聰明！既避開過敏地雷，又有一句日文短句能指給店員確認，安全又順暢。' },
+              { text: 'C. 離開餐廳回飯店吃泡麵。', isCorrect: false, feedback: '太可惜了，學會工具就能安心品嚐在地美食。' }
+            ]
+          },
+          {
+            id: 'q4_2',
+            text: '開車時靈光一閃想到一堆生活雜事（買牛奶、繳停車費、下週三回診），但不能用手打字，最順手的做法是？',
+            options: [
+              { text: 'A. 一邊開車一邊低頭在記事本打字。', isCorrect: false, feedback: '極度危險！開車分心打字嚴重危害道路安全。' },
+              { text: 'B. 停紅燈時點按麥克風語音碎念一口氣念出來，吩咐 AI「整理成條列待辦清單與日期」。', isCorrect: true, feedback: '正確！語音輸入加上 AI 自動歸納，不用管語病就能整理得井井有條。' },
+              { text: 'C. 靠腦袋硬記，通常到家就忘光了。', isCorrect: false, feedback: '人的工作記憶有限，容易遺漏生活重要瑣事。' }
+            ]
+          }
+        ]
+      },
+      {
+        id: 5,
+        depth: '50m',
+        name: '深海層：LINE 內建隱藏神技',
+        subtitle: '[A] 轉文字、無聲訊息、匿名截圖、清理快取與防詐機器人。',
+        intelPoints: [
+          '<strong>照片 [A] 轉文字：</strong>點開聊天室圖片，按右上角 [A]，直接框選文字複製，免手打。',
+          '<strong>無聲訊息不吵人：</strong>設定 ➔ LINE Labs 開啟。長按紙飛機發送鍵選「無聲訊息」，清晨半夜傳訊無鈴聲無震動。',
+          '<strong>匿名截圖護隱私：</strong>長按訊息選截圖 ➔ 左下角點「匿名處理」，名字頭貼秒變可愛小動物。',
+          '<strong>清理快取瘦身：</strong>設定 ➔ 聊天 ➔ 刪除資料 ➔ 勾選「快取資料」，不會刪紀錄，瞬間清出好幾 GB。',
+          '<strong>防詐查證神隊友：</strong>加「LINE 訊息查證」或「MyGoPen」官方帳號，可疑連結一鍵辨真假。'
+        ],
+        goldenRule: '「台灣人天天開 LINE，學會內建小技巧，隱私不外洩、手機不卡頓、傳訊不失禮。」',
+        xpReward: 190,
+        questions: [
+          {
+            id: 'q5_1',
+            text: '想把聊天室裡跟朋友的爆笑對話截圖分享到臉書或群組，但不想出賣朋友的名字和私人頭貼，最快做法是？',
+            options: [
+              { text: 'A. 用截圖後手動用畫筆一個一個名字慢慢塗黑。', isCorrect: false, feedback: '費時費工，而且塗不乾淨容易穿幫。' },
+              { text: 'B. 長按訊息點選「截圖」，點選左下角的「匿名處理」，人名頭像會瞬間替換成小動物插圖。', isCorrect: true, feedback: '標準內建神技！乾淨俐落，完全保護朋友隱私不曝光。' },
+              { text: 'C. 直接截圖發出去不管了。', isCorrect: false, feedback: '未經同意公開他人對話與頭貼，容易引發人際糾紛。' }
+            ]
+          },
+          {
+            id: 'q5_2',
+            text: '清晨 5 點突然想到一件事想留言給同事或朋友，但怕手機叮咚一聲把對方吵醒，該怎麼傳？',
+            options: [
+              { text: 'A. 先打電話過去問對方醒了沒。', isCorrect: false, feedback: '清晨打電話更會把人吵醒。' },
+              { text: 'B. 打開 LINE Labs 的「無聲訊息」，打完字後長按發送鍵選擇「無聲訊息」發出。', isCorrect: true, feedback: '貼心且專業！對方螢幕不會震動或響鈴，只有點開 LINE 才會看見，完全不擾人清夢。' },
+              { text: 'C. 故意傳很長的照片洗版。', isCorrect: false, feedback: '這會造成對方的困擾。' }
+            ]
+          }
+        ]
+      },
+      {
+        id: 6,
+        depth: '60m',
+        name: '深淵層：家庭與社交情境實戰',
+        subtitle: '管委會/鄰居溝通、孩子升學自傳「挑空泛句」反思引導。',
+        intelPoints: [
+          '<strong>社區群組溝通降火氣：</strong>收到管委會催告或鄰居投訴，把想罵的草稿貼進去：「改寫成有禮貌、維護自身權益、但語氣堅定不吵架的 3 行回覆」。',
+          '<strong>孩子升學自傳輔導：</strong>千萬不要讓 AI 代寫！（大學招生官看一眼就知道）。改請 AI 當「挑剔招生委員」，圈出文章裡「空泛、沒有具體行動佐證的句子」，讓孩子自己講出真實故事。',
+          '<strong>長輩手寫祖傳食譜轉文字：</strong>拍下泛黃手寫筆記，讓 AI 轉成工整表格與精確公克數。'
+        ],
+        goldenRule: '「教育與溝通不是讓 AI 代筆，而是讓 AI 幫忙拿捏分寸與當反思鏡子。」',
+        xpReward: 200,
+        questions: [
+          {
+            id: 'q6_1',
+            text: '孩子在寫高中升大學的自傳與學習歷程，身為家長怎樣引導 AI 協作最加分？',
+            options: [
+              { text: 'A. 把孩子的得獎名單輸入，請 AI 直接生成一篇 1500 字辭藻華麗的自傳。', isCorrect: false, feedback: '地雷！現在大學審查官對 AI 罐頭作文非常反感，面試一問細節立刻露餡。' },
+              { text: 'B. 讓孩子自己寫出草稿，請 AI 扮演嚴格招生官挑出「哪些句子太空泛、缺乏實際案例證明」，引導孩子自己修訂。', isCorrect: true, feedback: '最具智慧的教養方式！保留孩子獨一無二的靈魂與真實性，同時學會嚴謹論述。' },
+              { text: 'C. 不讓孩子用任何電腦，完全純手寫紙本。', isCorrect: false, feedback: '新時代的人機協作素養依然需要從小健康培養。' }
+            ]
+          },
+          {
+            id: 'q6_2',
+            text: '樓上鄰居半夜常發出搬動桌椅的噪音，你在氣頭上想傳訊息反映，如何避免引發鄰里大吵？',
+            options: [
+              { text: 'A. 寫下憤怒的字句後，請 AI：「把情緒字眼拿掉，保留具體時間點與聲音描述，語氣客氣但堅定希望對方加裝桌椅腳墊」。', isCorrect: true, feedback: '高情商溝通！AI 能幫你在氣頭上濾掉火藥味，聚焦在解決問題而不是互相攻擊。' },
+              { text: 'B. 叫 AI 寫一篇言詞刻薄的恐嚇信貼在電梯裡。', isCorrect: false, feedback: '這可能觸犯法律且加劇惡鄰衝突。' },
+              { text: 'C. 默默忍受好幾年直到自己神經衰弱。', isCorrect: false, feedback: '理性而有策略的溝通才是解決之道。' }
+            ]
+          }
+        ]
+      },
+      {
+        id: 7,
+        depth: '70m',
+        name: '海溝層：防詐騙、防盲點與查證原則',
+        subtitle: 'AI 擬真仿聲視訊詐騙、雙軌回撥確認、警惕諂媚附和。',
+        intelPoints: [
+          '<strong>擬真仿聲 (Deepfake) 詐騙：</strong>歹徒只要錄 5 秒親友聲音就能合成假語音或假視訊。凡是緊急借錢，一律「掛掉改打平常的市話或另一個管道確認」。',
+          '<strong>AI 很會順著你講：</strong>問「我想買這檔股票很聰明吧？」它只會瘋狂讚美。一定要問「這筆交易最可能因為什麼原因賠錢？」。',
+          '<strong>重要事實一定查原文：</strong>判例、健檢數據標準、罰款金額，AI 會說得很肯定但可能是自己編的，務必自己點官方資料確認。'
+        ],
+        goldenRule: '「越是緊急要錢的訊息，越要慢半拍；用平時常用的第二管道親自回撥查證。」',
+        xpReward: 210,
+        questions: [
+          {
+            id: 'q7_1',
+            text: '接到「兒子」從陌生的 LINE 帳號打語音電話過來，聲音聽起來一模一樣，哭著說撞到人急需 20 萬賠償，這時該怎麼做？',
+            options: [
+              { text: 'A. 聲音百分之百一樣，怕兒子坐牢，立刻去 ATM 轉帳。', isCorrect: false, feedback: '極度危險！AI 幾秒語音樣本就能複製音色，是目前最普遍的科技詐騙手法！' },
+              { text: 'B. 馬上掛斷電話，直接撥打平時存的手機號碼或家中電話確認，或打 165 反詐騙專線。', isCorrect: true, feedback: '冷靜救命招！落實「雙軌回撥確認」，只要換一個已知的管道聯繫，詐騙手法立刻被戳破。' },
+              { text: 'C. 在電話裡跟歹徒聊一個小時殺價。', isCorrect: false, feedback: '容易被心理戰術操控而落入圈套。' }
+            ]
+          },
+          {
+            id: 'q7_2',
+            text: '為什麼你想做一個重要決定時，不要問 AI「我這個想法很好對不對？」',
+            options: [
+              { text: 'A. 因為 AI 天生容易迎合使用者給出讚同，會隱瞞潛在的風險與盲點。', isCorrect: true, feedback: '沒錯！這叫「順從效應」。想避坑一定要反向問它「這件事最可能哪裡失敗」。' },
+              { text: 'B. 因為 AI 會因此對你產生崇拜。', isCorrect: false, feedback: 'AI 只是演算法，沒有崇拜情感。' },
+              { text: 'C. 因為問這句話會被扣除個人信用分數。', isCorrect: false, feedback: '沒有這項機制。' }
+            ]
+          }
+        ]
+      },
+      {
+        id: 8,
+        depth: '80m',
+        name: '深海巨溝：主動情報與生活哨兵',
+        subtitle: '每日晨報重點推播、股票到價警示、法規公告主動提醒。',
+        intelPoints: [
+          '<strong>生活與產業晨報：</strong>設定每天早晨 7 點自動整理「今日天氣、你關心的 3 則關鍵新聞摘要」，吃早餐時 1 分鐘看完。',
+          '<strong>到價與跳空預警：</strong>長期存股或追蹤機票，跌破設定價位時發送通知，並附帶當天跌幅原因摘要。',
+          '<strong>決策權永遠留在自己：</strong>哨兵負責主動通報與採集，下單買賣與簽名拍板永遠由人類負責。'
+        ],
+        goldenRule: '「讓機器負責替你盯哨，把寶貴的時間留給自己享受生活與關鍵決策。」',
+        xpReward: 250,
+        questions: [
+          {
+            id: 'q8_1',
+            text: '想建立一個追蹤「廉價航空機票特價」的生活情報哨兵，最好的邏輯是？',
+            options: [
+              { text: 'A. 每天讓手機自動彈出 100 則各大航空公司的所有促銷廣告。', isCorrect: false, feedback: '資訊轟炸只會讓你感到疲乏而忽略真正重要的訊息。' },
+              { text: 'B. 只設定「東京／大阪、特定月份、含稅低於 9000 元」才觸發即時通知，並附上直飛航班連結。', isCorrect: true, feedback: '標準哨兵精神！設定精準邊界，只有真正符合條件的情報才打擾你。' },
+              { text: 'C. 完全不查，出發當天直接到機場買全額票。', isCorrect: false, feedback: '成本過高且充滿不確定性。' }
+            ]
+          },
+          {
+            id: 'q8_2',
+            text: '收到設定的到價提醒通知某檔持股突然重挫 6%，此時理性的應對流程是什麼？',
+            options: [
+              { text: 'A. 授權 AI 機器人瞬間把所有股票全部賣出出清。', isCorrect: false, feedback: '過度授權可能因為短暫跳空造成非理性實質損失。' },
+              { text: 'B. 檢視附帶的新聞摘要，親自點開主流權威報導查核是否為短期突發謠言或基本面變質，自己做最後決策。', isCorrect: true, feedback: '正解！「AI 負責偵測通報，查證與決策留給自己」，這才是真正的智慧生活大師。' },
+              { text: 'C. 刪掉 APP 當作沒這回事。', isCorrect: false, feedback: '消極逃避無助於個人資產管理。' }
+            ]
+          }
+        ]
+      }
+    ];
+
+    // --- State Persistence ---
+    const STORAGE_KEY = 'ai_life_mobile_academy_v1';
+    let userState = {
+      currentLevelId: 1,
+      totalXP: 0,
+      levelStars: {},
+      levelAnswers: {},
+      unlockedMaxLevel: 1,
+      soundEnabled: true,
+      redactCompleted: false
+    };
+
+    function loadState() {
+      try {
+        const raw = localStorage.getItem(STORAGE_KEY);
+        if (raw) userState = { ...userState, ...JSON.parse(raw) };
+      } catch(e) {
+        console.warn("Storage load error", e);
+      }
+    }
+
+    function saveState() {
+      try {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(userState));
+      } catch(e) {
+        console.warn("Storage save error", e);
+      }
+    }
+
+    function getRankTitle(xp, maxLevel) {
+      if (maxLevel >= 8 && xp >= 1300) return '生活智慧大宗師 🔱';
+      if (maxLevel >= 6) return '深海生活引航員 🧭';
+      if (maxLevel >= 4) return '手機實戰好手 📱';
+      if (maxLevel >= 2) return '智慧生活進階者 🤿';
+      return '生活摸索新人 🌊';
+    }
+
+    // --- Bubbles Background ---
+    function initBubbles() {
+      const container = document.getElementById('ambient-bubbles');
+      if (!container) return;
+      container.innerHTML = '';
+      for (let i = 0; i < 16; i++) {
+        const b = document.createElement('div');
+        const size = Math.floor(Math.random() * 8) + 4;
+        const left = Math.random() * 100;
+        const delay = Math.random() * 7;
+        const duration = Math.random() * 6 + 6;
+        b.className = 'absolute rounded-full bg-cyan-400/20 border border-cyan-300/30 pointer-events-none animate-bubble';
+        b.style.width = `${size}px`;
+        b.style.height = `${size}px`;
+        b.style.left = `${left}%`;
+        b.style.animationDelay = `${delay}s`;
+        b.style.animationDuration = `${duration}s`;
+        container.appendChild(b);
+      }
+    }
+
+    // --- HUD and View Updates ---
+    function updateHUD() {
+      const stage = DEPTH_STAGES.find(s => s.id === userState.currentLevelId) || DEPTH_STAGES[0];
+      
+      document.getElementById('hud-current-depth').innerText = `${stage.depth} (${stage.name.split('：')[0]})`;
+      document.getElementById('hud-xp').innerText = userState.totalXP;
+      document.getElementById('hud-rank').innerText = getRankTitle(userState.totalXP, userState.unlockedMaxLevel);
+
+      let totalStars = 0;
+      Object.values(userState.levelStars).forEach(s => totalStars += s);
+      const totalPossible = DEPTH_STAGES.length * 3;
+      document.getElementById('side-stars-summary').innerHTML = `<i data-lucide="star" class="w-3.5 h-3.5 fill-current"></i> ${totalStars}/${totalPossible}`;
+
+      const pct = Math.min(100, Math.round((userState.unlockedMaxLevel / DEPTH_STAGES.length) * 100));
+      document.getElementById('hud-progress-bar').style.width = `${Math.max(12, pct)}%`;
+
+      const soundIcon = document.getElementById('sound-icon');
+      if (userState.soundEnabled) {
+        soundIcon.setAttribute('data-lucide', 'volume-2');
+        soundIcon.className = 'w-4 h-4 text-cyanPop';
+      } else {
+        soundIcon.setAttribute('data-lucide', 'volume-x');
+        soundIcon.className = 'w-4 h-4 text-slate-500';
+      }
+
+      renderDepthNav();
+      renderCurrentStage();
+      lucide.createIcons();
+    }
+
+    function renderDepthNav() {
+      const list = document.getElementById('depth-nav-list');
+      if (!list) return;
+      list.innerHTML = '';
+
+      DEPTH_STAGES.forEach(stage => {
+        const isUnlocked = stage.id <= userState.unlockedMaxLevel;
+        const isActive = stage.id === userState.currentLevelId;
+        const stars = userState.levelStars[stage.id] || 0;
+
+        const item = document.createElement('div');
+        item.className = `flex items-center justify-between p-2.5 rounded-xl cursor-pointer transition-all ${
+          isActive 
+            ? 'bg-cyan-950/80 border border-cyan-400 text-white shadow-lg shadow-cyan-500/10' 
+            : isUnlocked 
+              ? 'bg-deepSea-950/60 hover:bg-deepSea-800 border border-slate-800 text-slate-300' 
+              : 'opacity-40 bg-deepSea-950/30 border border-transparent text-slate-600 cursor-not-allowed'
+        }`;
+
+        item.onclick = () => {
+          if (isUnlocked) {
+            selectStage(stage.id);
+          } else {
+            showToast(`請先完成前面的關卡以解鎖 ${stage.depth} 水深！`);
+            sound.buzz();
+          }
+        };
+
+        let starHtml = '';
+        for (let i = 0; i < 3; i++) {
+          starHtml += `<i data-lucide="star" class="w-3 h-3 ${i < stars ? 'fill-amber-400 text-amber-400' : 'text-slate-700'}"></i>`;
+        }
+
+        item.innerHTML = `
+          <div class="flex items-center gap-2.5 overflow-hidden">
+            <div class="w-7 h-7 rounded-lg flex items-center justify-center font-mono text-xs font-bold shrink-0 ${
+              isActive 
+                ? 'bg-cyan-500 text-deepSea-950' 
+                : isUnlocked 
+                  ? 'bg-deepSea-800 text-cyan-300' 
+                  : 'bg-slate-900 text-slate-600'
+            }">
+              ${isUnlocked ? stage.depth : '<i data-lucide="lock" class="w-3 h-3"></i>'}
+            </div>
+            <div class="truncate text-left">
+              <div class="text-xs font-semibold truncate ${isActive ? 'text-cyanPop' : ''}">
+                ${stage.name.split('：')[1] || stage.name}
+              </div>
+              <div class="text-[10px] text-slate-500 font-mono">${stage.depth} 水深</div>
+            </div>
+          </div>
+          <div class="flex items-center gap-0.5 shrink-0 ml-1">
+            ${isUnlocked ? starHtml : ''}
+          </div>
+        `;
+        list.appendChild(item);
+      });
+    }
+
+    function renderCurrentStage() {
+      const stage = DEPTH_STAGES.find(s => s.id === userState.currentLevelId) || DEPTH_STAGES[0];
+      
+      document.getElementById('stage-badge-depth').innerText = `${stage.depth} 深度站`;
+      document.getElementById('stage-title').innerText = stage.name;
+      document.getElementById('stage-subtitle').innerText = stage.subtitle;
+      document.getElementById('stage-xp-reward').innerText = `+${stage.xpReward} XP`;
+
+      const stars = userState.levelStars[stage.id] || 0;
+      let starHtml = '';
+      for (let i = 0; i < 3; i++) {
+        starHtml += `<i data-lucide="star" class="w-4 h-4 ${i < stars ? 'fill-amber-400 text-amber-400' : 'text-slate-700'}"></i>`;
+      }
+      document.getElementById('stage-stars-row').innerHTML = starHtml;
+
+      const intelContainer = document.getElementById('stage-intel-points');
+      intelContainer.innerHTML = '';
+      stage.intelPoints.forEach(pt => {
+        const div = document.createElement('div');
+        div.className = 'p-3 rounded-xl bg-deepSea-950/70 border border-slate-800/80 leading-relaxed';
+        div.innerHTML = pt;
+        intelContainer.appendChild(div);
+      });
+
+      document.getElementById('stage-golden-rule').innerText = stage.goldenRule;
+      renderQuestions(stage);
+    }
+
+    function renderQuestions(stage) {
+      const container = document.getElementById('questions-container');
+      container.innerHTML = '';
+
+      let answeredCount = 0;
+      stage.questions.forEach((q, qIndex) => {
+        const selectedOpt = userState.levelAnswers[q.id];
+        if (selectedOpt !== undefined) answeredCount++;
+
+        const qCard = document.createElement('div');
+        qCard.className = 'p-4 sm:p-5 rounded-xl bg-deepSea-900/80 border border-slate-800 space-y-3';
+        
+        const qTitle = document.createElement('div');
+        qTitle.className = 'text-xs sm:text-sm font-semibold text-white flex items-start gap-2';
+        qTitle.innerHTML = `
+          <span class="px-2 py-0.5 rounded bg-cyan-950 text-cyan-400 font-mono text-xs border border-cyan-800 shrink-0">情境 ${qIndex + 1}</span>
+          <span class="flex-1">${q.text}</span>
+        `;
+        qCard.appendChild(qTitle);
+
+        const optionsWrapper = document.createElement('div');
+        optionsWrapper.className = 'space-y-2 pt-1';
+
+        q.options.forEach((opt, optIdx) => {
+          const isChosen = selectedOpt === optIdx;
+          const isSubmitted = selectedOpt !== undefined;
+          
+          let btnStyle = 'bg-deepSea-950/80 border-slate-800 text-slate-300 hover:border-cyan-500/50 hover:bg-deepSea-800';
+          let iconHtml = `<span class="w-5 h-5 rounded-full border border-slate-700 text-[10px] flex items-center justify-center font-mono">${String.fromCharCode(65 + optIdx)}</span>`;
+
+          if (isSubmitted) {
+            if (opt.isCorrect) {
+              btnStyle = 'bg-teal-950/60 border-tealMint text-teal-200';
+              iconHtml = `<i data-lucide="check" class="w-4 h-4 text-tealMint"></i>`;
+            } else if (isChosen && !opt.isCorrect) {
+              btnStyle = 'bg-rose-950/60 border-rose-500 text-rose-200';
+              iconHtml = `<i data-lucide="alert-circle" class="w-4 h-4 text-coralAlert"></i>`;
+            } else {
+              btnStyle = 'opacity-40 bg-deepSea-950 border-slate-800 text-slate-500';
+            }
+          }
+
+          const optBtn = document.createElement('button');
+          optBtn.className = `w-full text-left p-3 rounded-xl border text-xs sm:text-sm flex items-start gap-3 transition-all ${btnStyle}`;
+          optBtn.innerHTML = `
+            <div class="shrink-0 mt-0.5">${iconHtml}</div>
+            <div class="flex-1 leading-relaxed">${opt.text}</div>
+          `;
+
+          if (!isSubmitted) {
+            optBtn.onclick = () => handleAnswerSelect(stage.id, q.id, optIdx);
+          }
+          optionsWrapper.appendChild(optBtn);
+        });
+
+        qCard.appendChild(optionsWrapper);
+
+        if (selectedOpt !== undefined) {
+          const chosenObj = q.options[selectedOpt];
+          const feedbackBox = document.createElement('div');
+          feedbackBox.className = `mt-3 p-3 rounded-xl text-xs leading-relaxed flex items-start gap-2 ${
+            chosenObj.isCorrect 
+              ? 'bg-teal-950/40 border border-teal-500/30 text-teal-200' 
+              : 'bg-rose-950/40 border border-rose-500/30 text-rose-200'
+          }`;
+          feedbackBox.innerHTML = `
+            <i data-lucide="${chosenObj.isCorrect ? 'check-circle' : 'alert-triangle'}" class="w-4 h-4 shrink-0 mt-0.5"></i>
+            <div>
+              <strong>${chosenObj.isCorrect ? '正確做法：' : '地雷提醒：'}</strong>
+              ${chosenObj.feedback}
+            </div>
+          `;
+          qCard.appendChild(feedbackBox);
+        }
+
+        container.appendChild(qCard);
+      });
+
+      document.getElementById('exam-badge-count').innerText = `${answeredCount}/${stage.questions.length}`;
+      checkStagePassed(stage);
+    }
+
+    function handleAnswerSelect(stageId, questionId, optionIndex) {
+      sound.click();
+      userState.levelAnswers[questionId] = optionIndex;
+      
+      const stage = DEPTH_STAGES.find(s => s.id === stageId);
+      const question = stage.questions.find(q => q.id === questionId);
+      const isCorrect = question.options[optionIndex].isCorrect;
+
+      if (isCorrect) sound.success();
+      else sound.buzz();
+
+      saveState();
+      updateHUD();
+    }
+
+    function checkStagePassed(stage) {
+      const completionBox = document.getElementById('stage-completion-box');
+      const allAnswered = stage.questions.every(q => userState.levelAnswers[q.id] !== undefined);
+
+      if (!allAnswered) {
+        completionBox.classList.add('hidden');
+        return;
+      }
+
+      let correctCount = 0;
+      stage.questions.forEach(q => {
+        const ans = userState.levelAnswers[q.id];
+        if (ans !== undefined && q.options[ans].isCorrect) correctCount++;
+      });
+
+      let earnedStars = 1;
+      if (correctCount === stage.questions.length) earnedStars = 3;
+      else if (correctCount >= 1) earnedStars = 2;
+
+      const prevStars = userState.levelStars[stage.id] || 0;
+      if (earnedStars > prevStars) {
+        userState.levelStars[stage.id] = earnedStars;
+        userState.totalXP += (earnedStars - prevStars) * (stage.xpReward / 3);
+      }
+
+      if (stage.id === userState.unlockedMaxLevel && stage.id < DEPTH_STAGES.length) {
+        userState.unlockedMaxLevel = stage.id + 1;
+        sound.fanfare();
+        showToast(`已解鎖下一個水深層級：${DEPTH_STAGES[stage.id].depth}！`);
+      }
+
+      saveState();
+      completionBox.classList.remove('hidden');
+      document.getElementById('stage-complete-title').innerText = `本站考驗完成！答對 ${correctCount} / ${stage.questions.length} 題`;
+      document.getElementById('stage-complete-msg').innerText = correctCount === stage.questions.length 
+        ? '滿分過關！獲得 3 顆深潛星與全額生活經驗值。' 
+        : '順利過關！已掌握本層生活避坑要領。';
+
+      const nextBtn = document.getElementById('btn-next-stage');
+      if (stage.id >= DEPTH_STAGES.length) {
+        nextBtn.innerHTML = `<span>檢視結業全能證書與能力報告</span> <i data-lucide="award" class="w-4 h-4"></i>`;
+        nextBtn.onclick = () => renderReportModal();
+      } else {
+        nextBtn.innerHTML = `<span>下潛至下一關 (${DEPTH_STAGES[stage.id].depth})</span> <i data-lucide="chevrons-down" class="w-4 h-4"></i>`;
+        nextBtn.onclick = () => goToNextStage();
+      }
+    }
+
+    function selectStage(stageId) {
+      sound.click();
+      userState.currentLevelId = stageId;
+      saveState();
+      updateHUD();
+      switchStageTab('intel');
+      window.scrollTo({ top: 120, behavior: 'smooth' });
+    }
+
+    function goToNextStage() {
+      if (userState.currentLevelId < DEPTH_STAGES.length) {
+        selectStage(userState.currentLevelId + 1);
+      }
+    }
+
+    function switchStageTab(tabName) {
+      sound.click();
+      const intelTab = document.getElementById('stage-intel-tab');
+      const examTab = document.getElementById('stage-exam-tab');
+      const intelBtn = document.getElementById('tab-intel-btn');
+      const examBtn = document.getElementById('tab-exam-btn');
+
+      if (tabName === 'intel') {
+        intelTab.classList.remove('hidden');
+        examTab.classList.add('hidden');
+        intelBtn.className = 'pb-2.5 px-3 text-xs sm:text-sm font-semibold border-b-2 border-cyanPop text-cyanPop flex items-center gap-1.5 transition-all';
+        examBtn.className = 'pb-2.5 px-3 text-xs sm:text-sm font-semibold border-b-2 border-transparent text-slate-400 hover:text-slate-200 flex items-center gap-1.5 transition-all';
+      } else {
+        intelTab.classList.add('hidden');
+        examTab.classList.remove('hidden');
+        examBtn.className = 'pb-2.5 px-3 text-xs sm:text-sm font-semibold border-b-2 border-cyanPop text-cyanPop flex items-center gap-1.5 transition-all';
+        intelBtn.className = 'pb-2.5 px-3 text-xs sm:text-sm font-semibold border-b-2 border-transparent text-slate-400 hover:text-slate-200 flex items-center gap-1.5 transition-all';
+      }
+      lucide.createIcons();
+    }
+
+    // --- Life Prompt Templates ---
+    const LIFE_PROMPTS = {
+      p_eat: {
+        input: '「幫我想台南赤崁樓吃什麼」',
+        output: '「我們兩大一小去台南，小孩不吃辣、要有室內冷氣、預算 1000 內。請推薦 3 間離赤崁樓走路 10 分鐘內的小吃，並註明排隊熱門時段與最容易踩雷的一道菜。」'
+      },
+      p_buy: {
+        input: '「這台掃地機器人好不好用？」',
+        output: '「我家有 30 坪木地板、兩隻掉毛長毛貓。請站在精打細算的家庭主婦視角，列出買這款掃地機器人最常被買家退貨抱怨的 3 個缺點，不要一味誇獎。」'
+      },
+      p_repair: {
+        input: '「馬桶一直流水怎麼辦？」',
+        output: '「拍這張馬桶水箱內部構造照片。沖水後水箱水一直補不停，看照片最有可能是落水皮還是進水閥問題？請用白話教我如何 3 步驟自我檢查排錯，以及找水電時該報什麼零件名防敲竹槓。」'
+      },
+      p_trip: {
+        input: '「幫我排 4 天東京行程」',
+        output: '「帶 65 歲膝蓋不好的長輩去東京 4 天 3 夜。每天最多排 2 個主要景點、中途必須有下午茶休息點，避開大量爬樓梯地鐵站。請列出路線與合適的計程車備案。」'
+      },
+      p_line: {
+        input: '「管委會要我移走走廊鞋櫃，幫我回覆」',
+        output: '「這是管委會在 LINE 群組的公告。請用客氣、禮貌但堅定的語氣擬一段回覆：說明我們這週末會配合清理，但也請管委會一併盤點同樓層其他鄰居的私人物品，一視同仁執行。」'
+      }
+    };
+
+    function applyQuickPromptTemplate() {
+      const key = document.getElementById('quick-prompt-selector').value;
+      const data = LIFE_PROMPTS[key] || LIFE_PROMPTS.p_eat;
+      document.getElementById('quick-prompt-input').innerText = data.input;
+      document.getElementById('quick-prompt-output').innerText = data.output;
+      sound.click();
+    }
+
+    function copyTransformedPrompt() {
+      const text = document.getElementById('quick-prompt-output').innerText;
+      copyToClipboard(text);
+      showToast('已複製生活實戰指令！');
+      sound.success();
+    }
+
+    // --- Redaction Lab Interactive Simulator ---
+    const redactState = {
+      'box-id': false,
+      'box-record': false,
+      'box-barcode': false
+    };
+
+    function toggleRedact(boxId) {
+      sound.click();
+      const el = document.getElementById(boxId);
+      redactState[boxId] = !redactState[boxId];
+
+      if (redactState[boxId]) {
+        el.className = 'px-3 py-1 rounded bg-black text-black border border-black font-mono select-none transition-all';
+        el.innerText = '███████████';
+      } else {
+        el.className = 'border border-dashed border-rose-400/80 px-2 py-1 rounded cursor-pointer transition-all bg-rose-950/20 text-rose-300 hover:bg-rose-900/40';
+        if (boxId === 'box-id') el.innerText = '身分證：A123456789 (點擊遮蔽)';
+        if (boxId === 'box-record') el.innerText = '病歷號：MR-889021 (點擊遮蔽)';
+        if (boxId === 'box-barcode') el.innerText = '||| | |||| | ||| 889021 (點擊遮蔽)';
+      }
+
+      checkRedactStatus();
+    }
+
+    function checkRedactStatus() {
+      const allDone = Object.values(redactState).every(v => v === true);
+      const feedback = document.getElementById('redact-feedback');
+      if (allDone) {
+        sound.success();
+        feedback.className = 'p-3 rounded-xl bg-teal-950 border border-tealMint text-xs text-teal-200 flex items-center gap-2';
+        feedback.innerHTML = `<i data-lucide="check-circle" class="w-4 h-4 text-tealMint shrink-0"></i> <span>太棒了！個資與條碼全部純黑實心遮蔽，現在安全無虞，可以安心丟給 AI 分析了！</span>`;
+        if (!userState.redactCompleted) {
+          userState.redactCompleted = true;
+          userState.totalXP += 50;
+          saveState();
+          updateHUD();
+        }
+      } else {
+        feedback.className = 'p-3 rounded-xl bg-deepSea-950 border border-slate-800 text-xs text-slate-300 flex items-center gap-2';
+        feedback.innerHTML = `<i data-lucide="info" class="w-4 h-4 text-cyanPop shrink-0"></i> <span>還有項目未遮蔽！請將身分證號、病歷號與條碼全部塗黑。</span>`;
+      }
+      lucide.createIcons();
+    }
+
+    function resetRedactLab() {
+      sound.buzz();
+      ['box-id', 'box-record', 'box-barcode'].forEach(id => {
+        redactState[id] = false;
+        const el = document.getElementById(id);
+        el.className = 'border border-dashed border-rose-400/80 px-2 py-1 rounded cursor-pointer transition-all bg-rose-950/20 text-rose-300 hover:bg-rose-900/40';
+        if (id === 'box-id') el.innerText = '身分證：A123456789 (點擊遮蔽)';
+        if (id === 'box-record') el.innerText = '病歷號：MR-889021 (點擊遮蔽)';
+        if (id === 'box-barcode') el.innerText = '||| | |||| | ||| 889021 (點擊遮蔽)';
+      });
+      checkRedactStatus();
+    }
+
+    // --- Report Modal ---
+    function renderReportModal() {
+      sound.fanfare();
+      let totalQ = 0;
+      let totalC = 0;
+      DEPTH_STAGES.forEach(st => {
+        st.questions.forEach(q => {
+          totalQ++;
+          const ans = userState.levelAnswers[q.id];
+          if (ans !== undefined && q.options[ans].isCorrect) totalC++;
+        });
+      });
+
+      const ratio = totalQ > 0 ? (totalC / totalQ) : 0;
+      const sLazy = Math.min(99, Math.max(65, Math.round(ratio * 92 + (userState.levelStars[1] || 1) * 2)));
+      const sRedact = Math.min(100, Math.max(70, Math.round(ratio * 95 + (userState.redactCompleted ? 5 : 0))));
+      const sLine = Math.min(98, Math.max(60, Math.round(ratio * 90 + (userState.levelStars[5] || 1) * 3)));
+      const sFraud = Math.min(99, Math.max(65, Math.round(ratio * 93 + (userState.levelStars[7] || 1) * 2)));
+
+      document.getElementById('radar-score-lazy').innerText = `${sLazy}%`;
+      document.getElementById('radar-score-redact').innerText = `${sRedact}%`;
+      document.getElementById('radar-score-line').innerText = `${sLine}%`;
+      document.getElementById('radar-score-fraud').innerText = `${sFraud}%`;
+
+      openModal('report-modal');
+    }
+
+    // --- Modals and Utility ---
+    function openModal(id) {
+      sound.click();
+      const el = document.getElementById(id);
+      if (el) el.classList.remove('hidden');
+    }
+
+    function closeModal(id) {
+      sound.click();
+      const el = document.getElementById(id);
+      if (el) el.classList.add('hidden');
+    }
+
+    function showToast(msg) {
+      const t = document.getElementById('toast-notify');
+      const txt = document.getElementById('toast-text');
+      if (!t || !txt) return;
+      txt.innerText = msg;
+      t.classList.remove('opacity-0', 'translate-y-20', 'pointer-events-none');
+      t.classList.add('opacity-100', 'translate-y-0');
+      setTimeout(() => {
+        t.classList.add('opacity-0', 'translate-y-20', 'pointer-events-none');
+        t.classList.remove('opacity-100', 'translate-y-0');
+      }, 3000);
+    }
+
+    function copyToClipboard(text) {
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(text);
+      } else {
+        const ta = document.createElement('textarea');
+        ta.value = text;
+        ta.style.position = 'fixed';
+        ta.style.left = '-9999px';
+        document.body.appendChild(ta);
+        ta.select();
+        document.execCommand('copy');
+        document.body.removeChild(ta);
+      }
+    }
+
+    function toggleAudio() {
+      userState.soundEnabled = !userState.soundEnabled;
+      sound.enabled = userState.soundEnabled;
+      showToast(userState.soundEnabled ? '音效已開啟' : '音效已靜音');
+      saveState();
+      updateHUD();
+    }
+
+    function confirmResetProgress() {
+      sound.buzz();
+      if (window.confirm("確定要重設所有生活學習進度與經驗值嗎？")) {
+        userState = {
+          currentLevelId: 1,
+          totalXP: 0,
+          levelStars: {},
+          levelAnswers: {},
+          unlockedMaxLevel: 1,
+          soundEnabled: true,
+          redactCompleted: false
+        };
+        saveState();
+        updateHUD();
+        switchStageTab('intel');
+        showToast('已重設為起點！');
+      }
+    }
+
+    // --- Bootstrap ---
+    window.onload = function() {
+      loadState();
+      sound.enabled = userState.soundEnabled;
+      initBubbles();
+      applyQuickPromptTemplate();
+      updateHUD();
+      lucide.createIcons();
+    };
+  </script>
+</body>
+</html>
