@@ -13,19 +13,27 @@
       darkMode: 'class',
       theme: {
         extend: {
+          // 白底主題：把深色系色票整組「反轉」(50↔950, 100↔900…)，
+          // 原本深底淺字的設計會自動變成白底深字，對比維持一致。
           colors: {
+            white: '#0f172a',
             deepSea: {
-              950: '#030712',
-              900: '#071126',
-              850: '#0b1938',
-              800: '#0f234d',
-              700: '#173673',
+              950: '#ffffff',
+              900: '#f8fafc',
+              850: '#f1f5f9',
+              800: '#e8eef5',
+              700: '#dbe4ee',
             },
-            cyanPop: '#00f2fe',
-            tealMint: '#05d5b3',
-            amberSun: '#fbbf24',
-            coralAlert: '#ff5e7e',
-            lineGreen: '#06c755'
+            slate: { 50:'#020617',100:'#0f172a',200:'#1e293b',300:'#334155',400:'#475569',500:'#64748b',600:'#94a3b8',700:'#cbd5e1',800:'#e2e8f0',900:'#f1f5f9',950:'#f8fafc' },
+            cyan:  { 50:'#083344',100:'#164e63',200:'#155e75',300:'#0e7490',400:'#0891b2',500:'#06b6d4',600:'#22d3ee',700:'#67e8f9',800:'#a5f3fc',900:'#cffafe',950:'#ecfeff' },
+            teal:  { 50:'#042f2e',100:'#134e4a',200:'#115e59',300:'#0f766e',400:'#0d9488',500:'#14b8a6',600:'#2dd4bf',700:'#5eead4',800:'#99f6e4',900:'#ccfbf1',950:'#f0fdfa' },
+            rose:  { 50:'#4c0519',100:'#881337',200:'#9f1239',300:'#be123c',400:'#e11d48',500:'#f43f5e',600:'#fb7185',700:'#fda4af',800:'#fecdd3',900:'#ffe4e6',950:'#fff1f2' },
+            amber: { 50:'#451a03',100:'#78350f',200:'#92400e',300:'#b45309',400:'#d97706',500:'#f59e0b',600:'#fbbf24',700:'#fcd34d',800:'#fde68a',900:'#fef3c7',950:'#fffbeb' },
+            cyanPop: '#0891b2',
+            tealMint: '#0d9488',
+            amberSun: '#d97706',
+            coralAlert: '#e11d48',
+            lineGreen: '#059669'
           },
           fontFamily: {
             sans: ['Inter', 'Noto Sans TC', 'PingFang TC', 'Microsoft JhengHei', 'sans-serif'],
@@ -36,21 +44,27 @@
     }
   </script>
   <style>
+    /* 字體：整體放大（Tailwind 用 rem，調 root 就整頁變大） */
+    html { font-size: 18px; color-scheme: light; }
+    .text-\[9px\]  { font-size: 12px !important; }
+    .text-\[10px\] { font-size: 13px !important; }
+    .text-\[11px\] { font-size: 14px !important; }
+
     /* Custom Scrollbar */
-    ::-webkit-scrollbar { width: 6px; }
-    ::-webkit-scrollbar-track { background: #071126; }
-    ::-webkit-scrollbar-thumb { background: #173673; border-radius: 9999px; }
-    ::-webkit-scrollbar-thumb:hover { background: #00f2fe; }
+    ::-webkit-scrollbar { width: 8px; }
+    ::-webkit-scrollbar-track { background: #f1f5f9; }
+    ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 9999px; }
+    ::-webkit-scrollbar-thumb:hover { background: #0891b2; }
 
     .ocean-gradient {
-      background: radial-gradient(circle at 50% 12%, #0c2b54 0%, #071126 60%, #030712 100%);
+      background: #ffffff;
     }
     .blur-glass {
       backdrop-filter: blur(14px);
       -webkit-backdrop-filter: blur(14px);
     }
     .text-glow {
-      text-shadow: 0 0 12px rgba(0, 242, 254, 0.45);
+      text-shadow: none;
     }
     /* Simulated redacting canvas cursor */
     .crosshair-brush {
@@ -77,9 +91,10 @@
     .shake { animation: shake .4s ease-in-out; }
 
     /* Big text mode (長輩友善) — Tailwind sizes are rem-based, so scaling the root scales the page */
-    html.big-text { font-size: 19px; }
-    html.big-text .text-\[10px\] { font-size: 12px; }
-    html.big-text .text-\[11px\] { font-size: 13px; }
+    html.big-text { font-size: 22px; }
+    html.big-text .text-\[9px\]  { font-size: 14px !important; }
+    html.big-text .text-\[10px\] { font-size: 15px !important; }
+    html.big-text .text-\[11px\] { font-size: 16px !important; }
 
     @media (prefers-reduced-motion: reduce) {
       .animate-bubble, .mascot-body, .mascot-wiggle, .pop-in, .shake { animation: none !important; }
@@ -419,7 +434,7 @@
     </main>
 
     <!-- Modal: 相機塗黑演練室 (Redaction Lab) -->
-    <div id="redact-lab-modal" class="fixed inset-0 z-50 bg-black/85 blur-glass hidden flex items-center justify-center p-4">
+    <div id="redact-lab-modal" class="fixed inset-0 z-50 bg-black/40 blur-glass hidden flex items-center justify-center p-4">
       <div class="bg-deepSea-900 border border-rose-500/40 rounded-2xl max-w-xl w-full p-5 sm:p-6 shadow-2xl space-y-4">
         <div class="flex items-center justify-between border-b border-slate-800 pb-3">
           <div class="flex items-center gap-2">
@@ -492,7 +507,7 @@
     </div>
 
     <!-- Modal: 生活金律手冊 (Handbook) -->
-    <div id="handbook-modal" class="fixed inset-0 z-50 bg-black/85 blur-glass hidden flex items-center justify-center p-4">
+    <div id="handbook-modal" class="fixed inset-0 z-50 bg-black/40 blur-glass hidden flex items-center justify-center p-4">
       <div class="bg-deepSea-900 border border-cyan-500/40 rounded-2xl max-w-3xl w-full max-h-[85vh] flex flex-col shadow-2xl overflow-hidden">
         <div class="px-6 py-4 border-b border-slate-800 flex items-center justify-between bg-deepSea-850">
           <div class="flex items-center gap-2.5">
@@ -573,7 +588,7 @@
     </div>
 
     <!-- Modal: 結業能力與生活評定卡 (Report) -->
-    <div id="report-modal" class="fixed inset-0 z-50 bg-black/85 blur-glass hidden flex items-center justify-center p-4">
+    <div id="report-modal" class="fixed inset-0 z-50 bg-black/40 blur-glass hidden flex items-center justify-center p-4">
       <div class="bg-deepSea-900 border border-cyan-400/50 rounded-2xl max-w-xl w-full p-6 sm:p-7 shadow-2xl relative space-y-5">
         <button onclick="closeModal('report-modal')" class="absolute top-4 right-4 text-slate-400 hover:text-white">
           <i data-lucide="x" class="w-5 h-5"></i>
@@ -632,7 +647,7 @@
     </div>
 
     <!-- Modal: 抽小撇步 (Tip Card) -->
-    <div id="tip-modal" class="fixed inset-0 z-50 bg-black/80 blur-glass hidden flex items-center justify-center p-4" onclick="if(event.target===this) closeModal('tip-modal')">
+    <div id="tip-modal" class="fixed inset-0 z-50 bg-black/40 blur-glass hidden flex items-center justify-center p-4" onclick="if(event.target===this) closeModal('tip-modal')">
       <div id="tip-card" class="bg-gradient-to-br from-amber-950/90 via-deepSea-900 to-deepSea-900 border border-amber-400/50 rounded-3xl max-w-sm w-full p-6 shadow-2xl text-center space-y-3">
         <div id="tip-emoji" class="text-5xl">🎁</div>
         <div class="text-[11px] text-amber-300 font-mono tracking-widest">今日生活小撇步 <span id="tip-index"></span></div>
@@ -1471,7 +1486,7 @@
       const ctx = canvas.getContext('2d');
       canvas.width = window.innerWidth;
       canvas.height = window.innerHeight;
-      const colors = ['#00f2fe', '#05d5b3', '#fbbf24', '#ff5e7e', '#06c755', '#ffffff'];
+      const colors = ['#00f2fe', '#05d5b3', '#fbbf24', '#ff5e7e', '#06c755', '#6366f1'];
       const pieces = Array.from({ length: 140 }, () => ({
         x: canvas.width / 2 + (Math.random() - 0.5) * 120,
         y: canvas.height * 0.55,
