@@ -7,7 +7,7 @@
   <!-- Tailwind CSS CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
   <!-- Lucide Icons -->
-  <script src="https://unpkg.com/lucide@latest"></script>
+  <script src="https://unpkg.com/lucide@0.460.0/dist/umd/lucide.min.js"></script>
   <script>
     tailwind.config = {
       darkMode: 'class',
@@ -55,6 +55,34 @@
     /* Simulated redacting canvas cursor */
     .crosshair-brush {
       cursor: crosshair;
+    }
+
+    /* Floating bubbles (rise from the bottom) */
+    @keyframes bubble-rise {
+      0%   { transform: translateY(0) translateX(0); opacity: 0; }
+      10%  { opacity: 1; }
+      50%  { transform: translateY(-50vh) translateX(12px); }
+      100% { transform: translateY(-105vh) translateX(-8px); opacity: 0; }
+    }
+    .animate-bubble { bottom: -20px; animation: bubble-rise linear infinite; }
+
+    /* Mascot */
+    @keyframes bob { 0%,100% { transform: translateY(0) rotate(-3deg); } 50% { transform: translateY(-6px) rotate(3deg); } }
+    @keyframes wiggle { 0%,100% { transform: rotate(0); } 25% { transform: rotate(-14deg) scale(1.1); } 75% { transform: rotate(14deg) scale(1.1); } }
+    @keyframes pop-in { 0% { transform: scale(.6); opacity: 0; } 70% { transform: scale(1.06); } 100% { transform: scale(1); opacity: 1; } }
+    @keyframes shake { 0%,100% { transform: translateX(0); } 20%,60% { transform: translateX(-6px); } 40%,80% { transform: translateX(6px); } }
+    .mascot-body { animation: bob 3s ease-in-out infinite; }
+    .mascot-wiggle { animation: wiggle .6s ease-in-out; }
+    .pop-in { animation: pop-in .35s ease-out; }
+    .shake { animation: shake .4s ease-in-out; }
+
+    /* Big text mode (長輩友善) — Tailwind sizes are rem-based, so scaling the root scales the page */
+    html.big-text { font-size: 19px; }
+    html.big-text .text-\[10px\] { font-size: 12px; }
+    html.big-text .text-\[11px\] { font-size: 13px; }
+
+    @media (prefers-reduced-motion: reduce) {
+      .animate-bubble, .mascot-body, .mascot-wiggle, .pop-in, .shake { animation: none !important; }
     }
   </style>
 </head>
@@ -116,6 +144,15 @@
 
           <!-- Utility Quick Actions -->
           <div class="flex items-center gap-1.5">
+            <button onclick="drawTipCard()" title="抽一張生活小撇步"
+              class="flex items-center gap-1.5 px-3 py-2 rounded-xl bg-amber-950/40 hover:bg-amber-900/50 text-amber-200 border border-amber-500/30 text-xs font-medium transition-all">
+              <span class="text-sm leading-none">🎁</span>
+              <span class="hidden sm:inline">抽小撇步</span>
+            </button>
+            <button id="btn-big-text" onclick="toggleBigText()" title="放大字體（長輩友善）"
+              class="px-2.5 py-2 rounded-xl bg-deepSea-800 hover:bg-deepSea-700 text-slate-200 border border-slate-700/80 text-xs font-bold transition-all">
+              A+
+            </button>
             <button id="btn-sound-toggle" onclick="toggleAudio()" title="切換提示音效" 
               class="p-2 rounded-xl bg-deepSea-800 hover:bg-deepSea-700 text-slate-300 hover:text-cyanPop border border-slate-700/80 transition-all">
               <i id="sound-icon" data-lucide="volume-2" class="w-4 h-4"></i>
@@ -147,7 +184,7 @@
     </header>
 
     <!-- Main Content Area -->
-    <main class="flex-1 max-w-7xl mx-auto w-full px-4 sm:px-6 py-6 grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+    <main class="flex-1 max-w-7xl mx-auto w-full px-4 sm:px-6 pt-6 pb-28 grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
       
       <!-- Left Column: 8 Stages Map -->
       <aside class="lg:col-span-4 xl:col-span-3 bg-deepSea-900/60 border border-slate-800 rounded-2xl p-4 blur-glass lg:sticky lg:top-24">
@@ -290,6 +327,10 @@
                 <option value="p_repair">水電故障：「馬桶一直流水怎麼辦？」</option>
                 <option value="p_trip">長輩出國：「幫我排 4 天東京行程」</option>
                 <option value="p_line">回覆催告：「管委會要我移走走廊鞋櫃，幫我回覆」</option>
+                <option value="p_bill">看不懂帳單：「這張電費單在講什麼？」</option>
+                <option value="p_cook">冰箱剩菜：「晚餐煮什麼？」</option>
+                <option value="p_bday">寫祝福：「幫我寫生日祝福給媽媽」</option>
+                <option value="p_refund">網購退貨：「幫我寫退貨訊息給客服」</option>
               </select>
               <div id="quick-prompt-input" class="mt-2 p-2.5 rounded-xl bg-deepSea-950/80 border border-rose-500/20 text-xs text-rose-200 font-mono min-h-[58px]">
                 「幫我想台南赤崁樓吃什麼」
@@ -308,6 +349,70 @@
               </button>
             </div>
           </div>
+        </div>
+
+        <!-- 自己組指令：填空題 Prompt Builder -->
+        <div class="p-5 rounded-2xl bg-deepSea-900/60 border border-cyan-500/25">
+          <div class="flex flex-wrap items-center justify-between gap-2 mb-3">
+            <div class="flex items-center gap-2">
+              <span class="text-base leading-none">🧩</span>
+              <h3 class="text-xs sm:text-sm font-semibold text-white">填空就會：組出你自己的 AI 指令</h3>
+            </div>
+            <button onclick="fillBuilderExample()" class="px-3 py-1.5 rounded-xl bg-deepSea-800 hover:bg-deepSea-700 text-xs text-amber-200 border border-amber-500/30 flex items-center gap-1.5 transition-all active:scale-95">
+              🎲 給我一個範例
+            </button>
+          </div>
+          <p class="text-[11px] text-slate-400 mb-3">不用想格式，照著四格填，下面會自動幫你拼好，按複製貼到 ChatGPT / Gemini / Claude 就能用。</p>
+
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+            <label class="block">
+              <span class="text-xs text-cyan-300">① 我的情況（誰、在哪、發生什麼）</span>
+              <textarea id="pb-context" oninput="updateBuilder()" rows="2" placeholder="例：我們家 2 大 1 小，週六要去宜蘭"
+                class="mt-1 w-full bg-deepSea-950 border border-slate-700 rounded-xl px-3 py-2 text-xs text-slate-200 focus:outline-none focus:border-cyan-500 resize-none"></textarea>
+            </label>
+            <label class="block">
+              <span class="text-xs text-cyan-300">② 我想要（請它幫你做什麼）</span>
+              <textarea id="pb-goal" oninput="updateBuilder()" rows="2" placeholder="例：排一天的行程"
+                class="mt-1 w-full bg-deepSea-950 border border-slate-700 rounded-xl px-3 py-2 text-xs text-slate-200 focus:outline-none focus:border-cyan-500 resize-none"></textarea>
+            </label>
+            <label class="block md:col-span-2">
+              <span class="text-xs text-cyan-300">③ 條件限制（預算、時間、不要什麼）</span>
+              <textarea id="pb-limit" oninput="updateBuilder()" rows="2" placeholder="例：小孩 5 歲會暈車、車程不超過 1 小時、午餐預算 1500"
+                class="mt-1 w-full bg-deepSea-950 border border-slate-700 rounded-xl px-3 py-2 text-xs text-slate-200 focus:outline-none focus:border-cyan-500 resize-none"></textarea>
+            </label>
+          </div>
+
+          <div class="mt-3">
+            <div class="text-xs text-cyan-300 mb-1.5">④ 加點料（可複選）</div>
+            <div class="flex flex-wrap gap-2 text-xs">
+              <label class="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-deepSea-950 border border-slate-700 cursor-pointer has-[:checked]:border-tealMint has-[:checked]:text-teal-200"><input type="checkbox" id="pb-critic" onchange="updateBuilder()" class="accent-teal-400" checked> 幫我挑毛病</label>
+              <label class="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-deepSea-950 border border-slate-700 cursor-pointer has-[:checked]:border-tealMint has-[:checked]:text-teal-200"><input type="checkbox" id="pb-short" onchange="updateBuilder()" class="accent-teal-400" checked> 白話、條列重點</label>
+              <label class="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-deepSea-950 border border-slate-700 cursor-pointer has-[:checked]:border-tealMint has-[:checked]:text-teal-200"><input type="checkbox" id="pb-ask" onchange="updateBuilder()" class="accent-teal-400"> 資訊不夠先問我</label>
+              <label class="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-deepSea-950 border border-slate-700 cursor-pointer has-[:checked]:border-tealMint has-[:checked]:text-teal-200"><input type="checkbox" id="pb-options" onchange="updateBuilder()" class="accent-teal-400"> 給我 3 個選項比較</label>
+            </div>
+          </div>
+
+          <div class="mt-3 p-3 rounded-xl bg-deepSea-950/90 border border-teal-500/40">
+            <div class="text-[11px] text-tealMint mb-1">✨ 拼好的指令</div>
+            <div id="pb-output" class="text-xs text-teal-100 leading-relaxed whitespace-pre-wrap min-h-[40px]"></div>
+          </div>
+          <div class="mt-2 flex flex-wrap gap-2">
+            <button onclick="copyBuilderPrompt()" class="px-4 py-2 rounded-xl bg-gradient-to-r from-cyan-500 to-tealMint text-deepSea-950 font-bold text-xs flex items-center gap-1.5 active:scale-95 transition-all">
+              <i data-lucide="copy" class="w-3.5 h-3.5"></i> 複製指令
+            </button>
+            <button onclick="clearBuilder()" class="px-3 py-2 rounded-xl bg-deepSea-800 hover:bg-slate-700 text-xs text-slate-300 border border-slate-700">清空</button>
+          </div>
+        </div>
+
+        <!-- 防詐紅旗檢查器 -->
+        <div class="p-5 rounded-2xl bg-deepSea-900/60 border border-amber-500/30">
+          <div class="flex items-center gap-2 mb-1">
+            <span class="text-base leading-none">🚩</span>
+            <h3 class="text-xs sm:text-sm font-semibold text-white">這則訊息可疑嗎？30 秒防詐檢查</h3>
+          </div>
+          <p class="text-[11px] text-slate-400 mb-3">收到怪怪的電話、LINE 或簡訊？勾一勾符合的狀況，馬上告訴你該怎麼辦。</p>
+          <div id="fraud-flags" class="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs"></div>
+          <div id="fraud-result" class="mt-3 p-3 rounded-xl border text-xs leading-relaxed"></div>
         </div>
 
       </section>
@@ -442,6 +547,9 @@
               <div class="p-2.5 rounded-lg bg-deepSea-950 border border-slate-800">
                 <strong class="text-white">6. 刪除快取瘦身：</strong>設定 ➔ 聊天 ➔ 刪除資料 ➔ 勾選「快取」，瞬間清出好幾 GB。
               </div>
+              <div class="p-2.5 rounded-lg bg-deepSea-950 border border-slate-800">
+                <strong class="text-white">7. 自己的備忘群組：</strong>建一個只有自己的群組，把要記的照片、連結、地址丟進去，再搭配「Keep 筆記」收藏，比翻相簿快多了。
+              </div>
             </div>
           </div>
 
@@ -522,6 +630,35 @@
         </div>
       </div>
     </div>
+
+    <!-- Modal: 抽小撇步 (Tip Card) -->
+    <div id="tip-modal" class="fixed inset-0 z-50 bg-black/80 blur-glass hidden flex items-center justify-center p-4" onclick="if(event.target===this) closeModal('tip-modal')">
+      <div id="tip-card" class="bg-gradient-to-br from-amber-950/90 via-deepSea-900 to-deepSea-900 border border-amber-400/50 rounded-3xl max-w-sm w-full p-6 shadow-2xl text-center space-y-3">
+        <div id="tip-emoji" class="text-5xl">🎁</div>
+        <div class="text-[11px] text-amber-300 font-mono tracking-widest">今日生活小撇步 <span id="tip-index"></span></div>
+        <h3 id="tip-title" class="text-base sm:text-lg font-bold text-white"></h3>
+        <p id="tip-body" class="text-xs sm:text-sm text-slate-200 leading-relaxed text-left"></p>
+        <div class="flex justify-center gap-2 pt-2">
+          <button onclick="copyTip()" class="px-3 py-2 rounded-xl bg-deepSea-800 hover:bg-slate-700 text-xs text-amber-200 border border-amber-500/30 flex items-center gap-1.5">
+            <i data-lucide="share-2" class="w-3.5 h-3.5"></i> 複製分享給家人
+          </button>
+          <button onclick="drawTipCard()" class="px-4 py-2 rounded-xl bg-amberSun hover:bg-amber-300 text-deepSea-950 font-bold text-xs active:scale-95 transition-all">再抽一張 🎲</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Mascot 小章 -->
+    <div id="mascot" class="fixed bottom-4 left-4 z-40 flex items-end gap-2 pointer-events-none">
+      <button onclick="pokeMascot()" title="戳戳小章" class="pointer-events-auto w-14 h-14 sm:w-16 sm:h-16 rounded-full bg-gradient-to-br from-rose-400/30 to-cyan-500/20 border border-cyan-400/40 shadow-lg shadow-cyan-500/20 flex items-center justify-center">
+        <span id="mascot-face" class="mascot-body text-3xl sm:text-4xl select-none">🐙</span>
+      </button>
+      <div id="mascot-bubble" class="pointer-events-auto hidden max-w-[220px] sm:max-w-[260px] mb-6 px-3 py-2 rounded-2xl rounded-bl-sm bg-white text-deepSea-950 text-xs leading-relaxed shadow-xl">
+        <span id="mascot-text"></span>
+      </div>
+    </div>
+
+    <!-- Confetti layer -->
+    <canvas id="confetti-canvas" class="fixed inset-0 z-[60] pointer-events-none"></canvas>
 
     <!-- Notification Toast -->
     <div id="toast-notify" class="fixed bottom-6 right-6 z-50 bg-deepSea-900 border border-cyan-500/40 text-cyan-200 px-4 py-2.5 rounded-xl shadow-2xl text-xs flex items-center gap-2 transform translate-y-20 opacity-0 transition-all duration-300 pointer-events-none">
@@ -959,16 +1096,13 @@
             ? 'bg-cyan-950/80 border border-cyan-400 text-white shadow-lg shadow-cyan-500/10' 
             : isUnlocked 
               ? 'bg-deepSea-950/60 hover:bg-deepSea-800 border border-slate-800 text-slate-300' 
-              : 'opacity-40 bg-deepSea-950/30 border border-transparent text-slate-600 cursor-not-allowed'
+              : 'opacity-60 hover:opacity-90 bg-deepSea-950/30 border border-dashed border-slate-800 text-slate-400'
         }`;
 
+        // 輕鬆模式：每一站都能直接逛，不用照順序
         item.onclick = () => {
-          if (isUnlocked) {
-            selectStage(stage.id);
-          } else {
-            showToast(`請先完成前面的關卡以解鎖 ${stage.depth} 水深！`);
-            sound.buzz();
-          }
+          selectStage(stage.id);
+          if (!isUnlocked) mascotSay('想先偷看後面的站？沒問題，輕鬆逛就好～ 😎');
         };
 
         let starHtml = '';
@@ -983,9 +1117,9 @@
                 ? 'bg-cyan-500 text-deepSea-950' 
                 : isUnlocked 
                   ? 'bg-deepSea-800 text-cyan-300' 
-                  : 'bg-slate-900 text-slate-600'
+                  : 'bg-slate-900 text-slate-500'
             }">
-              ${isUnlocked ? stage.depth : '<i data-lucide="lock" class="w-3 h-3"></i>'}
+              ${isUnlocked ? stage.depth : '<span class="text-sm">🫧</span>'}
             </div>
             <div class="truncate text-left">
               <div class="text-xs font-semibold truncate ${isActive ? 'text-cyanPop' : ''}">
@@ -1097,11 +1231,18 @@
           }`;
           feedbackBox.innerHTML = `
             <i data-lucide="${chosenObj.isCorrect ? 'check-circle' : 'alert-triangle'}" class="w-4 h-4 shrink-0 mt-0.5"></i>
-            <div>
-              <strong>${chosenObj.isCorrect ? '正確做法：' : '地雷提醒：'}</strong>
+            <div class="flex-1">
+              <strong>${chosenObj.isCorrect ? '答對了！' : '差一點點～'}</strong>
               ${chosenObj.feedback}
             </div>
           `;
+          if (!chosenObj.isCorrect) {
+            const retryBtn = document.createElement('button');
+            retryBtn.className = 'shrink-0 self-center px-3 py-1.5 rounded-lg bg-rose-900/60 hover:bg-rose-800 text-rose-100 border border-rose-400/40 text-xs font-semibold active:scale-95 transition-all';
+            retryBtn.innerText = '↻ 再試一次';
+            retryBtn.onclick = () => retryQuestion(q.id);
+            feedbackBox.appendChild(retryBtn);
+          }
           qCard.appendChild(feedbackBox);
         }
 
@@ -1120,11 +1261,36 @@
       const question = stage.questions.find(q => q.id === questionId);
       const isCorrect = question.options[optionIndex].isCorrect;
 
-      if (isCorrect) sound.success();
-      else sound.buzz();
+      if (isCorrect) {
+        sound.success();
+        streak++;
+        if (streak >= 3) mascotSay(`🔥 連續答對 ${streak} 題！${pick(CHEERS)}`, 'party');
+        else mascotSay(pick(CHEERS), 'party');
+      } else {
+        sound.buzz();
+        streak = 0;
+        mascotSay(pick(COMFORTS), 'oops');
+      }
 
       saveState();
       updateHUD();
+
+      const allCorrect = stage.questions.every(q => {
+        const a = userState.levelAnswers[q.id];
+        return a !== undefined && q.options[a].isCorrect;
+      });
+      if (isCorrect && allCorrect) {
+        launchConfetti();
+        setTimeout(() => mascotSay(`這站滿分過關！🎉 ${stage.id < DEPTH_STAGES.length ? '要不要往下一站潛？' : '你全部破關了，去領證書吧！'}`, 'party'), 900);
+      }
+    }
+
+    function retryQuestion(questionId) {
+      sound.click();
+      delete userState.levelAnswers[questionId];
+      saveState();
+      updateHUD();
+      mascotSay('沒關係，再想一下～ 這次一定可以 💪');
     }
 
     function checkStagePassed(stage) {
@@ -1152,7 +1318,7 @@
         userState.totalXP += (earnedStars - prevStars) * (stage.xpReward / 3);
       }
 
-      if (stage.id === userState.unlockedMaxLevel && stage.id < DEPTH_STAGES.length) {
+      if (stage.id >= userState.unlockedMaxLevel && stage.id < DEPTH_STAGES.length) {
         userState.unlockedMaxLevel = stage.id + 1;
         sound.fanfare();
         showToast(`已解鎖下一個水深層級：${DEPTH_STAGES[stage.id].depth}！`);
@@ -1232,6 +1398,22 @@
       p_line: {
         input: '「管委會要我移走走廊鞋櫃，幫我回覆」',
         output: '「這是管委會在 LINE 群組的公告。請用客氣、禮貌但堅定的語氣擬一段回覆：說明我們這週末會配合清理，但也請管委會一併盤點同樓層其他鄰居的私人物品，一視同仁執行。」'
+      },
+      p_bill: {
+        input: '「這張電費單在講什麼？」',
+        output: '「附上電費單照片（戶名、電號、地址我已塗黑）。請用國中生聽得懂的白話告訴我：1. 這期要繳多少、最後期限；2. 跟上期比是變多還變少、可能原因；3. 有沒有我能馬上做的省電小動作。3 段以內講完。」'
+      },
+      p_cook: {
+        input: '「晚餐煮什麼？」',
+        output: '「我冰箱有：雞蛋 4 顆、高麗菜半顆、豬絞肉 200g、豆腐一盒。家裡 3 個人、只有一個瓦斯爐、30 分鐘內要上桌、不吃辣。請給我 2 道菜的做法，步驟寫成 5 行以內，並告訴我先煮哪道最省時間。」'
+      },
+      p_bday: {
+        input: '「幫我寫生日祝福給媽媽」',
+        output: '「媽媽今年 62 歲，最近開始學游泳、很愛種多肉植物，我平常比較少說肉麻話。請寫 3 個版本的 LINE 生日祝福（溫馨版、搞笑版、超短版各一），每則 50 字內，要像我自己講的口氣，不要太文謅謅。」'
+      },
+      p_refund: {
+        input: '「幫我寫退貨訊息給客服」',
+        output: '「我 11/3 在網路買的吹風機，收到 3 天就無法開機，訂單編號我自己會補上。請幫我寫一段給客服的訊息：說明狀況、要求退款或換新、詢問退貨運費誰出，語氣禮貌但清楚，最後附上我可以提供的照片清單。」'
       }
     };
 
@@ -1249,6 +1431,227 @@
       showToast('已複製生活實戰指令！');
       sound.success();
     }
+
+    // --- Mascot 小章 ---
+    let streak = 0;
+    let mascotTimer = null;
+    const pick = arr => arr[Math.floor(Math.random() * arr.length)];
+    const CHEERS = ['太強了吧！', '漂亮！生活高手就是你 ✨', '答對！小章幫你拍拍手 👏', '就是這樣！AI 被你用得服服貼貼', '讚啦～這招學起來超實用', '完美！可以去教家人了 😆'];
+    const COMFORTS = ['沒關係！踩過這個雷，真實生活就不會踩了 😉', '哎呀～差一點！看一下說明再試一次', '別擔心，小章當初也選錯過 🙈', '錯了也是賺到，現在你知道陷阱在哪了'];
+    const POKES = ['嘿！別戳我啦 🐙', '小提醒：拍照前先塗黑個資喔 ⬛', '累了就休息一下，進度都會幫你存著 ☕', '試試右上角 🎁 抽小撇步！', '字太小嗎？點右上角 A+ 放大 👀', '覺得 AI 回答太長？跟它說「3 行講完」就好', '接到要錢的電話，先掛掉再回撥確認 📞', '往下滑有「填空組指令」，超好用 🧩'];
+
+    function mascotSay(text, mood) {
+      const bubble = document.getElementById('mascot-bubble');
+      const face = document.getElementById('mascot-face');
+      if (!bubble || !face) return;
+      document.getElementById('mascot-text').innerText = text;
+      bubble.classList.remove('hidden', 'pop-in');
+      void bubble.offsetWidth;
+      bubble.classList.add('pop-in');
+      face.innerText = mood === 'party' ? '🥳' : mood === 'oops' ? '🫣' : '🐙';
+      face.classList.remove('mascot-wiggle');
+      void face.offsetWidth;
+      face.classList.add('mascot-wiggle');
+      clearTimeout(mascotTimer);
+      mascotTimer = setTimeout(() => {
+        bubble.classList.add('hidden');
+        face.innerText = '🐙';
+      }, 4500);
+    }
+
+    function pokeMascot() {
+      sound.click();
+      mascotSay(pick(POKES));
+    }
+
+    // --- Confetti (no library) ---
+    function launchConfetti() {
+      if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+      const canvas = document.getElementById('confetti-canvas');
+      const ctx = canvas.getContext('2d');
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+      const colors = ['#00f2fe', '#05d5b3', '#fbbf24', '#ff5e7e', '#06c755', '#ffffff'];
+      const pieces = Array.from({ length: 140 }, () => ({
+        x: canvas.width / 2 + (Math.random() - 0.5) * 120,
+        y: canvas.height * 0.55,
+        vx: (Math.random() - 0.5) * 16,
+        vy: -Math.random() * 16 - 6,
+        size: Math.random() * 7 + 4,
+        rot: Math.random() * Math.PI,
+        vr: (Math.random() - 0.5) * 0.3,
+        color: pick(colors)
+      }));
+      const start = performance.now();
+      function frame(now) {
+        const t = now - start;
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        pieces.forEach(p => {
+          p.vy += 0.35; p.vx *= 0.99;
+          p.x += p.vx; p.y += p.vy; p.rot += p.vr;
+          ctx.save();
+          ctx.globalAlpha = Math.max(0, 1 - t / 2200);
+          ctx.translate(p.x, p.y); ctx.rotate(p.rot);
+          ctx.fillStyle = p.color;
+          ctx.fillRect(-p.size / 2, -p.size / 4, p.size, p.size / 2);
+          ctx.restore();
+        });
+        if (t < 2200) requestAnimationFrame(frame);
+        else ctx.clearRect(0, 0, canvas.width, canvas.height);
+      }
+      requestAnimationFrame(frame);
+    }
+
+    // --- 抽小撇步 Tip Cards ---
+    const TIP_CARDS = [
+      { e: '📸', t: '截圖前先想三秒', b: '要截圖給 AI 或朋友前，先看畫面上有沒有手機號碼、地址、帳號。有就先裁掉或塗黑，再傳。' },
+      { e: '🗣️', t: '懶得打字就用講的', b: '按鍵盤上的麥克風直接講，講得亂七八糟也沒關係，最後加一句「幫我整理成條列重點」就好。' },
+      { e: '🔍', t: '叫 AI 反過來挑毛病', b: '想買東西別問「好不好」，改問「買這個最容易後悔的 3 個原因」，答案會實在很多。' },
+      { e: '📞', t: '要錢的電話先掛掉', b: '不管聲音多像家人，只要提到急著匯款，就先掛斷，改打你手機裡存的號碼確認。不確定就打 165。' },
+      { e: '🧾', t: '看不懂的單子拍給 AI', b: '帳單、保單、說明書看不懂？個資塗黑後拍照，問「用白話跟我說重點，還有我要注意什麼」。' },
+      { e: '✂️', t: '太長？叫它短一點', b: 'AI 回一大串時，直接回「太長了，3 行講完」。不用重開新對話，它會記得前面講過的。' },
+      { e: '🌏', t: '出國菜單拍一下', b: '看不懂的外文菜單拍給 AI，加上「我不吃牛、對蝦過敏」，它會幫你圈出能點的菜。' },
+      { e: '🤫', t: 'LINE 無聲訊息', b: '半夜想傳訊息又怕吵到人？長按送出鍵選「無聲訊息」，對方手機不會響。' },
+      { e: '🧹', t: 'LINE 清快取救手機', b: '手機容量不夠？LINE 設定 ➔ 聊天 ➔ 刪除資料 ➔ 勾「快取」，聊天紀錄不會不見。' },
+      { e: '🧑‍⚕️', t: 'AI 是助手，不是醫生', b: '健康、法律、大筆錢的事，讓 AI 幫你整理問題清單，再帶著清單去問醫生、藥師或專家。' },
+      { e: '🎭', t: '先給 AI 一個角色', b: '開頭加一句「你是有 20 年經驗的水電師傅」或「你是很會砍價的媽媽」，回答會更接地氣。' },
+      { e: '🔗', t: '可疑連結先查證', b: '長輩群組傳來的「免費領」「中獎」連結先別點，轉給 LINE 官方帳號「MyGoPen」或「LINE 訊息查證」問一下。' },
+      { e: '📋', t: '範例是最好的說明', b: '想要某種口氣的文字？先貼一段你喜歡的範例，說「照這個感覺幫我寫」，比形容半天有效。' },
+      { e: '😴', t: '學累了就休息', b: '這個網頁會自動記住你的進度，關掉明天再來也沒問題。慢慢學，用得上才是重點！' }
+    ];
+    let lastTip = -1;
+    function drawTipCard() {
+      let i;
+      do { i = Math.floor(Math.random() * TIP_CARDS.length); } while (i === lastTip && TIP_CARDS.length > 1);
+      lastTip = i;
+      const tip = TIP_CARDS[i];
+      document.getElementById('tip-emoji').innerText = tip.e;
+      document.getElementById('tip-title').innerText = tip.t;
+      document.getElementById('tip-body').innerText = tip.b;
+      document.getElementById('tip-index').innerText = `#${i + 1}/${TIP_CARDS.length}`;
+      const card = document.getElementById('tip-card');
+      card.classList.remove('pop-in'); void card.offsetWidth; card.classList.add('pop-in');
+      sound.success();
+      openModal('tip-modal');
+      lucide.createIcons();
+    }
+    function copyTip() {
+      const t = document.getElementById('tip-title').innerText;
+      const b = document.getElementById('tip-body').innerText;
+      copyToClipboard(`【生活小撇步】${t}\n${b}`);
+      showToast('已複製！貼到 LINE 分享給家人吧');
+    }
+
+    // --- 字體放大 ---
+    function applyBigText() {
+      document.documentElement.classList.toggle('big-text', !!userState.bigText);
+      const btn = document.getElementById('btn-big-text');
+      if (btn) {
+        btn.innerText = userState.bigText ? 'A−' : 'A+';
+        btn.title = userState.bigText ? '恢復一般字體' : '放大字體（長輩友善）';
+      }
+    }
+    function toggleBigText() {
+      userState.bigText = !userState.bigText;
+      applyBigText();
+      saveState();
+      sound.click();
+      showToast(userState.bigText ? '字體已放大，看得更清楚 👀' : '已恢復一般字體');
+    }
+
+    // --- 填空組指令 Prompt Builder ---
+    const BUILDER_EXAMPLES = [
+      { c: '我們家 2 大 1 小（5 歲），週六要從台北開車去宜蘭', g: '排一天的行程', l: '小孩容易暈車、單程不超過 1.5 小時、午餐預算 1500、下雨也能去' },
+      { c: '我是 60 歲退休族，剛換 iPhone，不太會用', g: '教我把照片備份起來，手機壞了也不怕', l: '步驟要一步一步、不要英文術語、不想多花錢' },
+      { c: '公司同事下個月要離職，我們想合送禮物', g: '推薦禮物並幫我寫群組募款訊息', l: '每人 300 元、6 個人、對方喜歡咖啡和露營' },
+      { c: '我爸 70 歲有高血壓，最近想開始運動', g: '幫我列出適合他的運動和注意事項', l: '膝蓋不好、家附近只有公園、最後提醒我哪些要先問醫生' },
+      { c: '房東說下個月房租要漲 2000 元', g: '幫我寫一段 LINE 回覆跟房東討論', l: '口氣客氣但想爭取只漲 1000、提到我住 3 年都準時繳租' }
+    ];
+    function updateBuilder() {
+      const v = id => (document.getElementById(id).value || '').trim();
+      const c = v('pb-context'), g = v('pb-goal'), l = v('pb-limit');
+      const out = document.getElementById('pb-output');
+      if (!c && !g && !l) {
+        out.innerHTML = '<span class="text-slate-500">在上面填幾個字，這裡就會出現完整指令 👆</span>';
+        return;
+      }
+      const lines = [];
+      if (c) lines.push(`我的情況：${c}。`);
+      if (g) lines.push(`請幫我：${g}。`);
+      if (l) lines.push(`條件限制：${l}。`);
+      if (document.getElementById('pb-options').checked) lines.push('請給我 3 個不同選項，並用表格比較優缺點。');
+      if (document.getElementById('pb-critic').checked) lines.push('最後請站在挑剔的角度，告訴我這個安排最可能出問題或讓我後悔的地方。');
+      if (document.getElementById('pb-short').checked) lines.push('請用白話、條列重點回答，不要長篇大論。');
+      if (document.getElementById('pb-ask').checked) lines.push('如果資訊不夠，請先問我 2–3 個問題再回答。');
+      out.innerText = lines.join('\n');
+    }
+    function fillBuilderExample() {
+      const ex = pick(BUILDER_EXAMPLES);
+      document.getElementById('pb-context').value = ex.c;
+      document.getElementById('pb-goal').value = ex.g;
+      document.getElementById('pb-limit').value = ex.l;
+      updateBuilder();
+      sound.click();
+    }
+    function clearBuilder() {
+      ['pb-context', 'pb-goal', 'pb-limit'].forEach(id => document.getElementById(id).value = '');
+      updateBuilder();
+      sound.click();
+    }
+    function copyBuilderPrompt() {
+      const hasInput = ['pb-context', 'pb-goal', 'pb-limit'].some(id => document.getElementById(id).value.trim());
+      if (!hasInput) {
+        showToast('先填一點內容，或按「給我一個範例」');
+        document.getElementById('pb-goal').classList.add('shake');
+        setTimeout(() => document.getElementById('pb-goal').classList.remove('shake'), 400);
+        return;
+      }
+      copyToClipboard(document.getElementById('pb-output').innerText);
+      showToast('已複製！貼到 ChatGPT / Gemini / Claude 試試看');
+      sound.success();
+      mascotSay('指令組好了！貼給 AI 看看效果 🚀', 'party');
+    }
+
+    // --- 防詐紅旗檢查器 ---
+    const FRAUD_FLAGS = [
+      '對方是陌生號碼或新加的 LINE 帳號',
+      '急著要你匯款、轉帳或買點數卡',
+      '叫你「先不要跟家人說」',
+      '要你點連結、掃 QR Code 或下載 App',
+      '跟你要驗證碼、密碼或提款卡資料',
+      '說「穩賺不賠」「保證獲利」「內線」',
+      '自稱警察、檢察官、銀行或健保局',
+      '說不馬上處理就會被凍結、被抓、錯過'
+    ];
+    function renderFraudChecker() {
+      const box = document.getElementById('fraud-flags');
+      box.innerHTML = FRAUD_FLAGS.map((f, i) => `
+        <label class="flex items-start gap-2 p-2.5 rounded-xl bg-deepSea-950 border border-slate-800 cursor-pointer hover:border-amber-500/40 has-[:checked]:border-coralAlert has-[:checked]:bg-rose-950/40 transition-all">
+          <input type="checkbox" class="mt-0.5 accent-rose-500" data-flag="${i}" onchange="updateFraudResult()">
+          <span class="text-slate-200">${f}</span>
+        </label>`).join('');
+      updateFraudResult();
+    }
+    function updateFraudResult() {
+      const n = document.querySelectorAll('#fraud-flags input:checked').length;
+      const r = document.getElementById('fraud-result');
+      if (n === 0) {
+        r.className = 'mt-3 p-3 rounded-xl border text-xs leading-relaxed bg-deepSea-950 border-slate-800 text-slate-300';
+        r.innerHTML = '👆 勾選符合的狀況。都沒有也別完全放心，跟錢有關的事一律<strong>換個管道確認</strong>。';
+      } else if (n === 1) {
+        r.className = 'mt-3 p-3 rounded-xl border text-xs leading-relaxed bg-amber-950/50 border-amber-500/50 text-amber-100';
+        r.innerHTML = '🟡 <strong>有點可疑，先別急。</strong>不要點連結、不要給任何資料，用你自己存的電話或官方網站聯絡對方確認。';
+      } else {
+        r.className = 'mt-3 p-3 rounded-xl border text-xs leading-relaxed bg-rose-950/60 border-coralAlert text-rose-100';
+        r.innerHTML = `🔴 <strong>中了 ${n} 個紅旗，非常像詐騙！</strong><br>1. 立刻停止對話，不要匯款、不要給驗證碼。<br>2. 打你通訊錄裡存的號碼回撥本人確認。<br>3. 撥打 <a href="tel:165" class="underline font-bold text-white">165 反詐騙專線</a>，或把訊息轉給 LINE「MyGoPen」查證。`;
+      }
+      if (n >= 2 && !fraudWarned) {
+        fraudWarned = true;
+        mascotSay('紅旗好多！記住：慢半拍、先回撥、打 165 ☎️', 'oops');
+      }
+      if (n < 2) fraudWarned = false;
+    }
+    let fraudWarned = false;
 
     // --- Redaction Lab Interactive Simulator ---
     const redactState = {
@@ -1394,8 +1797,10 @@
           levelAnswers: {},
           unlockedMaxLevel: 1,
           soundEnabled: true,
-          redactCompleted: false
+          redactCompleted: false,
+          bigText: userState.bigText
         };
+        streak = 0;
         saveState();
         updateHUD();
         switchStageTab('intel');
@@ -1407,10 +1812,17 @@
     window.onload = function() {
       loadState();
       sound.enabled = userState.soundEnabled;
+      applyBigText();
       initBubbles();
       applyQuickPromptTemplate();
+      renderFraudChecker();
+      updateBuilder();
       updateHUD();
       lucide.createIcons();
+      const isNew = userState.totalXP === 0 && Object.keys(userState.levelAnswers).length === 0;
+      setTimeout(() => mascotSay(isNew
+        ? '嗨！我是小章 🐙 不用緊張，答錯可以重來，每一站都能隨便逛～'
+        : '歡迎回來！進度都幫你存好了，繼續加油 💪'), 800);
     };
   </script>
 </body>
