@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>AI × 手機生活實戰訓練營 | 隨身智慧指南</title>
+  <title>11/19 AI × 手機功能生活實戰分享｜活動教學網站</title>
   <!-- Tailwind CSS CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
   <!-- Lucide Icons -->
@@ -186,7 +186,7 @@
           <div>
             <div class="flex items-center gap-2">
               <h1 class="font-bold text-base sm:text-lg tracking-wide text-white flex items-center gap-1.5">
-                AI × 手機生活實戰營
+                AI × 手機生活實戰分享
                 <span class="text-[10px] px-2 py-0.5 rounded-full bg-cyan-500/10 text-cyan-300 border border-cyan-500/30 font-mono font-medium">白話實戰版</span>
               </h1>
             </div>
@@ -265,18 +265,20 @@
     <!-- Main Content Area -->
     <main class="flex-1 max-w-7xl mx-auto w-full px-4 sm:px-6 pt-6 pb-28 grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
       
-      <!-- Left Column: 8 Stages Map -->
+      <!-- Left Column: 11:05 實戰挑戰（8 站），保留原本互動機制 -->
       <aside class="lg:col-span-4 xl:col-span-3 bg-deepSea-900/60 border border-slate-800 rounded-2xl p-4 blur-glass lg:sticky lg:top-24">
         <div class="flex items-center justify-between pb-3 border-b border-slate-800 mb-3">
           <span class="text-xs font-semibold uppercase tracking-wider text-slate-400 flex items-center gap-1.5">
             <i data-lucide="map" class="w-3.5 h-3.5 text-cyanPop"></i>
-            生活深潛航道 (8 站)
+            11:05 實戰挑戰（8 站）
           </span>
           <span id="side-stars-summary" class="text-xs font-mono text-amberSun flex items-center gap-1">
             <i data-lucide="star" class="w-3.5 h-3.5 fill-current"></i> 0/24
           </span>
         </div>
 
+        <a href="#event-agenda" class="block mb-3 rounded-xl bg-cyan-500/10 border border-cyan-500/30 px-3 py-2 text-center text-sm text-cyanPop font-bold">查看 11/19 課程時間表</a>
+        <p class="text-xs text-slate-500 mb-3">八站生活挑戰位於 11:05 實戰單元，點選可隨時切換題目。</p>
         <div id="depth-nav-list" class="space-y-2">
           <!-- Dynamically populated stages -->
         </div>
@@ -290,100 +292,90 @@
         </div>
       </aside>
 
-      <!-- Right Column: Interactive Stage Workspace -->
+      <!-- Right Column: 11/19 timed course and existing interactive widgets -->
       <section class="lg:col-span-8 xl:col-span-9 space-y-6">
         
-        <!-- Active Stage Main Card -->
-        <div class="relative overflow-hidden rounded-2xl bg-gradient-to-br from-deepSea-850 via-deepSea-900 to-deepSea-950 border border-cyan-500/25 p-5 sm:p-7 shadow-xl">
-          <div class="absolute -right-10 -top-10 w-48 h-48 bg-cyan-500/10 rounded-full blur-3xl pointer-events-none"></div>
-          <div class="absolute -left-10 -bottom-10 w-48 h-48 bg-teal-500/10 rounded-full blur-3xl pointer-events-none"></div>
 
-          <!-- Header info -->
-          <div class="flex flex-wrap items-start justify-between gap-4">
-            <div>
-              <div class="flex items-center gap-2 mb-1.5">
-                <span id="stage-badge-depth" class="px-2.5 py-0.5 rounded-full text-xs font-mono font-bold bg-cyan-500/20 text-cyan-300 border border-cyan-400/40">10m 潮間層</span>
-                <span id="stage-stars-row" class="flex text-amberSun text-xs"></span>
-              </div>
-              <h2 id="stage-title" class="text-xl sm:text-2xl font-bold text-white tracking-wide">關卡名稱</h2>
-              <p id="stage-subtitle" class="text-xs sm:text-sm text-slate-300 mt-1 max-w-2xl leading-relaxed">引言載入中...</p>
-            </div>
-            
-            <div class="bg-deepSea-800/90 border border-slate-700/80 rounded-xl px-4 py-2 text-right font-mono min-w-[100px]">
-              <div class="text-[10px] text-slate-400">過關獎勵</div>
-              <div id="stage-xp-reward" class="text-base sm:text-lg font-bold text-tealMint">+150 XP</div>
-            </div>
+        <!-- 活動資訊與依時序排列的導覽 -->
+        <section id="event-agenda" class="rounded-2xl border border-cyan-500/35 bg-deepSea-900 p-5 sm:p-7 space-y-5 scroll-mt-28">
+          <div>
+            <p class="text-sm font-bold text-tealMint">2026／11／19（四） · 中悅一品・社區書房</p>
+            <h2 class="text-2xl sm:text-3xl font-extrabold text-white mt-2 leading-tight">AI × 手機功能<br>生活實戰分享</h2>
+            <p class="mt-3 text-base text-slate-300 leading-relaxed">09:30–11:30 實戰教學｜11:30–12:15 用餐交流。帶著手機，跟著順序學，課後隨時回來複習。</p>
           </div>
-
-          <!-- Tab Selection: 白話心法卡 vs 生活情境題 -->
-          <div class="flex gap-2 mt-6 border-b border-slate-800">
-            <button id="tab-intel-btn" onclick="switchStageTab('intel')" 
-              class="pb-2.5 px-3 text-xs sm:text-sm font-semibold border-b-2 border-cyanPop text-cyanPop flex items-center gap-1.5 transition-all">
-              <i data-lucide="lightbulb" class="w-4 h-4"></i>
-              生活實戰心法 (看這張就懂)
-            </button>
-            <button id="tab-exam-btn" onclick="switchStageTab('exam')" 
-              class="pb-2.5 px-3 text-xs sm:text-sm font-semibold border-b-2 border-transparent text-slate-400 hover:text-slate-200 flex items-center gap-1.5 transition-all">
-              <i data-lucide="check-square" class="w-4 h-4"></i>
-              日常狀況挑戰題
-              <span id="exam-badge-count" class="px-1.5 py-0.2 text-[10px] bg-slate-800 text-slate-300 rounded-full font-mono">0/2</span>
-            </button>
+          <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+            <div class="rounded-xl bg-deepSea-850 border border-slate-700 p-3"><h3 class="font-bold text-cyanPop text-sm">① 生活化教學</h3><p class="text-sm text-slate-300 mt-1 leading-relaxed">從翻譯、看照片、安排旅遊與日常問題開始，學會讓 AI 幫忙。</p></div>
+            <div class="rounded-xl bg-deepSea-850 border border-slate-700 p-3"><h3 class="font-bold text-cyanPop text-sm">② 現場互動</h3><p class="text-sm text-slate-300 mt-1 leading-relaxed">操作 AI 指令改造器、四格填空練習與防詐挑戰題。</p></div>
+            <div class="rounded-xl bg-deepSea-850 border border-slate-700 p-3"><h3 class="font-bold text-cyanPop text-sm">③ 帶得走的技巧</h3><p class="text-sm text-slate-300 mt-1 leading-relaxed">LINE 13 項技巧、AI 提問公式與隱私安全，都留在網站供課後複習。</p></div>
           </div>
-
-          <!-- TAB 1: Intel Knowledge Card -->
-          <div id="stage-intel-tab" class="mt-5 space-y-4">
-            <div class="p-4 sm:p-5 rounded-xl bg-deepSea-800/70 border border-cyan-500/20">
-              <div class="flex items-center gap-2 text-cyan-300 font-semibold text-xs sm:text-sm mb-3">
-                <i data-lucide="sparkles" class="w-4 h-4 text-cyanPop"></i>
-                本站生活實用心法整理
-              </div>
-              <div id="stage-intel-points" class="grid grid-cols-1 md:grid-cols-2 gap-3 text-xs sm:text-sm text-slate-300">
-                <!-- Dynamically populated points -->
-              </div>
-
-              <!-- Golden Takeaway Quote -->
-              <div class="mt-4 pt-3 border-t border-slate-700/60 flex items-start gap-2.5 bg-cyan-950/30 p-3 rounded-xl border border-cyan-500/20">
-                <i data-lucide="quote" class="w-4 h-4 text-cyan-400 shrink-0 mt-0.5"></i>
-                <div>
-                  <div class="text-[11px] uppercase tracking-wider text-cyan-400 font-semibold font-mono">一句話生活白話銘言</div>
-                  <p id="stage-golden-rule" class="text-xs sm:text-sm text-slate-200 italic font-medium mt-0.5">「...」</p>
-                </div>
-              </div>
-            </div>
-
-            <!-- Call to action button to test right away -->
-            <div class="flex justify-end pt-1">
-              <button onclick="switchStageTab('exam')" class="px-5 py-2.5 rounded-xl bg-gradient-to-r from-cyan-500 to-tealMint hover:from-cyan-400 hover:to-teal-300 text-deepSea-950 font-bold text-xs sm:text-sm flex items-center gap-2 shadow-lg shadow-cyan-500/20 transition-all active:scale-95">
-                <span>進入情境實戰測驗</span>
-                <i data-lucide="arrow-right" class="w-4 h-4"></i>
-              </button>
-            </div>
+          <div>
+            <h3 class="text-base font-bold text-white mb-3">今天的課程表｜點選時間直接跳到該單元</h3>
+            <nav aria-label="11月19日活動課程時間表" class="grid grid-cols-2 md:grid-cols-4 gap-2">
+              <a class="block rounded-xl border border-slate-700 bg-deepSea-850 hover:bg-cyan-500/10 hover:border-cyan-500/50 px-3 py-3 text-sm text-slate-100" href="#session-intro"><span class="block text-cyanPop font-bold">09:30–09:40</span><span class="block font-semibold mt-1">AI 生活新時代</span></a>
+              <a class="block rounded-xl border border-slate-700 bg-deepSea-850 hover:bg-cyan-500/10 hover:border-cyan-500/50 px-3 py-3 text-sm text-slate-100" href="#session-life"><span class="block text-cyanPop font-bold">09:40–10:05</span><span class="block font-semibold mt-1">AI 生活應用</span></a>
+              <a class="block rounded-xl border border-slate-700 bg-deepSea-850 hover:bg-cyan-500/10 hover:border-cyan-500/50 px-3 py-3 text-sm text-slate-100" href="#session-prompt"><span class="block text-cyanPop font-bold">10:05–10:25</span><span class="block font-semibold mt-1">AI 提問技巧</span></a>
+              <a class="block rounded-xl border border-slate-700 bg-deepSea-850 hover:bg-cyan-500/10 hover:border-cyan-500/50 px-3 py-3 text-sm text-slate-100" href="#session-line"><span class="block text-cyanPop font-bold">10:25–10:50</span><span class="block font-semibold mt-1">LINE 手機技巧</span></a>
+              <a class="block rounded-xl border border-slate-700 bg-deepSea-850 hover:bg-cyan-500/10 hover:border-cyan-500/50 px-3 py-3 text-sm text-slate-100" href="#session-safety"><span class="block text-cyanPop font-bold">10:50–11:05</span><span class="block font-semibold mt-1">防詐與隱私</span></a>
+              <a class="block rounded-xl border border-slate-700 bg-deepSea-850 hover:bg-cyan-500/10 hover:border-cyan-500/50 px-3 py-3 text-sm text-slate-100" href="#session-practice"><span class="block text-cyanPop font-bold">11:05–11:25</span><span class="block font-semibold mt-1">互動實戰挑戰</span></a>
+              <a class="block rounded-xl border border-slate-700 bg-deepSea-850 hover:bg-cyan-500/10 hover:border-cyan-500/50 px-3 py-3 text-sm text-slate-100" href="#session-recap"><span class="block text-cyanPop font-bold">11:25–11:30</span><span class="block font-semibold mt-1">重點整理</span></a>
+              <a class="block rounded-xl border border-slate-700 bg-deepSea-850 hover:bg-cyan-500/10 hover:border-cyan-500/50 px-3 py-3 text-sm text-slate-100" href="#session-lunch"><span class="block text-cyanPop font-bold">11:30–12:15</span><span class="block font-semibold mt-1">用餐交流</span></a>
+            </nav>
           </div>
+          <p class="text-sm text-slate-500">手機版可直接點選課程時間跳轉；教學示範會依 iPhone、Android、LINE 版本及功能開放情況調整。</p>
+        </section>
 
-          <!-- TAB 2: Exam Questions -->
-          <div id="stage-exam-tab" class="mt-5 hidden space-y-6">
-            <div id="questions-container" class="space-y-5">
-              <!-- Dynamically populated scenario challenge questions -->
-            </div>
-
-            <!-- Stage Completion & Progression Box -->
-            <div id="stage-completion-box" class="hidden p-5 rounded-2xl bg-gradient-to-r from-teal-950/80 to-cyan-950/80 border border-teal-500/40 text-center space-y-3">
-              <div class="w-11 h-11 mx-auto rounded-full bg-teal-500/20 text-tealMint flex items-center justify-center border border-teal-400/40">
-                <i data-lucide="check-circle" class="w-6 h-6"></i>
-              </div>
-              <h3 id="stage-complete-title" class="text-base font-bold text-white">本站考驗達標！</h3>
-              <p id="stage-complete-msg" class="text-xs sm:text-sm text-slate-300 max-w-md mx-auto">恭喜你搞懂日常避雷要領，解鎖前往下一個生活深度水域！</p>
-              <div class="flex flex-wrap items-center justify-center gap-3 pt-2">
-                <button id="btn-next-stage" onclick="goToNextStage()" class="px-6 py-2.5 rounded-xl bg-gradient-to-r from-tealMint to-cyanPop hover:from-teal-300 hover:to-cyan-400 text-deepSea-950 font-bold text-xs sm:text-sm flex items-center gap-2 shadow-lg shadow-teal-500/25 transition-all">
-                  <span>前往下一站</span>
-                  <i data-lucide="chevrons-down" class="w-4 h-4"></i>
-                </button>
-              </div>
-            </div>
+        <!-- 09:30–09:40 AI 生活新時代 -->
+        <section id="session-intro" class="scroll-mt-32 space-y-4">
+          
+          <div class="rounded-2xl border border-cyan-500/30 bg-cyan-500/10 px-5 py-4">
+            <div class="text-sm font-extrabold text-cyanPop tracking-wide">09:30–09:40｜第一單元</div>
+            <h2 class="text-xl sm:text-2xl font-bold text-white mt-1">AI 生活新時代</h2>
+            <p class="text-sm text-slate-300 mt-2 leading-relaxed">認識 AI、ChatGPT：不用懂程式，只要會用平常說話的方式描述需要幫忙的事。</p>
           </div>
+          <div class="rounded-2xl border border-slate-700 bg-deepSea-900 p-5">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+              <div class="rounded-xl bg-deepSea-850 p-4 border border-slate-700">
+                <h3 class="text-base font-bold text-white">AI 是什麼？</h3>
+                <p class="text-sm text-slate-300 mt-2 leading-relaxed">人工智慧能協助理解問題、整理文字、辨識照片與產生建議。它是幫手，不是永遠正確的答案機。</p>
+              </div>
+              <div class="rounded-xl bg-deepSea-850 p-4 border border-slate-700">
+                <h3 class="text-base font-bold text-white">ChatGPT 怎麼用？</h3>
+                <p class="text-sm text-slate-300 mt-2 leading-relaxed">打開 ChatGPT App 或網站 → 在對話框輸入問題（也可用語音）→ 看回答 → 不滿意就接著請它改短、改清楚。</p>
+              </div>
+            </div>
+            <div class="mt-4 rounded-xl bg-cyan-500/10 border border-cyan-500/25 p-3 text-sm text-slate-300"><strong class="text-cyanPop">暖身示範：</strong>「請用國小六年級也聽得懂的方式，解釋什麼是 AI，並舉 3 個生活例子。」</div>
+          </div>
+        </section>
 
-        </div>
+        <!-- 09:40–10:05 AI 生活應用 -->
+        <section id="session-life" class="scroll-mt-32 space-y-4">
+          
+          <div class="rounded-2xl border border-teal-500/30 bg-teal-500/10 px-5 py-4">
+            <div class="text-sm font-extrabold text-tealMint tracking-wide">09:40–10:05｜第二單元</div>
+            <h2 class="text-xl sm:text-2xl font-bold text-white mt-1">AI 生活應用</h2>
+            <p class="text-sm text-slate-300 mt-2 leading-relaxed">翻譯、照片辨識、旅遊規劃、生活安排：從每天真會遇到的問題練起。</p>
+          </div>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+            <div class="rounded-2xl bg-deepSea-900 border border-slate-700 p-4"><h3 class="text-base font-bold text-white">🌏 翻譯看得懂</h3><p class="text-sm text-slate-300 leading-relaxed mt-2">拍下外語菜單或輸入一段英文：「翻成繁體中文，告訴我重點與需要注意的地方。」</p><p class="text-sm text-tealMint mt-3">1. 開啟 ChatGPT → 2. 按附加照片／上傳 → 3. 問想知道的事。</p></div>
+<div class="rounded-2xl bg-deepSea-900 border border-slate-700 p-4"><h3 class="text-base font-bold text-white">📷 拍照認物品</h3><p class="text-sm text-slate-300 leading-relaxed mt-2">拍家電面板或植物：「這張照片看得到什麼？請說明可能用途；不確定請告訴我。」</p><p class="text-sm text-tealMint mt-3">上傳前先遮住姓名、電話、帳號與條碼。</p></div>
+<div class="rounded-2xl bg-deepSea-900 border border-slate-700 p-4"><h3 class="text-base font-bold text-white">🧳 安排出遊</h3><p class="text-sm text-slate-300 leading-relaxed mt-2">「幫我規劃桃園出發的一日遊，兩位大人，喜歡散步，總預算 2000 元，列交通與用餐建議。」</p><p class="text-sm text-tealMint mt-3">旅館、車次、營業時間與價格仍要查官方最新資訊。</p></div>
+<div class="rounded-2xl bg-deepSea-900 border border-slate-700 p-4"><h3 class="text-base font-bold text-white">📝 日常生活規劃</h3><p class="text-sm text-slate-300 leading-relaxed mt-2">「我今天要買菜、繳費、接小孩，幫我依先後順序排成簡單待辦清單。」</p><p class="text-sm text-tealMint mt-3">也能請 AI 把雜亂語音或筆記整理成重點。</p></div>
+          </div>
+          <p class="rounded-xl border border-amber-500/30 bg-amber-500/10 p-4 text-sm text-amber-900">小提醒：AI 的翻譯、辨識與建議可能出錯。過敏原、藥品、醫療、金錢或法律資訊請再向專業人士或官方來源確認。</p>
+        </section>
 
+        <!-- 10:05–10:25 AI 提問技巧 -->
+        <section id="session-prompt" class="scroll-mt-32 space-y-4">
+          
+          <div class="rounded-2xl border border-cyan-500/30 bg-cyan-500/10 px-5 py-4">
+            <div class="text-sm font-extrabold text-cyanPop tracking-wide">10:05–10:25｜第三單元</div>
+            <h2 class="text-xl sm:text-2xl font-bold text-white mt-1">AI 提問技巧</h2>
+            <p class="text-sm text-slate-300 mt-2 leading-relaxed">會問，AI 才容易答對：提供背景＋目的＋限制＋希望的回答方式。</p>
+          </div>
+          <div class="rounded-2xl border border-slate-700 bg-deepSea-900 p-4 text-sm leading-relaxed">
+            <p class="font-bold text-white">生活提問公式：我的情況 → 我想做什麼 → 有哪些條件 → 請怎麼回答</p>
+            <p class="text-slate-300 mt-2">例如：「我們週末從桃園開車出遊，帶一位長輩；請安排輕鬆的一日行程，避免爬坡，午餐預算 1,000 元內，請用表格列出時間與注意事項。」</p>
+          </div>
         <!-- Interactive 生活提問大改造 Widget -->
         <div class="p-5 rounded-2xl bg-deepSea-900/60 border border-slate-800">
           <div class="flex items-center justify-between mb-3">
@@ -429,72 +421,20 @@
             </div>
           </div>
         </div>
+        </section>
 
-        <!-- 自己組指令：填空題 Prompt Builder -->
-        <div class="p-5 rounded-2xl bg-deepSea-900/60 border border-cyan-500/25">
-          <div class="flex flex-wrap items-center justify-between gap-2 mb-3">
-            <div class="flex items-center gap-2">
-              <span class="text-base leading-none">🧩</span>
-              <h3 class="text-xs sm:text-sm font-semibold text-white">填空就會：組出你自己的 AI 指令</h3>
-            </div>
-            <button onclick="fillBuilderExample()" class="px-3 py-1.5 rounded-xl bg-deepSea-800 hover:bg-deepSea-700 text-xs text-amber-200 border border-amber-500/30 flex items-center gap-1.5 transition-all active:scale-95">
-              🎲 給我一個範例
-            </button>
+        <!-- 10:25–10:50 LINE 實用技巧 -->
+        <section id="session-line" class="scroll-mt-32 space-y-4">
+          
+          <div class="rounded-2xl border border-teal-500/30 bg-teal-500/10 px-5 py-4">
+            <div class="text-sm font-extrabold text-tealMint tracking-wide">10:25–10:50｜第四單元</div>
+            <h2 class="text-xl sm:text-2xl font-bold text-white mt-1">LINE 手機實用功能</h2>
+            <p class="text-sm text-slate-300 mt-2 leading-relaxed">照片轉文字、無聲訊息、匿名截圖、一人群組等。打開自己的 LINE，照著卡片一步一步練。</p>
           </div>
-          <p class="text-[11px] text-slate-400 mb-3">不用想格式，照著四格填，下面會自動幫你拼好，按複製貼到 ChatGPT / Gemini / Claude 就能用。</p>
-
-          <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
-            <label class="block">
-              <span class="text-xs text-cyan-300">① 我的情況（誰、在哪、發生什麼）</span>
-              <textarea id="pb-context" oninput="updateBuilder()" rows="2" placeholder="例：我們家 2 大 1 小，週六要去宜蘭"
-                class="mt-1 w-full bg-deepSea-950 border border-slate-700 rounded-xl px-3 py-2 text-xs text-slate-200 focus:outline-none focus:border-cyan-500 resize-none"></textarea>
-            </label>
-            <label class="block">
-              <span class="text-xs text-cyan-300">② 我想要（請它幫你做什麼）</span>
-              <textarea id="pb-goal" oninput="updateBuilder()" rows="2" placeholder="例：排一天的行程"
-                class="mt-1 w-full bg-deepSea-950 border border-slate-700 rounded-xl px-3 py-2 text-xs text-slate-200 focus:outline-none focus:border-cyan-500 resize-none"></textarea>
-            </label>
-            <label class="block md:col-span-2">
-              <span class="text-xs text-cyan-300">③ 條件限制（預算、時間、不要什麼）</span>
-              <textarea id="pb-limit" oninput="updateBuilder()" rows="2" placeholder="例：小孩 5 歲會暈車、車程不超過 1 小時、午餐預算 1500"
-                class="mt-1 w-full bg-deepSea-950 border border-slate-700 rounded-xl px-3 py-2 text-xs text-slate-200 focus:outline-none focus:border-cyan-500 resize-none"></textarea>
-            </label>
+          <div class="rounded-xl border border-teal-500/25 bg-teal-500/10 p-4">
+            <h3 class="text-base text-white font-bold">本堂建議先練 4 項</h3>
+            <p class="text-sm text-slate-300 leading-relaxed mt-2">① 照片文字辨識　② 匿名截圖　③ 一人群組／Keep 筆記　④ 無聲訊息（有 LINE Premium 功能者）。其餘技巧課後可慢慢複習。</p>
           </div>
-
-          <div class="mt-3">
-            <div class="text-xs text-cyan-300 mb-1.5">④ 加點料（可複選）</div>
-            <div class="flex flex-wrap gap-2 text-xs">
-              <label class="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-deepSea-950 border border-slate-700 cursor-pointer has-[:checked]:border-tealMint has-[:checked]:text-teal-200"><input type="checkbox" id="pb-critic" onchange="updateBuilder()" class="accent-teal-400" checked> 幫我挑毛病</label>
-              <label class="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-deepSea-950 border border-slate-700 cursor-pointer has-[:checked]:border-tealMint has-[:checked]:text-teal-200"><input type="checkbox" id="pb-short" onchange="updateBuilder()" class="accent-teal-400" checked> 白話、條列重點</label>
-              <label class="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-deepSea-950 border border-slate-700 cursor-pointer has-[:checked]:border-tealMint has-[:checked]:text-teal-200"><input type="checkbox" id="pb-ask" onchange="updateBuilder()" class="accent-teal-400"> 資訊不夠先問我</label>
-              <label class="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-deepSea-950 border border-slate-700 cursor-pointer has-[:checked]:border-tealMint has-[:checked]:text-teal-200"><input type="checkbox" id="pb-options" onchange="updateBuilder()" class="accent-teal-400"> 給我 3 個選項比較</label>
-            </div>
-          </div>
-
-          <div class="mt-3 p-3 rounded-xl bg-deepSea-950/90 border border-teal-500/40">
-            <div class="text-[11px] text-tealMint mb-1">✨ 拼好的指令</div>
-            <div id="pb-output" class="text-xs text-teal-100 leading-relaxed whitespace-pre-wrap min-h-[40px]"></div>
-          </div>
-          <div class="mt-2 flex flex-wrap gap-2">
-            <button onclick="copyBuilderPrompt()" class="px-4 py-2 rounded-xl bg-gradient-to-r from-cyan-500 to-tealMint text-deepSea-950 font-bold text-xs flex items-center gap-1.5 active:scale-95 transition-all">
-              <i data-lucide="copy" class="w-3.5 h-3.5"></i> 複製指令
-            </button>
-            <button onclick="clearBuilder()" class="px-3 py-2 rounded-xl bg-deepSea-800 hover:bg-slate-700 text-xs text-slate-300 border border-slate-700">清空</button>
-          </div>
-        </div>
-
-        <!-- 防詐紅旗檢查器 -->
-        <div class="p-5 rounded-2xl bg-deepSea-900/60 border border-amber-500/30">
-          <div class="flex items-center gap-2 mb-1">
-            <span class="text-base leading-none">🚩</span>
-            <h3 class="text-xs sm:text-sm font-semibold text-white">這則訊息可疑嗎？30 秒防詐檢查</h3>
-          </div>
-          <p class="text-[11px] text-slate-400 mb-3">收到怪怪的電話、LINE 或簡訊？勾一勾符合的狀況，馬上告訴你該怎麼辦。</p>
-          <div id="fraud-flags" class="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs"></div>
-          <div id="fraud-result" class="mt-3 p-3 rounded-xl border text-xs leading-relaxed"></div>
-        </div>
-
-
         <!-- LINE 教學增補 2026：保留原八站關卡 -->
         <section id="line-practice-class" class="scroll-mt-28 mt-8 space-y-5" aria-labelledby="line-practice-title">
           <div class="rounded-2xl border border-teal-500/30 bg-deepSea-900 p-5 sm:p-6">
@@ -644,6 +584,213 @@
 <label class="flex items-center gap-2 text-xs text-tealMint cursor-pointer"><input type="checkbox" data-line-practice="13" onchange="updateLinePracticeProgress()" class="w-4 h-4 accent-teal-600">這項我學會了</label></div></div>
 </details></div>
           <p class="rounded-xl border border-rose-500/25 bg-rose-500/10 p-4 text-sm text-rose-900"><strong>上課隱私守則：</strong>練習時請使用測試對話，不展示自己的密碼、驗證碼、住址、電話或他人私人聊天室。</p>
+        </section>
+        </section>
+
+        <!-- 10:50–11:05 防詐與隱私安全 -->
+        <section id="session-safety" class="scroll-mt-32 space-y-4">
+          
+          <div class="rounded-2xl border border-amber-500/30 bg-amber-500/10 px-5 py-4">
+            <div class="text-sm font-extrabold text-amberSun tracking-wide">10:50–11:05｜第五單元</div>
+            <h2 class="text-xl sm:text-2xl font-bold text-white mt-1">AI 防詐與隱私安全</h2>
+            <p class="text-sm text-slate-300 mt-2 leading-relaxed">辨識可疑訊息、學會先遮蔽照片個資；遇到緊急借錢或驗證碼要求，先停止並用其他管道查證。</p>
+          </div>
+          <div class="rounded-2xl bg-deepSea-900 border border-slate-700 p-4 text-sm text-slate-300 leading-relaxed">
+            <p><strong class="text-white">防詐三個動作：</strong>不急著點連結、不透露密碼或驗證碼、不轉帳；改用自己原本存的電話確認對方身分。</p>
+            <button type="button" onclick="openModal('redact-lab-modal')" class="mt-3 rounded-xl border border-rose-500/30 bg-rose-500/10 text-coralAlert px-4 py-2 font-bold">打開照片個資遮蔽模擬器</button>
+          </div>
+        <!-- 防詐紅旗檢查器 -->
+        <div class="p-5 rounded-2xl bg-deepSea-900/60 border border-amber-500/30">
+          <div class="flex items-center gap-2 mb-1">
+            <span class="text-base leading-none">🚩</span>
+            <h3 class="text-xs sm:text-sm font-semibold text-white">這則訊息可疑嗎？30 秒防詐檢查</h3>
+          </div>
+          <p class="text-[11px] text-slate-400 mb-3">收到怪怪的電話、LINE 或簡訊？勾一勾符合的狀況，馬上告訴你該怎麼辦。</p>
+          <div id="fraud-flags" class="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs"></div>
+          <div id="fraud-result" class="mt-3 p-3 rounded-xl border text-xs leading-relaxed"></div>
+        </div>
+        </section>
+
+        <!-- 11:05–11:25 現場互動 -->
+        <section id="session-practice" class="scroll-mt-32 space-y-4">
+          
+          <div class="rounded-2xl border border-teal-500/30 bg-teal-500/10 px-5 py-4">
+            <div class="text-sm font-extrabold text-tealMint tracking-wide">11:05–11:25｜第六單元</div>
+            <h2 class="text-xl sm:text-2xl font-bold text-white mt-1">互動實戰挑戰</h2>
+            <p class="text-sm text-slate-300 mt-2 leading-relaxed">用本站的四格填空組 AI 指令，再挑一個生活情境完成測驗；每站都能自由選，不必一次做完。</p>
+          </div>
+          <div class="rounded-xl border border-teal-500/30 bg-teal-500/10 p-4">
+            <p class="text-sm text-slate-300 leading-relaxed"><strong class="text-tealMint">現場兩個任務：</strong>先用下面的「AI 指令填空」組出想問的問題，再從左側八站點一站，進入「日常狀況挑戰題」練習。防詐檢查器也可以再回去操作。</p>
+          </div>
+        <!-- 自己組指令：填空題 Prompt Builder -->
+        <div class="p-5 rounded-2xl bg-deepSea-900/60 border border-cyan-500/25">
+          <div class="flex flex-wrap items-center justify-between gap-2 mb-3">
+            <div class="flex items-center gap-2">
+              <span class="text-base leading-none">🧩</span>
+              <h3 class="text-xs sm:text-sm font-semibold text-white">填空就會：組出你自己的 AI 指令</h3>
+            </div>
+            <button onclick="fillBuilderExample()" class="px-3 py-1.5 rounded-xl bg-deepSea-800 hover:bg-deepSea-700 text-xs text-amber-200 border border-amber-500/30 flex items-center gap-1.5 transition-all active:scale-95">
+              🎲 給我一個範例
+            </button>
+          </div>
+          <p class="text-[11px] text-slate-400 mb-3">不用想格式，照著四格填，下面會自動幫你拼好，按複製貼到 ChatGPT / Gemini / Claude 就能用。</p>
+
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+            <label class="block">
+              <span class="text-xs text-cyan-300">① 我的情況（誰、在哪、發生什麼）</span>
+              <textarea id="pb-context" oninput="updateBuilder()" rows="2" placeholder="例：我們家 2 大 1 小，週六要去宜蘭"
+                class="mt-1 w-full bg-deepSea-950 border border-slate-700 rounded-xl px-3 py-2 text-xs text-slate-200 focus:outline-none focus:border-cyan-500 resize-none"></textarea>
+            </label>
+            <label class="block">
+              <span class="text-xs text-cyan-300">② 我想要（請它幫你做什麼）</span>
+              <textarea id="pb-goal" oninput="updateBuilder()" rows="2" placeholder="例：排一天的行程"
+                class="mt-1 w-full bg-deepSea-950 border border-slate-700 rounded-xl px-3 py-2 text-xs text-slate-200 focus:outline-none focus:border-cyan-500 resize-none"></textarea>
+            </label>
+            <label class="block md:col-span-2">
+              <span class="text-xs text-cyan-300">③ 條件限制（預算、時間、不要什麼）</span>
+              <textarea id="pb-limit" oninput="updateBuilder()" rows="2" placeholder="例：小孩 5 歲會暈車、車程不超過 1 小時、午餐預算 1500"
+                class="mt-1 w-full bg-deepSea-950 border border-slate-700 rounded-xl px-3 py-2 text-xs text-slate-200 focus:outline-none focus:border-cyan-500 resize-none"></textarea>
+            </label>
+          </div>
+
+          <div class="mt-3">
+            <div class="text-xs text-cyan-300 mb-1.5">④ 加點料（可複選）</div>
+            <div class="flex flex-wrap gap-2 text-xs">
+              <label class="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-deepSea-950 border border-slate-700 cursor-pointer has-[:checked]:border-tealMint has-[:checked]:text-teal-200"><input type="checkbox" id="pb-critic" onchange="updateBuilder()" class="accent-teal-400" checked> 幫我挑毛病</label>
+              <label class="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-deepSea-950 border border-slate-700 cursor-pointer has-[:checked]:border-tealMint has-[:checked]:text-teal-200"><input type="checkbox" id="pb-short" onchange="updateBuilder()" class="accent-teal-400" checked> 白話、條列重點</label>
+              <label class="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-deepSea-950 border border-slate-700 cursor-pointer has-[:checked]:border-tealMint has-[:checked]:text-teal-200"><input type="checkbox" id="pb-ask" onchange="updateBuilder()" class="accent-teal-400"> 資訊不夠先問我</label>
+              <label class="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-deepSea-950 border border-slate-700 cursor-pointer has-[:checked]:border-tealMint has-[:checked]:text-teal-200"><input type="checkbox" id="pb-options" onchange="updateBuilder()" class="accent-teal-400"> 給我 3 個選項比較</label>
+            </div>
+          </div>
+
+          <div class="mt-3 p-3 rounded-xl bg-deepSea-950/90 border border-teal-500/40">
+            <div class="text-[11px] text-tealMint mb-1">✨ 拼好的指令</div>
+            <div id="pb-output" class="text-xs text-teal-100 leading-relaxed whitespace-pre-wrap min-h-[40px]"></div>
+          </div>
+          <div class="mt-2 flex flex-wrap gap-2">
+            <button onclick="copyBuilderPrompt()" class="px-4 py-2 rounded-xl bg-gradient-to-r from-cyan-500 to-tealMint text-deepSea-950 font-bold text-xs flex items-center gap-1.5 active:scale-95 transition-all">
+              <i data-lucide="copy" class="w-3.5 h-3.5"></i> 複製指令
+            </button>
+            <button onclick="clearBuilder()" class="px-3 py-2 rounded-xl bg-deepSea-800 hover:bg-slate-700 text-xs text-slate-300 border border-slate-700">清空</button>
+          </div>
+        </div>
+          <div class="rounded-xl bg-deepSea-850 border border-slate-700 p-4"><h3 class="text-base font-bold text-white">八站生活情境題與小測驗</h3><p class="text-sm text-slate-300 mt-1">從左側選關卡；手機版向上找到「生活深潛航道」切換。每一站都有白話心法與題目，課後可以繼續玩。</p></div>
+        <!-- Active Stage Main Card -->
+        <div class="relative overflow-hidden rounded-2xl bg-gradient-to-br from-deepSea-850 via-deepSea-900 to-deepSea-950 border border-cyan-500/25 p-5 sm:p-7 shadow-xl">
+          <div class="absolute -right-10 -top-10 w-48 h-48 bg-cyan-500/10 rounded-full blur-3xl pointer-events-none"></div>
+          <div class="absolute -left-10 -bottom-10 w-48 h-48 bg-teal-500/10 rounded-full blur-3xl pointer-events-none"></div>
+
+          <!-- Header info -->
+          <div class="flex flex-wrap items-start justify-between gap-4">
+            <div>
+              <div class="flex items-center gap-2 mb-1.5">
+                <span id="stage-badge-depth" class="px-2.5 py-0.5 rounded-full text-xs font-mono font-bold bg-cyan-500/20 text-cyan-300 border border-cyan-400/40">10m 潮間層</span>
+                <span id="stage-stars-row" class="flex text-amberSun text-xs"></span>
+              </div>
+              <h2 id="stage-title" class="text-xl sm:text-2xl font-bold text-white tracking-wide">關卡名稱</h2>
+              <p id="stage-subtitle" class="text-xs sm:text-sm text-slate-300 mt-1 max-w-2xl leading-relaxed">引言載入中...</p>
+            </div>
+            
+            <div class="bg-deepSea-800/90 border border-slate-700/80 rounded-xl px-4 py-2 text-right font-mono min-w-[100px]">
+              <div class="text-[10px] text-slate-400">過關獎勵</div>
+              <div id="stage-xp-reward" class="text-base sm:text-lg font-bold text-tealMint">+150 XP</div>
+            </div>
+          </div>
+
+          <!-- Tab Selection: 白話心法卡 vs 生活情境題 -->
+          <div class="flex gap-2 mt-6 border-b border-slate-800">
+            <button id="tab-intel-btn" onclick="switchStageTab('intel')" 
+              class="pb-2.5 px-3 text-xs sm:text-sm font-semibold border-b-2 border-cyanPop text-cyanPop flex items-center gap-1.5 transition-all">
+              <i data-lucide="lightbulb" class="w-4 h-4"></i>
+              生活實戰心法 (看這張就懂)
+            </button>
+            <button id="tab-exam-btn" onclick="switchStageTab('exam')" 
+              class="pb-2.5 px-3 text-xs sm:text-sm font-semibold border-b-2 border-transparent text-slate-400 hover:text-slate-200 flex items-center gap-1.5 transition-all">
+              <i data-lucide="check-square" class="w-4 h-4"></i>
+              日常狀況挑戰題
+              <span id="exam-badge-count" class="px-1.5 py-0.2 text-[10px] bg-slate-800 text-slate-300 rounded-full font-mono">0/2</span>
+            </button>
+          </div>
+
+          <!-- TAB 1: Intel Knowledge Card -->
+          <div id="stage-intel-tab" class="mt-5 space-y-4">
+            <div class="p-4 sm:p-5 rounded-xl bg-deepSea-800/70 border border-cyan-500/20">
+              <div class="flex items-center gap-2 text-cyan-300 font-semibold text-xs sm:text-sm mb-3">
+                <i data-lucide="sparkles" class="w-4 h-4 text-cyanPop"></i>
+                本站生活實用心法整理
+              </div>
+              <div id="stage-intel-points" class="grid grid-cols-1 md:grid-cols-2 gap-3 text-xs sm:text-sm text-slate-300">
+                <!-- Dynamically populated points -->
+              </div>
+
+              <!-- Golden Takeaway Quote -->
+              <div class="mt-4 pt-3 border-t border-slate-700/60 flex items-start gap-2.5 bg-cyan-950/30 p-3 rounded-xl border border-cyan-500/20">
+                <i data-lucide="quote" class="w-4 h-4 text-cyan-400 shrink-0 mt-0.5"></i>
+                <div>
+                  <div class="text-[11px] uppercase tracking-wider text-cyan-400 font-semibold font-mono">一句話生活白話銘言</div>
+                  <p id="stage-golden-rule" class="text-xs sm:text-sm text-slate-200 italic font-medium mt-0.5">「...」</p>
+                </div>
+              </div>
+            </div>
+
+            <!-- Call to action button to test right away -->
+            <div class="flex justify-end pt-1">
+              <button onclick="switchStageTab('exam')" class="px-5 py-2.5 rounded-xl bg-gradient-to-r from-cyan-500 to-tealMint hover:from-cyan-400 hover:to-teal-300 text-deepSea-950 font-bold text-xs sm:text-sm flex items-center gap-2 shadow-lg shadow-cyan-500/20 transition-all active:scale-95">
+                <span>進入情境實戰測驗</span>
+                <i data-lucide="arrow-right" class="w-4 h-4"></i>
+              </button>
+            </div>
+          </div>
+
+          <!-- TAB 2: Exam Questions -->
+          <div id="stage-exam-tab" class="mt-5 hidden space-y-6">
+            <div id="questions-container" class="space-y-5">
+              <!-- Dynamically populated scenario challenge questions -->
+            </div>
+
+            <!-- Stage Completion & Progression Box -->
+            <div id="stage-completion-box" class="hidden p-5 rounded-2xl bg-gradient-to-r from-teal-950/80 to-cyan-950/80 border border-teal-500/40 text-center space-y-3">
+              <div class="w-11 h-11 mx-auto rounded-full bg-teal-500/20 text-tealMint flex items-center justify-center border border-teal-400/40">
+                <i data-lucide="check-circle" class="w-6 h-6"></i>
+              </div>
+              <h3 id="stage-complete-title" class="text-base font-bold text-white">本站考驗達標！</h3>
+              <p id="stage-complete-msg" class="text-xs sm:text-sm text-slate-300 max-w-md mx-auto">恭喜你搞懂日常避雷要領，解鎖前往下一個生活深度水域！</p>
+              <div class="flex flex-wrap items-center justify-center gap-3 pt-2">
+                <button id="btn-next-stage" onclick="goToNextStage()" class="px-6 py-2.5 rounded-xl bg-gradient-to-r from-tealMint to-cyanPop hover:from-teal-300 hover:to-cyan-400 text-deepSea-950 font-bold text-xs sm:text-sm flex items-center gap-2 shadow-lg shadow-teal-500/25 transition-all">
+                  <span>前往下一站</span>
+                  <i data-lucide="chevrons-down" class="w-4 h-4"></i>
+                </button>
+              </div>
+            </div>
+          </div>
+
+        </div>
+        </section>
+
+        <!-- 11:25–11:30 重點整理 -->
+        <section id="session-recap" class="scroll-mt-32 space-y-4">
+          
+          <div class="rounded-2xl border border-cyan-500/30 bg-cyan-500/10 px-5 py-4">
+            <div class="text-sm font-extrabold text-cyanPop tracking-wide">11:25–11:30｜第七單元</div>
+            <h2 class="text-xl sm:text-2xl font-bold text-white mt-1">重點整理與 Q&A</h2>
+            <p class="text-sm text-slate-300 mt-2 leading-relaxed">今天學會的技巧，回家後也能繼續用；有問題歡迎現場提出。</p>
+          </div>
+          <div class="rounded-2xl border border-slate-700 bg-deepSea-900 p-5 text-sm text-slate-300 leading-relaxed">
+            <p><strong class="text-white">今天帶走三件事：</strong>① 把生活問題說清楚，AI 才能幫忙；② LINE 小技巧讓溝通更方便；③ 個資先遮蔽、陌生訊息先查證。</p>
+            <button type="button" onclick="openModal('handbook-modal')" class="mt-4 px-4 py-2 rounded-xl border border-cyan-500/30 bg-cyan-500/10 text-cyanPop font-bold">開啟課後隨身備忘手冊</button>
+          </div>
+        </section>
+
+        <!-- 11:30–12:15 用餐與交流 -->
+        <section id="session-lunch" class="scroll-mt-32 space-y-4">
+          
+          <div class="rounded-2xl border border-teal-500/30 bg-teal-500/10 px-5 py-4">
+            <div class="text-sm font-extrabold text-tealMint tracking-wide">11:30–12:15｜交流時間</div>
+            <h2 class="text-xl sm:text-2xl font-bold text-white mt-1">用餐與自由交流</h2>
+            <p class="text-sm text-slate-300 mt-2 leading-relaxed">中悅一品・社區書房｜一起享用午餐、交流今天的學習心得。</p>
+          </div>
+          <p class="text-sm text-slate-300 px-1">謝謝參加！想複習時，重新開啟本網站，點上方課程表就能找到 LINE 技巧、AI 提問公式與防詐練習。</p>
+          <a href="#event-agenda" class="inline-block rounded-xl px-4 py-2 bg-deepSea-900 border border-slate-700 text-cyanPop text-sm font-bold">返回課程表 ↑</a>
         </section>
       </section>
     </main>
