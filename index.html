@@ -18,11 +18,11 @@
           colors: {
             white: '#0f172a',
             deepSea: {
-              950: '#ffffff',
-              900: '#f8fafc',
-              850: '#f1f5f9',
-              800: '#e8eef5',
-              700: '#dbe4ee',
+              950: '#f8fbff',
+              900: '#ffffff',
+              850: '#f1f7ff',
+              800: '#e7f0fa',
+              700: '#d6e5f4',
             },
             slate: { 50:'#020617',100:'#0f172a',200:'#1e293b',300:'#334155',400:'#475569',500:'#64748b',600:'#94a3b8',700:'#cbd5e1',800:'#e2e8f0',900:'#f1f5f9',950:'#f8fafc' },
             cyan:  { 50:'#083344',100:'#164e63',200:'#155e75',300:'#0e7490',400:'#0891b2',500:'#06b6d4',600:'#22d3ee',700:'#67e8f9',800:'#a5f3fc',900:'#cffafe',950:'#ecfeff' },
@@ -57,7 +57,7 @@
     ::-webkit-scrollbar-thumb:hover { background: #0891b2; }
 
     .ocean-gradient {
-      background: #ffffff;
+      background: #eef4fb;
     }
     .blur-glass {
       backdrop-filter: blur(14px);
@@ -99,6 +99,31 @@
     @media (prefers-reduced-motion: reduce) {
       .animate-bubble, .mascot-body, .mascot-wiggle, .pop-in, .shake { animation: none !important; }
     }
+
+    /* 2026 清晰閱讀版：高對比文字、卡片與操作區分層 */
+    html { scroll-behavior: smooth; }
+    body.ocean-gradient { background: #eef4fb !important; color: #16263c; }
+    #app header { background-color: rgba(255,255,255,.97) !important; border-bottom: 2px solid #a4c4da !important; }
+    main > aside, main > section > .rounded-2xl { background-color: #fff; border-color: #aac0d4 !important; box-shadow: 0 6px 24px rgba(30,58,91,.09); }
+    #app .text-slate-400 { color: #334155 !important; }
+    #app .text-slate-500 { color: #42546d !important; }
+    #app .text-slate-600 { color: #4b5e77 !important; }
+    #app .text-amber-900 { color: #7b4700 !important; }
+    #app .text-rose-900 { color: #881337 !important; }
+    #app .text-deepSea-950 { color: #083344 !important; }
+    #app .border-slate-800 { border-color: #b3c4d7 !important; }
+    #app .border-slate-700 { border-color: #a4b6cb !important; }
+    #line-practice-class > div:first-child { background: #ffffff !important; border: 2px solid #0d9488 !important; box-shadow: 0 7px 24px rgba(13,148,136,.12); }
+    #line-practice-class details { background: #ffffff !important; border: 2px solid #9bb2c8 !important; box-shadow: 0 4px 12px rgba(31,59,81,.08); }
+    #line-practice-class details[open] > summary { background: #eaf8f4 !important; border-bottom: 1px solid #c5ddd6; }
+    #line-practice-class details .text-tealMint { color: #006b62 !important; }
+    #line-practice-class details ol { font-size: 1rem; }
+    #line-practice-class details li { padding-left: 2px; }
+    #line-practice-class details .text-amber-900 { color: #784400 !important; }
+    #line-practice-class details .bg-amber-500\\/10 { background-color: #fff4d5 !important; }
+    #app :is(button,a,summary,input,select,textarea):focus-visible { outline: 3px solid #0e7490 !important; outline-offset: 3px; }
+    #app button { font-weight: 700; }
+    #app main .text-\\[10px\\], #app main .text-\\[11px\\] { letter-spacing: .01em; }
   </style>
 </head>
 <body class="bg-deepSea-950 text-slate-100 font-sans min-h-screen ocean-gradient overflow-x-hidden selection:bg-cyan-500 selection:text-black">
@@ -172,7 +197,7 @@
               class="p-2 rounded-xl bg-deepSea-800 hover:bg-deepSea-700 text-slate-300 hover:text-cyanPop border border-slate-700/80 transition-all">
               <i id="sound-icon" data-lucide="volume-2" class="w-4 h-4"></i>
             </button>
-            <a href="#line-practice-class" title="LINE 10 個教學" class="flex items-center gap-1.5 px-3 py-2 rounded-xl bg-deepSea-800 text-lineGreen border border-teal-500/30 text-xs font-semibold"><i data-lucide="messages-square" class="w-4 h-4"></i><span class="hidden sm:inline">LINE 教學</span></a>
+            <a href="#line-practice-class" title="LINE 13 個教學" class="flex items-center gap-1.5 px-3 py-2 rounded-xl bg-deepSea-800 text-lineGreen border border-teal-500/30 text-xs font-semibold"><i data-lucide="messages-square" class="w-4 h-4"></i><span class="hidden sm:inline">LINE 教學</span></a>
             <button onclick="openModal('handbook-modal')" title="生活金律手冊" 
               class="flex items-center gap-1.5 px-3 py-2 rounded-xl bg-deepSea-800 hover:bg-cyan-950 text-cyan-200 border border-cyan-500/30 text-xs font-medium transition-all">
               <i data-lucide="book-open" class="w-4 h-4 text-cyanPop"></i>
@@ -436,10 +461,10 @@
         <section id="line-practice-class" class="scroll-mt-28 mt-8 space-y-5" aria-labelledby="line-practice-title">
           <div class="rounded-2xl border border-teal-500/30 bg-deepSea-900 p-5 sm:p-6">
             <div class="flex items-center gap-2 text-lineGreen text-xs font-bold mb-2"><i data-lucide="message-circle" class="w-5 h-5"></i> LINE 專區 · 實用技巧＋帳號安全</div>
-            <h3 id="line-practice-title" class="text-xl sm:text-2xl font-bold text-white">LINE 10 個實戰教學｜打開手機跟著做</h3>
-            <p class="text-sm text-slate-300 mt-2 leading-relaxed">新增日期搜尋、無聲傳送新制、追加裝置、一起看 YouTube、連結預覽、匿名截圖，並加強登入安全、反詐騙、密碼防護與聊天備份。點選教學卡展開步驟。</p>
+            <h3 id="line-practice-title" class="text-xl sm:text-2xl font-bold text-white">LINE 13 個實戰教學｜打開手機跟著做</h3>
+            <p class="text-sm text-slate-300 mt-2 leading-relaxed">日期搜尋、無聲傳送、追加裝置、YouTube 共看、匿名截圖，再加上全新「通話錄製」、一人群組、所有相簿，以及帳號隱私、防詐和聊天備份。點選教學卡展開步驟。</p>
             <div class="flex items-center gap-3 flex-wrap mt-4">
-              <span id="line-practice-count" class="text-sm font-bold text-tealMint" aria-live="polite">已完成 0 / 10</span>
+              <span id="line-practice-count" class="text-sm font-bold text-tealMint" aria-live="polite">已完成 0 / 13</span>
               <div class="flex-1 min-w-[110px] h-2 rounded-full bg-slate-700 overflow-hidden"><div id="line-practice-bar" class="h-full bg-tealMint w-0 transition-all"></div></div>
               <button type="button" onclick="resetLinePracticeProgress()" class="rounded-lg border border-slate-600 px-3 py-2 text-xs text-slate-300 hover:bg-deepSea-700">重設進度</button>
             </div>
@@ -544,7 +569,42 @@
 <div class="px-5 pb-5 space-y-3"><p class="text-xs font-semibold text-tealMint">跟著做</p>
 <ol class="list-decimal pl-4 space-y-2 text-sm text-slate-200 leading-relaxed"><li>LINE 主頁 → 設定 → 備份及移動帳號 → 備份聊天記錄</li><li>需要時先設定備份啟用碼</li><li>按馬上進行備份，等待完成</li><li>確認最近備份成功日期，視需求設定自動備份</li></ol>
 <div class="rounded-xl border border-amber-500/20 bg-amber-500/10 p-3 text-xs text-amber-900 leading-relaxed"><strong>注意：</strong>iPhone 與 Android 的備份與跨系統移動規則不同；沒有備份前不要任意刪除 LINE 或移動主要帳號。</div>
-<div class="flex items-center justify-between flex-wrap gap-2"><a href="https://help.line.me/line/smartphone?contentId=20023473&lang=zh-Hant" target="_blank" rel="noopener noreferrer" class="text-xs font-semibold text-cyanPop underline underline-offset-4">官方資訊／參考資源 ↗</a><label class="flex items-center gap-2 text-xs text-tealMint cursor-pointer"><input type="checkbox" data-line-practice="10" onchange="updateLinePracticeProgress()" class="w-4 h-4 accent-teal-600">這項我學會了</label></div></div></details></div>
+<div class="flex items-center justify-between flex-wrap gap-2"><a href="https://help.line.me/line/smartphone?contentId=20023473&lang=zh-Hant" target="_blank" rel="noopener noreferrer" class="text-xs font-semibold text-cyanPop underline underline-offset-4">官方資訊／參考資源 ↗</a><label class="flex items-center gap-2 text-xs text-tealMint cursor-pointer"><input type="checkbox" data-line-practice="10" onchange="updateLinePracticeProgress()" class="w-4 h-4 accent-teal-600">這項我學會了</label></div></div></details><details class="group overflow-hidden rounded-2xl border border-teal-500/20 bg-deepSea-900/80" open>
+<summary class="cursor-pointer list-none p-4 flex gap-3 items-center hover:bg-deepSea-800">
+<div class="p-2.5 rounded-xl bg-teal-500/15 shrink-0"><i data-lucide="mic" class="w-5 h-5 text-tealMint"></i></div>
+<div class="min-w-0 flex-1"><p class="text-xs text-tealMint font-semibold">2026 新功能 · 限時免費試用 · 11</p><h4 class="text-base font-bold text-white">通話錄製：語音與視訊都能保存</h4><p class="text-xs text-slate-400 mt-1">LINE Labs 的實驗功能。2026/10/30 起免費試用，預計到 2027 年 1 月下旬；之後預計轉為 LINE Premium 會員權益。</p></div>
+<i data-lucide="chevron-down" class="w-5 h-5 text-slate-400 group-open:rotate-180 transition-transform"></i>
+</summary>
+<div class="px-5 pb-5 space-y-3"><p class="text-xs font-semibold text-tealMint">跟著做</p><ol class="list-decimal pl-4 space-y-2 text-sm text-slate-200 leading-relaxed">
+<li>將手機 LINE 更新至 26.16.0（含）以上版本。</li><li>開啟 LINE → 主頁 → 設定 → LINE Labs，啟用「通話錄製」。</li><li>進入 LINE → 設定 → 通話 → 通話錄製，可設定是否僅透過 Wi-Fi 傳送錄製檔。</li><li>與已知情且同意錄製的朋友進行 1 對 1 語音或視訊通話，於通話畫面點「開始錄製」。</li><li>結束通話後，到 Keep 筆記或該聊天室的「通話錄製」查看；重要檔案建議另存裝置。</li>
+</ol><div class="rounded-xl border border-amber-500/20 bg-amber-500/10 p-3 text-xs text-amber-900 leading-relaxed"><strong>注意：</strong>只支援台灣、日本、泰國等指定地區、雙方帳號國家或地區相同的 1 對 1 通話。錄音最長 1 小時，錄影依畫質最長 20 或 50 分鐘。啟動錄製時系統會通知雙方，但仍應事先取得對方同意。</div><div class="flex items-center justify-between flex-wrap gap-2">
+<a href="https://help.line.me/line/smartphone?contentId=200003130&lang=zh-Hant" target="_blank" rel="noopener noreferrer" class="text-xs font-semibold text-cyanPop underline underline-offset-4">官方資訊／參考資源 ↗</a>
+<label class="flex items-center gap-2 text-xs text-tealMint cursor-pointer"><input type="checkbox" data-line-practice="11" onchange="updateLinePracticeProgress()" class="w-4 h-4 accent-teal-600">這項我學會了</label></div></div>
+</details>
+<details class="group overflow-hidden rounded-2xl border border-teal-500/20 bg-deepSea-900/80" open>
+<summary class="cursor-pointer list-none p-4 flex gap-3 items-center hover:bg-deepSea-800">
+<div class="p-2.5 rounded-xl bg-teal-500/15 shrink-0"><i data-lucide="notebook-pen" class="w-5 h-5 text-tealMint"></i></div>
+<div class="min-w-0 flex-1"><p class="text-xs text-tealMint font-semibold">自己記筆記 · 生活小技巧 · 12</p><h4 class="text-base font-bold text-white">建立一人群組：自己的記事室</h4><p class="text-xs text-slate-400 mt-1">把待辦、活動連結和臨時想法傳給自己。部分版本可在建立群組時不邀請任何好友。</p></div>
+<i data-lucide="chevron-down" class="w-5 h-5 text-slate-400 group-open:rotate-180 transition-transform"></i>
+</summary>
+<div class="px-5 pb-5 space-y-3"><p class="text-xs font-semibold text-tealMint">跟著做</p><ol class="list-decimal pl-4 space-y-2 text-sm text-slate-200 leading-relaxed">
+<li>LINE →「聊天」→ 右上角「＋」→「建立群組」（舊版也可能從主頁右上角進入）。</li><li>在邀請好友頁面不勾選任何人；如果介面允許，直接點「下一步」。</li><li>命名為「我的生活備忘」等容易辨識的名稱，點「建立」。</li><li>傳送一則測試備忘訊息或連結，確認群組成員只有自己。</li>
+</ol><div class="rounded-xl border border-amber-500/20 bg-amber-500/10 p-3 text-xs text-amber-900 leading-relaxed"><strong>注意：</strong>LINE 官方說明的一般群組建立流程包含選取好友，不同版本可能無法不選好友直接下一步。如果按鈕無法操作，改用「Keep 筆記」作為私人備忘即可。不要放密碼、驗證碼、金融機密。</div><div class="flex items-center justify-between flex-wrap gap-2">
+<a href="https://help.line.me/line/smartphone/?contentId=20008159&lang=zh-Hant" target="_blank" rel="noopener noreferrer" class="text-xs font-semibold text-cyanPop underline underline-offset-4">官方資訊／參考資源 ↗</a>
+<label class="flex items-center gap-2 text-xs text-tealMint cursor-pointer"><input type="checkbox" data-line-practice="12" onchange="updateLinePracticeProgress()" class="w-4 h-4 accent-teal-600">這項我學會了</label></div></div>
+</details>
+<details class="group overflow-hidden rounded-2xl border border-teal-500/20 bg-deepSea-900/80" open>
+<summary class="cursor-pointer list-none p-4 flex gap-3 items-center hover:bg-deepSea-800">
+<div class="p-2.5 rounded-xl bg-teal-500/15 shrink-0"><i data-lucide="images" class="w-5 h-5 text-tealMint"></i></div>
+<div class="min-w-0 flex-1"><p class="text-xs text-tealMint font-semibold">LINE 新版聊天頁 · 相簿總覽 · 13</p><h4 class="text-base font-bold text-white">一鍵查看不同聊天室的相簿</h4><p class="text-xs text-slate-400 mt-1">新版 LINE 聊天頁能從好友分頁的相簿展示區，快速找出各聊天室建立的相簿。</p></div>
+<i data-lucide="chevron-down" class="w-5 h-5 text-slate-400 group-open:rotate-180 transition-transform"></i>
+</summary>
+<div class="px-5 pb-5 space-y-3"><p class="text-xs font-semibold text-tealMint">跟著做</p><ol class="list-decimal pl-4 space-y-2 text-sm text-slate-200 leading-relaxed">
+<li>將 LINE 更新至 26.4.0 或以上，並確認是否收到新版聊天頁面。</li><li>點選 LINE 底部「聊天」，再切到畫面上方的「好友」分頁。</li><li>向下查看「所有相簿」展示區，點選想查看的相簿。</li><li>需要找單張未收進相簿的聊天圖片時，仍須回到原聊天室查找。</li>
+</ol><div class="rounded-xl border border-amber-500/20 bg-amber-500/10 p-3 text-xs text-amber-900 leading-relaxed"><strong>注意：</strong>「所有相簿」不是自動永久保存所有聊天室傳過的單張圖片。LINE 於 2026/3/30 宣布分批開放新版介面，更新後若尚未看到入口，可能仍在分批發布。</div><div class="flex items-center justify-between flex-wrap gap-2">
+<a href="https://www.linecorp.com/tw/pr/news/2026/0330/" target="_blank" rel="noopener noreferrer" class="text-xs font-semibold text-cyanPop underline underline-offset-4">官方資訊／參考資源 ↗</a>
+<label class="flex items-center gap-2 text-xs text-tealMint cursor-pointer"><input type="checkbox" data-line-practice="13" onchange="updateLinePracticeProgress()" class="w-4 h-4 accent-teal-600">這項我學會了</label></div></div>
+</details></div>
           <p class="rounded-xl border border-rose-500/25 bg-rose-500/10 p-4 text-sm text-rose-900"><strong>上課隱私守則：</strong>練習時請使用測試對話，不展示自己的密碼、驗證碼、住址、電話或他人私人聊天室。</p>
         </section>
       </section>
@@ -658,7 +718,7 @@
           <!-- LINE 7 個神技能 -->
           <div>
             <h4 class="text-xs font-bold uppercase tracking-wider text-lineGreen flex items-center gap-1.5 mb-2.5">
-              <i data-lucide="message-square" class="w-4 h-4"></i> LINE 常用技巧速查（另有 10 項完整實作教學）
+              <i data-lucide="message-square" class="w-4 h-4"></i> LINE 常用技巧速查（另有 13 項完整實作教學）
             </h4>
             <div class="grid grid-cols-1 md:grid-cols-2 gap-2.5 text-xs">
               <div class="p-2.5 rounded-lg bg-deepSea-950 border border-slate-800">
@@ -1644,6 +1704,9 @@
       { e: '✂️', t: '太長？叫它短一點', b: 'AI 回一大串時，直接回「太長了，3 行講完」。不用重開新對話，它會記得前面講過的。' },
       { e: '🌏', t: '出國菜單拍一下', b: '看不懂的外文菜單拍給 AI，加上「我不吃牛、對蝦過敏」，它會幫你圈出能點的菜。' },
       { e: '🤫', t: 'LINE 無聲訊息新制', b: '2026/11 起改列 LINE Premium 會員權益；如果有這項功能，可以長按送出鍵選無聲傳送。' },
+      { e: '🎙️', t: 'LINE 通話錄製', b: 'LINE Labs 的通話錄製預計免費試用到 2027/1 下旬，只支援指定地區的一對一通話；開始前先取得對方同意。' },
+      { e: '📝', t: '自己的 LINE 備忘空間', b: '部分版本建立群組可以不加好友，只有自己一個人；不支援時可直接用 Keep 筆記。' },
+      { e: '🖼️', t: 'LINE 所有相簿', b: '新版聊天頁的好友分頁可快速查看各聊天室相簿；並不代表所有聊天照片都能永久保存。' },
       { e: '🧹', t: 'LINE 清快取救手機', b: '手機容量不夠？LINE 設定 ➔ 聊天 ➔ 刪除資料 ➔ 勾「快取」，聊天紀錄不會不見。' },
       { e: '🧑‍⚕️', t: 'AI 是助手，不是醫生', b: '健康、法律、大筆錢的事，讓 AI 幫你整理問題清單，再帶著清單去問醫生、藥師或專家。' },
       { e: '🎭', t: '先給 AI 一個角色', b: '開頭加一句「你是有 20 年經驗的水電師傅」或「你是很會砍價的媽媽」，回答會更接地氣。' },
