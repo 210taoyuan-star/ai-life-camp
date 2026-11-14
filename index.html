@@ -124,6 +124,44 @@
     #app :is(button,a,summary,input,select,textarea):focus-visible { outline: 3px solid #0e7490 !important; outline-offset: 3px; }
     #app button { font-weight: 700; }
     #app main .text-\\[10px\\], #app main .text-\\[11px\\] { letter-spacing: .01em; }
+
+    /* 提示卡／小撇步視窗：改用長輩友善的淺色系，避免原本近黑背景 */
+    #tip-modal { background: rgba(93, 122, 151, .20) !important; }
+    #tip-card {
+      background: linear-gradient(145deg, #fffef8 0%, #fff5d9 52%, #eff8ff 100%) !important;
+      border: 2px solid #e6be65 !important;
+      box-shadow: 0 18px 48px rgba(42, 67, 94, .20) !important;
+      color: #172b45 !important;
+    }
+    #tip-title { color: #15263e !important; font-weight: 800; }
+    #tip-body { color: #263b55 !important; font-size: 1rem !important; line-height: 1.85 !important; }
+    #tip-card .text-amber-300 { color: #915400 !important; }
+    #tip-card button:first-child {
+      background: #ffffff !important;
+      color: #14537a !important;
+      border: 1px solid #8cbbd5 !important;
+    }
+    #tip-card button:first-child:hover { background: #eaf7ff !important; }
+    #tip-card button:last-child {
+      background: #ffcf65 !important;
+      color: #442600 !important;
+      border: 1px solid #daa846 !important;
+    }
+    #tip-card button:last-child:hover { background: #ffdf8c !important; }
+    #toast-notify {
+      background: #effaff !important;
+      color: #164e63 !important;
+      border: 2px solid #67b6d3 !important;
+      box-shadow: 0 8px 28px rgba(31, 69, 92, .15) !important;
+      font-size: .9rem !important;
+    }
+    #toast-text { color: #164e63 !important; }
+    #mascot-bubble {
+      background: #eff7ff !important;
+      color: #1e3a59 !important;
+      border: 1px solid #a8c6dd !important;
+    }
+    #mascot-text { color: #1e3a59 !important; }
   </style>
 </head>
 <body class="bg-deepSea-950 text-slate-100 font-sans min-h-screen ocean-gradient overflow-x-hidden selection:bg-cyan-500 selection:text-black">
