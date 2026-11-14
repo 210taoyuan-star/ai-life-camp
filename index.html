@@ -100,6 +100,8 @@
       .animate-bubble, .mascot-body, .mascot-wiggle, .pop-in, .shake { animation: none !important; }
     }
 
+    #stage-title { scroll-margin-top: 150px; }
+
     /* 2026 清晰閱讀版：高對比文字、卡片與操作區分層 */
     html { scroll-behavior: smooth; }
     body.ocean-gradient { background: #eef4fb !important; color: #16263c; }
@@ -235,7 +237,7 @@
               class="p-2 rounded-xl bg-deepSea-800 hover:bg-deepSea-700 text-slate-300 hover:text-cyanPop border border-slate-700/80 transition-all">
               <i id="sound-icon" data-lucide="volume-2" class="w-4 h-4"></i>
             </button>
-            <a href="#line-practice-class" title="LINE 13 個教學" class="flex items-center gap-1.5 px-3 py-2 rounded-xl bg-deepSea-800 text-lineGreen border border-teal-500/30 text-xs font-semibold"><i data-lucide="messages-square" class="w-4 h-4"></i><span class="hidden sm:inline">LINE 教學</span></a>
+            <a href="#session-line" title="10:25 LINE 手機教學" class="flex items-center gap-1.5 px-3 py-2 rounded-xl bg-deepSea-800 text-lineGreen border border-teal-500/30 text-xs font-semibold"><i data-lucide="messages-square" class="w-4 h-4"></i><span class="hidden sm:inline">LINE 教學</span></a>
             <button onclick="openModal('handbook-modal')" title="生活金律手冊" 
               class="flex items-center gap-1.5 px-3 py-2 rounded-xl bg-deepSea-800 hover:bg-cyan-950 text-cyan-200 border border-cyan-500/30 text-xs font-medium transition-all">
               <i data-lucide="book-open" class="w-4 h-4 text-cyanPop"></i>
@@ -434,6 +436,7 @@
           <div class="rounded-xl border border-teal-500/25 bg-teal-500/10 p-4">
             <h3 class="text-base text-white font-bold">本堂建議先練 4 項</h3>
             <p class="text-sm text-slate-300 leading-relaxed mt-2">① 照片文字辨識　② 匿名截圖　③ 一人群組／Keep 筆記　④ 無聲訊息（有 LINE Premium 功能者）。其餘技巧課後可慢慢複習。</p>
+            <p class="text-sm text-slate-300 leading-relaxed mt-2"><strong class="text-white">照片轉文字操作：</strong>打開 LINE 聊天室的照片 → 點選畫面上的文字辨識／[A]（依版本而異）→ 選取文字並複製。練習請使用不含個資的圖片。</p>
           </div>
         <!-- LINE 教學增補 2026：保留原八站關卡 -->
         <section id="line-practice-class" class="scroll-mt-28 mt-8 space-y-5" aria-labelledby="line-practice-title">
@@ -1724,7 +1727,8 @@
       saveState();
       updateHUD();
       switchStageTab('intel');
-      window.scrollTo({ top: 120, behavior: 'smooth' });
+      // 關卡現在放在 11:05 實戰單元，切換時要捲到題目，不是捲回頁首。
+      document.getElementById('stage-title')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
     }
 
     function goToNextStage() {
