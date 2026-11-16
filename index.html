@@ -416,6 +416,75 @@
               <p class="text-sm" style="color:#155e59;"><strong>現場練習：</strong>改成自己想去的地方，提出少走路或無障礙需求。</p>
               <p class="text-xs leading-relaxed rounded-xl p-3" style="background:#fff4da;color:#774700;border:1px solid #ebc886;"><strong>注意：</strong>班次、票價及路線可能調整，出發前要查官方公車動態。</p>
             </article></div>
+
+          <!-- 出國語音翻譯實作：AI 幫你問路、點餐 -->
+          <section id="travel-voice-lab" class="scroll-mt-32 rounded-2xl p-4 sm:p-6 space-y-4" aria-labelledby="travel-voice-title" style="background:#f1f9ff;border:2px solid #8dbfdb;box-shadow:0 7px 24px rgba(19,82,115,.09);">
+            <div class="flex items-start gap-3">
+              <span class="rounded-xl p-3 shrink-0" style="background:#d6eefb;color:#075985"><i data-lucide="languages" class="w-7 h-7"></i></span>
+              <div>
+                <p class="text-xs font-extrabold" style="color:#087b8c;">旅行實戰加碼｜雙向語音翻譯</p>
+                <h3 id="travel-voice-title" class="text-xl sm:text-2xl font-extrabold mt-1" style="color:#153451;">出國讓 AI 幫忙問路、點餐，開口說中文就能溝通</h3>
+                <p class="text-sm mt-2 leading-relaxed" style="color:#334155;">不會講日文、英文也能練習！你說中文，ChatGPT 語音模式可協助翻成當地語言說出來；對方回答後，再請 AI 翻回繁體中文。AI 是<strong>雙向口譯助手</strong>，不是自己走出去替你問路的真人代理。</p>
+              </div>
+            </div>
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+              <div class="rounded-xl p-3" style="background:#fff;border:1px solid #b6d7e8;">
+                <div class="text-xs font-bold" style="color:#075985;">第一步</div>
+                <p class="font-extrabold text-sm" style="color:#17324c;">選旅行情境與語言</p>
+                <p class="text-xs mt-1" style="color:#475569;">例如日本問路、餐廳點餐</p>
+              </div>
+              <div class="rounded-xl p-3" style="background:#fff;border:1px solid #b6d7e8;">
+                <div class="text-xs font-bold" style="color:#075985;">第二步</div>
+                <p class="font-extrabold text-sm" style="color:#17324c;">複製指令到 ChatGPT</p>
+                <p class="text-xs mt-1" style="color:#475569;">貼到新對話，讓 AI 知道要當雙向口譯員</p>
+              </div>
+              <div class="rounded-xl p-3" style="background:#fff;border:1px solid #b6d7e8;">
+                <div class="text-xs font-bold" style="color:#075985;">第三步</div>
+                <p class="font-extrabold text-sm" style="color:#17324c;">開啟語音對話</p>
+                <p class="text-xs mt-1" style="color:#475569;">對著手機說中文，讓對方聽翻譯；聽完回答再翻回來</p>
+              </div>
+            </div>
+            <div class="rounded-xl border p-4 space-y-4" style="background:#ffffff;border-color:#a7c8dc;">
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                <label class="text-sm font-extrabold" style="color:#17324c;">我要去哪個國家／語言？
+                  <select id="voice-travel-language" onchange="updateTravelVoicePrompt()" class="mt-2 w-full rounded-xl border-2 px-3 py-3 text-base" style="background:#fff;color:#17324c;border-color:#b0c7d9;">
+                    <option value="日文">日本（日文）</option>
+                    <option value="英文">英語系國家（英文）</option>
+                    <option value="韓文">韓國（韓文）</option>
+                    <option value="泰文">泰國（泰文）</option>
+                  </select>
+                </label>
+                <label class="text-sm font-extrabold" style="color:#17324c;">今天要練習什麼？
+                  <select id="voice-travel-scene" onchange="updateTravelVoicePrompt()" class="mt-2 w-full rounded-xl border-2 px-3 py-3 text-base" style="background:#fff;color:#17324c;border-color:#b0c7d9;">
+                    <option value="direction">向路人問路</option>
+                    <option value="food">在餐廳點餐</option>
+                  </select>
+                </label>
+              </div>
+              <label class="block text-sm font-extrabold" style="color:#17324c;">我想說的中文句子：
+                <textarea id="voice-travel-message" oninput="updateTravelVoicePrompt()" rows="3" class="mt-2 w-full rounded-xl border-2 px-3 py-3 text-base leading-relaxed" style="background:#fff;color:#17324c;border-color:#b0c7d9;" placeholder="請輸入想對當地人說的話">不好意思，請問到最近的車站怎麼走？我希望盡量少走路。</textarea>
+              </label>
+              <div class="rounded-xl p-4 border" style="background:#f1f8ff;border-color:#afd2e7;">
+                <p class="text-sm font-extrabold mb-2" style="color:#075985;">複製這段「雙向語音翻譯指令」</p>
+                <p id="voice-travel-preview" class="text-sm leading-relaxed whitespace-pre-line" style="color:#17324c;" aria-live="polite"></p>
+                <div class="flex gap-2 flex-wrap mt-3">
+                  <button type="button" onclick="copyTravelVoicePrompt()" class="inline-flex items-center gap-2 px-4 py-3 rounded-xl text-sm font-extrabold" style="background:#087d74;color:#fff;"><i data-lucide="copy" class="w-4 h-4"></i>複製語音翻譯指令</button>
+                  <a href="https://chatgpt.com/" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-2 px-4 py-3 rounded-xl text-sm font-extrabold border" style="color:#075985;background:#fff;border-color:#91bed8;"><i data-lucide="external-link" class="w-4 h-4"></i>開啟 ChatGPT</a>
+                </div>
+              </div>
+            </div>
+            <div class="rounded-xl p-4 border space-y-3" style="background:#f0fcf7;border-color:#a9d8c2;">
+              <h4 class="text-base font-extrabold" style="color:#155e59;">🎭 6～7 人小班怎麼玩？「旅行雙人角色扮演」</h4>
+              <p class="text-sm leading-relaxed" style="color:#28564a;">兩人一組：一位當台灣旅客、一位當日本店員或路人，手機中的 ChatGPT 負責口譯。說完一回合交換角色；第七位可當觀察員或和講師組隊。</p>
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-2 text-sm" style="color:#28564a;">
+                <div class="rounded-lg p-3" style="background:#fff;border:1px solid #c9e5d5;"><strong>問路任務：</strong>「最近的車站在哪？可以少爬樓梯嗎？」由路人回覆後，請 AI 翻成中文。</div>
+                <div class="rounded-lg p-3" style="background:#fff;border:1px solid #c9e5d5;"><strong>點餐任務：</strong>「請推薦一道不辣、容易咀嚼的料理，大約多少錢？」讓店員回覆，再由 AI 口譯。</div>
+              </div>
+              <p class="text-xs" style="color:#3d685a;">每組各練 1 分鐘，再請大家投票「哪個情境回家最有機會用到？」。</p>
+            </div>
+            <p class="rounded-xl p-3 text-sm leading-relaxed border" style="background:#fff4d8;border-color:#e0bc74;color:#774700;"><strong>重要安全提醒：</strong>AI 可能聽錯、翻錯或把背景聲當成回應；遇到食物過敏、藥品、交通票價與路線等重要資訊，要直接向店員或官方再次核對。語音模式需開啟麥克風及網路；請先徵得對方同意再收音，不要在開車或過馬路時操作手機。</p>
+            <p class="text-xs" style="color:#475569;">本頁只會替你組合與複製指令，<strong>不會自行錄音或直接播放外語</strong>。實際雙向語音要在 ChatGPT 的語音模式中進行；介面及可用功能依 App 版本和帳號而異。<a href="https://help.openai.com/en/articles/20001274-chatgpt-voice" target="_blank" rel="noopener noreferrer" class="underline font-semibold" style="color:#075985;">查看 ChatGPT 語音官方說明 ↗</a></p>
+          </section>
           <!-- 加碼實作：以冰箱食材規劃料理 -->
           <section id="ai-recipe-lab" class="scroll-mt-32 rounded-2xl p-4 sm:p-6 space-y-4" style="background:#fffdfa;border:2px solid #ddbb79;box-shadow:0 5px 16px rgba(79,57,23,.08);">
             <div class="flex items-center gap-3">
@@ -2416,6 +2485,27 @@
       if (prompt) { copyToClipboard(prompt.textContent); showToast('食材提問已複製，貼到 ChatGPT 試試！'); }
     }
 
+    // 出國雙向語音翻譯練習：僅產生可複製的指令文字
+    function updateTravelVoicePrompt() {
+      const lang = document.getElementById('voice-travel-language');
+      const scene = document.getElementById('voice-travel-scene');
+      const msg = document.getElementById('voice-travel-message');
+      const output = document.getElementById('voice-travel-preview');
+      if (!lang || !scene || !msg || !output) return;
+      const phrase = msg.value.trim() || (scene.value === 'direction' ? '請問到最近的車站怎麼走？' : '請問有不辣、容易咀嚼的餐點嗎？');
+      const where = scene.value === 'direction' ? '旅遊問路' : '餐廳點餐';
+      output.textContent = '請當我的旅行雙向語音口譯員。情境：' + where + '。\n' +
+        '我說繁體中文時，請把我的話翻成自然且有禮貌的' + lang.value + '並用語音說出；當對方用' + lang.value + '回答時，請將聽到的內容翻回繁體中文並說出來。\n' +
+        '一次只翻譯當前一句，不要自行代替店員或路人回答；若沒聽清楚，請請對方再說一次。\n' +
+        '我想先問的是：「' + phrase + '」\n' +
+        '翻譯前先用中文告訴我你已準備好，等我說「開始翻譯」再開始。';
+    }
+    function copyTravelVoicePrompt() {
+      updateTravelVoicePrompt();
+      const p = document.getElementById('voice-travel-preview');
+      if (p) { copyToClipboard(p.textContent); showToast('語音翻譯指令已複製，貼到 ChatGPT 開啟語音！'); }
+    }
+
     // --- Bootstrap ---
     window.onload = function() {
       loadState();
@@ -2427,6 +2517,7 @@
       renderFraudChecker();
       updateBuilder();
       updateRecipePromptPreview();
+      updateTravelVoicePrompt();
       updateHUD();
       lucide.createIcons();
       const isNew = userState.totalXP === 0 && Object.keys(userState.levelAnswers).length === 0;
