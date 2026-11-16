@@ -164,6 +164,64 @@
       border: 1px solid #a8c6dd !important;
     }
     #mascot-text { color: #1e3a59 !important; }
+    /* ===== LINE 13 招：活潑互動 ===== */
+    .lp-done-label { padding: 8px 14px; border-radius: 999px; border: 2px dashed #5eb8ad; background: #f0fbf8; font-size: .9rem !important; font-weight: 800; transition: transform .15s, background .2s, border-color .2s; user-select: none; }
+    .lp-done-label:hover { transform: scale(1.05); background: #dff6f0; }
+    .lp-done-label:active { transform: scale(.95); }
+    .lp-done-label input { width: 1.3rem !important; height: 1.3rem !important; }
+    .lp-done-label.is-done { border-style: solid; border-color: #0d9488; background: #0d9488; color: #fff !important; }
+    #line-practice-class details { position: relative; transition: box-shadow .3s, transform .3s; }
+    #line-practice-class details.lp-card-done { border-color: #2bb39f !important; box-shadow: 0 0 0 3px rgba(13,148,136,.18); }
+    .lp-stamp { position: absolute; top: 10px; right: 46px; font-size: .75rem; font-weight: 900; color: #e11d48; border: 2.5px solid #e11d48; border-radius: 10px; padding: 2px 8px; transform: rotate(-12deg); background: rgba(255,255,255,.9); pointer-events: none; }
+    .lp-stamp.slam { animation: lp-slam .45s cubic-bezier(.2,1.6,.4,1); }
+    @keyframes lp-slam { 0% { transform: rotate(-12deg) scale(2.6); opacity: 0; } 100% { transform: rotate(-12deg) scale(1); opacity: 1; } }
+    .lp-highlight { animation: lp-glow 1.6s ease-out 2; }
+    @keyframes lp-glow { 0%,100% { box-shadow: 0 0 0 0 rgba(251,191,36,0); } 40% { box-shadow: 0 0 0 8px rgba(251,191,36,.55); } }
+    .lp-track { position: relative; flex: 1; min-width: 160px; height: 14px; border-radius: 999px; background: #d9eef0; margin: 18px 4px 6px; }
+    .lp-track #line-practice-bar { height: 100%; border-radius: 999px; background: linear-gradient(90deg,#14b8a6,#22d3ee); transition: width .6s cubic-bezier(.3,1.4,.5,1); }
+    .lp-runner { position: absolute; top: -22px; font-size: 26px; transform: translateX(-50%); transition: left .6s cubic-bezier(.3,1.4,.5,1); line-height: 1; }
+    .lp-flag { position: absolute; top: -20px; transform: translateX(-50%); font-size: 15px; opacity: .45; filter: grayscale(1); transition: all .3s; }
+    .lp-flag.reached { opacity: 1; filter: none; transform: translateX(-50%) scale(1.2); }
+    .lp-rank { display: inline-flex; align-items: center; gap: 6px; padding: 4px 12px; border-radius: 999px; background: #fff4d5; color: #784400; font-weight: 800; font-size: .85rem; }
+    .lp-dice-btn { padding: 8px 14px; border-radius: 12px; background: #fbbf24; color: #3b2300; font-weight: 900; font-size: .9rem; box-shadow: 0 3px 0 #c98a00; transition: transform .1s; }
+    .lp-dice-btn:active { transform: translateY(3px); box-shadow: none; }
+    .lp-dice-btn.rolling .lp-dice { display: inline-block; animation: wiggle .25s linear 3; }
+    @media (prefers-reduced-motion: reduce) { .lp-stamp.slam, .lp-highlight, .lp-dice-btn.rolling .lp-dice { animation: none !important; } }
+    /* ===== 手機版頂部工具列：單列、不橫向撐開頁面 ===== */
+    @media (max-width: 639px) {
+      #app header > div:first-child { gap: 8px; }
+      #app header .hud-stats { gap: 6px; }
+      #app header .hud-stats > div:first-child { padding: 4px 8px; gap: 4px; }
+      #app header .hud-stats > div:first-child > div:first-child { display: none; }
+      #app header .hud-xp-label { display: none; }
+      #app header .hud-tools { flex: 1; justify-content: space-between; overflow-x: auto; scrollbar-width: none; }
+      #app header .hud-tools::-webkit-scrollbar { display: none; }
+      #app header .hud-tools { gap: 4px; }
+      #app header .hud-tools > * { flex-shrink: 0; padding: 7px 7px !important; }
+      #app header h1 > span { display: none; }
+    }
+    @media (min-width: 640px) {
+      #app header .hud-stats, #app header .hud-tools { flex-wrap: wrap; }
+      #app header .hud-stats > *, #app header .hud-tools > * { white-space: nowrap; flex-shrink: 0; }
+    }
+    @media (min-width: 640px) and (max-width: 1535px) {
+      #app header .hud-tools span.hidden { display: none !important; }
+    }
+    /* ===== 全站活潑互動 ===== */
+    .fun-burst { position: fixed; z-index: 70; pointer-events: none; font-size: 22px; animation: fun-float 1s ease-out forwards; }
+    @keyframes fun-float { 0% { transform: translate(0,0) scale(.5); opacity: 0; } 20% { opacity: 1; transform: translate(calc(var(--dx)*.3), -20px) scale(1.2); } 100% { transform: translate(var(--dx), -90px) scale(.9) rotate(var(--rot)); opacity: 0; } }
+    .copy-pressed { animation: pop-in .35s ease-out; }
+    .life-stampbar { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; padding: 12px 14px; border-radius: 16px; background: #fffaf0; border: 2px dashed #e5b75a; color: #6b4300; }
+    .life-stamp { width: 40px; height: 40px; border-radius: 999px; display: grid; place-items: center; font-size: 20px; background: #fff; border: 2px dashed #d9c39a; filter: grayscale(1); opacity: .45; transition: all .3s; }
+    .life-stamp.got { filter: none; opacity: 1; border: 2px solid #e11d48; transform: rotate(-8deg); animation: lp-slam .45s cubic-bezier(.2,1.6,.4,1); }
+    article.life-done { border-color: #e5b75a !important; box-shadow: 0 0 0 3px rgba(251,191,36,.25); }
+    .magic-typing::after { content: '▍'; animation: blink .8s steps(1) infinite; color: #0d9488; }
+    @keyframes blink { 50% { opacity: 0; } }
+    .magic-flash { animation: magic-flash .7s ease-out; }
+    @keyframes magic-flash { 0% { box-shadow: 0 0 0 0 rgba(168,85,247,.0); } 30% { box-shadow: 0 0 0 6px rgba(168,85,247,.35); } 100% { box-shadow: 0 0 0 0 rgba(168,85,247,0); } }
+    .strike-old { text-decoration: line-through; text-decoration-color: #e11d48; text-decoration-thickness: 2px; opacity: .75; transition: opacity .3s; }
+    .shake { animation: shake .45s ease-in-out; }
+    @media (prefers-reduced-motion: reduce) { .fun-burst, .life-stamp.got, .magic-flash, .copy-pressed { animation: none !important; } .fun-burst { display: none; } }
   </style>
 </head>
 <body class="bg-deepSea-950 text-slate-100 font-sans min-h-screen ocean-gradient overflow-x-hidden selection:bg-cyan-500 selection:text-black">
@@ -200,14 +258,14 @@
         </div>
 
         <!-- Diver Stats and Utility Tools -->
-        <div class="flex items-center gap-2 sm:gap-4">
+        <div class="hud-stats flex items-center gap-2 sm:gap-4 w-full sm:w-auto min-w-0">
           <!-- Total XP -->
-          <div class="flex items-center bg-deepSea-850/80 border border-slate-700/60 rounded-xl px-3 py-1.5 gap-2">
+          <div class="flex items-center shrink-0 whitespace-nowrap bg-deepSea-850/80 border border-slate-700/60 rounded-xl px-3 py-1.5 gap-2">
             <div class="p-1 rounded-lg bg-amberSun/10 text-amberSun">
               <i data-lucide="award" class="w-4 h-4"></i>
             </div>
             <div class="text-left">
-              <div class="text-[10px] text-slate-400">生活智慧積分</div>
+              <div class="hud-xp-label text-[10px] text-slate-400">生活智慧積分</div>
               <div class="text-xs sm:text-sm font-bold font-mono text-cyanPop flex items-center gap-0.5">
                 <span id="hud-xp">0</span> <span class="text-[10px] text-slate-400">XP</span>
               </div>
@@ -223,7 +281,7 @@
           </div>
 
           <!-- Utility Quick Actions -->
-          <div class="flex items-center gap-1.5">
+          <div class="hud-tools flex items-center gap-1.5 min-w-0">
             <button onclick="drawTipCard()" title="抽一張生活小撇步"
               class="flex items-center gap-1.5 px-3 py-2 rounded-xl bg-amber-950/40 hover:bg-amber-900/50 text-amber-200 border border-amber-500/30 text-xs font-medium transition-all">
               <span class="text-sm leading-none">🎁</span>
@@ -359,6 +417,17 @@
           <div class="rounded-xl border p-4 flex flex-wrap justify-between gap-3" style="background:#eaf8f3;border-color:#99cfc3;color:#155e59;">
             <p class="text-sm font-bold">課堂任務：選一項自己最需要的生活應用，複製提問後貼到 AI，看看能得到什麼幫助。</p>
             <a class="text-sm font-bold underline" href="https://chatgpt.com/" target="_blank" rel="noopener noreferrer">開啟 ChatGPT ↗</a>
+          </div>
+          <div class="life-stampbar" aria-live="polite">
+            <span class="text-sm font-extrabold">🎟️ 生活 AI 集章卡：每複製一張卡的提問，就蓋一個章！</span>
+            <span class="flex gap-2 ml-auto">
+              <span class="life-stamp" data-life-stamp="0" title="拍照翻譯">📷</span>
+              <span class="life-stamp" data-life-stamp="1" title="健康百科">🍎</span>
+              <span class="life-stamp" data-life-stamp="2" title="文章摘要">📰</span>
+              <span class="life-stamp" data-life-stamp="3" title="祝福語">💌</span>
+              <span class="life-stamp" data-life-stamp="4" title="旅遊路線">🚌</span>
+            </span>
+            <span id="life-stamp-count" class="text-xs font-bold w-full">已集 0 / 5 個章</span>
           </div>
           <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
             <article class="rounded-2xl border p-4 sm:p-5 space-y-3" style="background:#fff;border:2px solid #acc2d6;color:#18324c;">
@@ -648,7 +717,19 @@
             <p class="text-sm text-slate-300 mt-2 leading-relaxed">日期搜尋、無聲傳送、追加裝置、YouTube 共看、匿名截圖，再加上全新「通話錄製」、一人群組、所有相簿，以及帳號隱私、防詐和聊天備份。點選教學卡展開步驟。</p>
             <div class="flex items-center gap-3 flex-wrap mt-4">
               <span id="line-practice-count" class="text-sm font-bold text-tealMint" aria-live="polite">已完成 0 / 13</span>
-              <div class="flex-1 min-w-[110px] h-2 rounded-full bg-slate-700 overflow-hidden"><div id="line-practice-bar" class="h-full bg-tealMint w-0 transition-all"></div></div>
+              <span id="line-practice-rank" class="lp-rank">🥚 LINE 新手蛋</span>
+            </div>
+            <div class="flex items-center gap-3 flex-wrap">
+              <div class="lp-track" aria-hidden="true">
+                <div id="line-practice-bar" style="width:0"></div>
+                <span class="lp-flag" data-at="4" style="left:30.77%">🚩</span>
+                <span class="lp-flag" data-at="7" style="left:53.85%">⭐</span>
+                <span class="lp-flag" data-at="13" style="left:100%">🏆</span>
+                <span id="line-practice-runner" class="lp-runner" style="left:0%">🐙</span>
+              </div>
+            </div>
+            <div class="flex items-center gap-2 flex-wrap mt-3">
+              <button type="button" id="lp-dice-btn" onclick="drawLinePractice()" class="lp-dice-btn"><span class="lp-dice">🎲</span> 抽一招來練！</button>
               <button type="button" onclick="resetLinePracticeProgress()" class="rounded-lg border border-slate-600 px-3 py-2 text-xs text-slate-300 hover:bg-deepSea-700">重設進度</button>
             </div>
             <p class="text-xs text-slate-400 mt-3">已依 2026 年 11 月可取得的 LINE 官方資料修正教學；依 LINE 版本、地區或會員資格，畫面選項可能不同。打勾進度只保存在目前瀏覽器。</p>
@@ -2048,9 +2129,32 @@
     function applyQuickPromptTemplate() {
       const key = document.getElementById('quick-prompt-selector').value;
       const data = LIFE_PROMPTS[key] || LIFE_PROMPTS.p_eat;
-      document.getElementById('quick-prompt-input').innerText = data.input;
-      document.getElementById('quick-prompt-output').innerText = data.output;
+      const inEl = document.getElementById('quick-prompt-input');
+      const outEl = document.getElementById('quick-prompt-output');
+      inEl.innerText = data.input;
+      clearInterval(window.__magicTimer);
+      const reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      if (!window.__magicReady || reduce) { outEl.innerText = data.output; window.__magicReady = true; return; }
       sound.click();
+      inEl.classList.remove('strike-old', 'shake'); void inEl.offsetWidth; inEl.classList.add('shake');
+      setTimeout(() => inEl.classList.add('strike-old'), 300);
+      outEl.innerText = '🪄 AI 指令改造中…';
+      outEl.classList.remove('magic-flash'); void outEl.offsetWidth; outEl.classList.add('magic-flash', 'magic-typing');
+      const text = data.output;
+      let i = 0;
+      setTimeout(() => {
+        window.__magicTimer = setInterval(() => {
+          i += 2;
+          outEl.innerText = text.slice(0, i);
+          if (i >= text.length) {
+            clearInterval(window.__magicTimer);
+            outEl.innerText = text;
+            outEl.classList.remove('magic-typing');
+            sound.success();
+            mascotSay(pick(['✨ 看！多了條件、預算、限制，AI 就答得準多了', '🪄 改造完成！比較一下前後差在哪？', '加上「誰、多少錢、什麼限制」，回答立刻變實用 👍']));
+          }
+        }, 28);
+      }, 450);
     }
 
     function copyTransformedPrompt() {
@@ -2276,8 +2380,10 @@
         r.className = 'mt-3 p-3 rounded-xl border text-xs leading-relaxed bg-rose-950/60 border-coralAlert text-rose-100';
         r.innerHTML = `🔴 <strong>中了 ${n} 個紅旗，非常像詐騙！</strong><br>1. 立刻停止對話，不要匯款、不要給驗證碼。<br>2. 打你通訊錄裡存的號碼回撥本人確認。<br>3. 撥打 <a href="tel:165" class="underline font-bold text-white">165 反詐騙專線</a>，或把訊息轉給 LINE「MyGoPen」查證。`;
       }
+      if (n >= 2) { r.classList.remove('shake'); void r.offsetWidth; r.classList.add('shake'); }
       if (n >= 2 && !fraudWarned) {
         fraudWarned = true;
+        sound.buzz();
         mascotSay('紅旗好多！記住：慢半拍、先回撥、打 165 ☎️', 'oops');
       }
       if (n < 2) fraudWarned = false;
@@ -2440,8 +2546,74 @@
     }
 
     // LINE 教學勾選進度，只儲存在本機瀏覽器
+    const LP_RANKS = [
+      [0, '🥚 LINE 新手蛋'], [1, '🐣 剛破殼'], [4, '🐥 小雞會飛了'],
+      [7, '🦜 LINE 達人鳥'], [10, '🦅 老鷹級高手'], [13, '👑 LINE 全能王']
+    ];
+    const LP_CHEERS = ['學會一招！手機越用越順 👍', '太厲害了，再一招就更熟練！', '好樣的！可以教家人了 😄', '讚！這招回家馬上用得到', '進步神速！章魚老師為你鼓掌 👏'];
+    const LP_MILESTONES = {
+      4: '🚩 本堂必練 4 招達成！你已經可以下課了…開玩笑的，繼續挑戰！',
+      7: '⭐ 過半了！你比 9 成的人更會用 LINE！',
+      13: '🏆 13 招全破！恭喜成為「LINE 全能王」，回家當家裡的手機老師吧！'
+    };
+    let lpLastCount = null;
+    function decorateLinePractice() {
+      document.querySelectorAll('[data-line-practice]').forEach(box => {
+        const label = box.closest('label');
+        if (label && !label.classList.contains('lp-done-label')) {
+          label.classList.add('lp-done-label');
+          box.addEventListener('change', () => { if (box.checked) celebrateLineTip(box); });
+        }
+      });
+    }
+    function celebrateLineTip(box) {
+      const card = box.closest('details');
+      const stamp = card && card.querySelector('.lp-stamp');
+      if (stamp) { stamp.classList.remove('slam'); void stamp.offsetWidth; stamp.classList.add('slam'); }
+      sound.success();
+      const done = document.querySelectorAll('[data-line-practice]:checked').length;
+      if (LP_MILESTONES[done]) {
+        setTimeout(() => { sound.fanfare(); launchConfetti(); mascotSay(LP_MILESTONES[done], 'party'); }, 250);
+      } else {
+        mascotSay(pick(LP_CHEERS) + `（${done}/13）`);
+      }
+    }
+    function drawLinePractice() {
+      const btn = document.getElementById('lp-dice-btn');
+      const left = [...document.querySelectorAll('[data-line-practice]:not(:checked)')];
+      sound.click();
+      if (!left.length) { mascotSay('13 招都學會了！要不要按「重設進度」再複習一輪？', 'party'); return; }
+      btn.classList.remove('rolling'); void btn.offsetWidth; btn.classList.add('rolling');
+      const card = pick(left).closest('details');
+      setTimeout(() => {
+        card.open = true;
+        card.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        card.classList.remove('lp-highlight'); void card.offsetWidth; card.classList.add('lp-highlight');
+        const title = card.querySelector('h4');
+        mascotSay('🎲 抽到了：「' + (title ? title.textContent : '這一招') + '」！打開手機跟著做吧～');
+      }, 750);
+    }
     function updateLinePracticeProgress() {
+      decorateLinePractice();
       const boxes = [...document.querySelectorAll('[data-line-practice]')];
+      boxes.forEach(box => {
+        const card = box.closest('details');
+        const label = box.closest('label');
+        if (label) label.classList.toggle('is-done', box.checked);
+        if (!card) return;
+        card.classList.toggle('lp-card-done', box.checked);
+        let stamp = card.querySelector('.lp-stamp');
+        if (box.checked && !stamp) { stamp = document.createElement('span'); stamp.className = 'lp-stamp'; stamp.textContent = '學會了！'; card.appendChild(stamp); }
+        if (!box.checked && stamp) stamp.remove();
+      });
+      const doneCount = boxes.filter(box => box.checked).length;
+      const pct = doneCount / (boxes.length || 1) * 100;
+      const runner = document.getElementById('line-practice-runner');
+      if (runner) runner.style.left = pct + '%';
+      document.querySelectorAll('#line-practice-class .lp-flag').forEach(f => f.classList.toggle('reached', doneCount >= +f.dataset.at));
+      const rank = document.getElementById('line-practice-rank');
+      if (rank) rank.textContent = LP_RANKS.filter(r => doneCount >= r[0]).pop()[1];
+      lpLastCount = doneCount;
       const completed = boxes.filter(box => box.checked).map(box => box.dataset.linePractice);
       try { localStorage.setItem('ai_life_line_practice_v1', JSON.stringify(completed)); } catch(e) {}
       const text = document.getElementById('line-practice-count');
@@ -2467,7 +2639,60 @@
       if (!prompt) return;
       copyToClipboard(prompt.textContent.trim());
       showToast('提問已複製，可貼到 ChatGPT 練習！');
+      sound.success();
+      const idx = [...document.querySelectorAll('#session-life article[class*="rounded-2xl"]')].filter(a => a.querySelector('[data-ai-use-prompt]')).indexOf(card);
+      if (idx < 0) return;
+      const got = loadLifeStamps();
+      const isNew = !got.includes(idx);
+      if (isNew) { got.push(idx); try { localStorage.setItem('ai_life_stamps_v1', JSON.stringify(got)); } catch(e) {} }
+      renderLifeStamps(isNew ? idx : null);
+      if (isNew && got.length === 5) {
+        setTimeout(() => { sound.fanfare(); launchConfetti(); mascotSay('🎟️ 5 個章全集滿！你已經是「生活 AI 小達人」了 🎉', 'party'); }, 300);
+      } else if (isNew) {
+        mascotSay(pick(['蓋章！貼到 ChatGPT 看看它怎麼回答 ✨', '又集一個章！記得 AI 的答案要再查證喔 😉', '好眼光！這招生活超常用']) + `（${got.length}/5）`);
+      }
     }
+    function loadLifeStamps() {
+      try { const v = JSON.parse(localStorage.getItem('ai_life_stamps_v1') || '[]'); return Array.isArray(v) ? v : []; } catch(e) { return []; }
+    }
+    function renderLifeStamps(justGot) {
+      const got = loadLifeStamps();
+      document.querySelectorAll('[data-life-stamp]').forEach(el => {
+        const i = +el.dataset.lifeStamp;
+        el.classList.toggle('got', got.includes(i));
+        if (i === justGot) { el.classList.remove('got'); void el.offsetWidth; el.classList.add('got'); }
+      });
+      const cards = [...document.querySelectorAll('#session-life article[class*="rounded-2xl"]')].filter(a => a.querySelector('[data-ai-use-prompt]'));
+      cards.forEach((c, i) => c.classList.toggle('life-done', got.includes(i)));
+      const cnt = document.getElementById('life-stamp-count');
+      if (cnt) cnt.textContent = got.length === 5 ? '🎉 已集滿 5 / 5 個章！生活 AI 小達人' : '已集 ' + got.length + ' / 5 個章';
+    }
+
+    // 全站複製按鈕：彈出小表情
+    const BURST_SETS = { copyRecipePrompt: ['🍳','🥬','🥚','🍲'], copyTravelVoicePrompt: ['✈️','🗣️','🌏','🎌'], copyTransformedPrompt: ['🪄','✨','💡'], copyBuilderPrompt: ['🧩','✨','👍'], copyAiUsePrompt: ['✨','📋','👍','💬'], copyTip: ['🎁','💡','✨'] };
+    function funBurst(el, set) {
+      if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+      const r = el.getBoundingClientRect();
+      for (let i = 0; i < 6; i++) {
+        const s = document.createElement('span');
+        s.className = 'fun-burst';
+        s.textContent = pick(set);
+        s.style.left = (r.left + r.width / 2 - 11 + (Math.random() - .5) * r.width * .6) + 'px';
+        s.style.top = (r.top - 4) + 'px';
+        s.style.setProperty('--dx', ((Math.random() - .5) * 120) + 'px');
+        s.style.setProperty('--rot', ((Math.random() - .5) * 60) + 'deg');
+        s.style.animationDelay = (i * 50) + 'ms';
+        document.body.appendChild(s);
+        setTimeout(() => s.remove(), 1300);
+      }
+      el.classList.remove('copy-pressed'); void el.offsetWidth; el.classList.add('copy-pressed');
+    }
+    document.addEventListener('click', e => {
+      const b = e.target.closest('button[onclick]');
+      if (!b) return;
+      const fn = (b.getAttribute('onclick') || '').split('(')[0].trim();
+      if (BURST_SETS[fn]) funBurst(b, BURST_SETS[fn]);
+    });
 
     // 冰箱食材練習：只組合文字，不傳送使用者內容
     function updateRecipePromptPreview() {
@@ -2482,7 +2707,7 @@
     function copyRecipePrompt() {
       updateRecipePromptPreview();
       const prompt = document.getElementById('recipe-prompt-preview');
-      if (prompt) { copyToClipboard(prompt.textContent); showToast('食材提問已複製，貼到 ChatGPT 試試！'); }
+      if (prompt) { copyToClipboard(prompt.textContent); showToast('食材提問已複製，貼到 ChatGPT 試試！'); sound.success(); mascotSay('🍳 好香！貼到 ChatGPT，今晚的菜單就有著落了'); }
     }
 
     // 出國雙向語音翻譯練習：僅產生可複製的指令文字
@@ -2503,13 +2728,14 @@
     function copyTravelVoicePrompt() {
       updateTravelVoicePrompt();
       const p = document.getElementById('voice-travel-preview');
-      if (p) { copyToClipboard(p.textContent); showToast('語音翻譯指令已複製，貼到 ChatGPT 開啟語音！'); }
+      if (p) { copyToClipboard(p.textContent); showToast('語音翻譯指令已複製，貼到 ChatGPT 開啟語音！'); sound.success(); mascotSay('✈️ 準備出發！開啟語音模式，大聲說中文吧～'); }
     }
 
     // --- Bootstrap ---
     window.onload = function() {
       loadState();
       loadLinePracticeProgress();
+      renderLifeStamps(null);
       sound.enabled = userState.soundEnabled;
       applyBigText();
       initBubbles();
