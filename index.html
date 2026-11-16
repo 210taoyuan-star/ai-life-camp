@@ -416,6 +416,49 @@
               <p class="text-sm" style="color:#155e59;"><strong>現場練習：</strong>改成自己想去的地方，提出少走路或無障礙需求。</p>
               <p class="text-xs leading-relaxed rounded-xl p-3" style="background:#fff4da;color:#774700;border:1px solid #ebc886;"><strong>注意：</strong>班次、票價及路線可能調整，出發前要查官方公車動態。</p>
             </article></div>
+          <!-- 加碼實作：以冰箱食材規劃料理 -->
+          <section id="ai-recipe-lab" class="scroll-mt-32 rounded-2xl p-4 sm:p-6 space-y-4" style="background:#fffdfa;border:2px solid #ddbb79;box-shadow:0 5px 16px rgba(79,57,23,.08);">
+            <div class="flex items-center gap-3">
+              <span class="rounded-xl p-3" style="background:#fff1d4;color:#9a5e00;"><i data-lucide="chef-hat" class="w-7 h-7"></i></span>
+              <div><p class="text-xs font-extrabold" style="color:#9a5e00;">加碼練習｜AI 幫忙安排晚餐</p>
+                <h3 class="text-xl font-extrabold" style="color:#17324c;">AI 如何依冰箱食材規劃食譜？</h3></div>
+            </div>
+            <p class="text-sm leading-relaxed" style="color:#334155;">每天想「晚餐吃什麼」很傷腦筋。只要告訴 ChatGPT 家裡的食材、用餐人數和飲食需要，它就能協助組合菜色、列出食譜，還可提醒缺少哪些調味料。</p>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div class="space-y-3">
+                <label class="block text-sm font-bold" style="color:#17324c;">① 冰箱裡有哪些食材？
+                  <textarea id="recipe-ingredients" rows="3" oninput="updateRecipePromptPreview()" class="mt-2 block w-full rounded-xl border-2 px-3 py-3 text-base" style="background:#fff;color:#17324c;border-color:#a3bfd3;" placeholder="例如：高麗菜、雞蛋、豆腐、金針菇">高麗菜、雞蛋、豆腐、金針菇</textarea>
+                </label>
+                <label class="block text-sm font-bold" style="color:#17324c;">② 這餐要準備幾人份？
+                  <select id="recipe-servings" onchange="updateRecipePromptPreview()" class="mt-2 block w-full rounded-xl border-2 px-3 py-3 text-base" style="background:#fff;color:#17324c;border-color:#a3bfd3;">
+                    <option value="2">2 人份</option><option value="3">3 人份</option><option value="4">4 人份</option><option value="5">5 人份</option><option value="6">6 人份</option>
+                  </select>
+                </label>
+                <label class="block text-sm font-bold" style="color:#17324c;">③ 家人的飲食偏好
+                  <select id="recipe-preference" onchange="updateRecipePromptPreview()" class="mt-2 block w-full rounded-xl border-2 px-3 py-3 text-base" style="background:#fff;color:#17324c;border-color:#a3bfd3;">
+                    <option value="適合長輩牙口、口感柔軟、清淡少鹽">長輩友善・軟一點・少鹽</option>
+                    <option value="一般家庭口味，營養均衡">一般家庭・營養均衡</option>
+                    <option value="不吃辣、容易咀嚼">不吃辣・容易咀嚼</option>
+                    <option value="以少油料理方式為主">少油料理</option>
+                  </select>
+                </label>
+              </div>
+              <div class="rounded-xl border p-4 space-y-3" style="background:#eff8ff;border-color:#a6cedf;">
+                <p class="text-sm font-extrabold" style="color:#075985;">④ AI 提問範例（可修改後複製）</p>
+                <p id="recipe-prompt-preview" class="text-sm leading-relaxed whitespace-pre-line" style="color:#17324c;">請用冰箱現有食材：高麗菜、雞蛋、豆腐、金針菇，設計 2 人份的一餐，適合長輩牙口、口感柔軟、清淡少鹽。</p>
+                <button type="button" onclick="copyRecipePrompt()" class="px-4 py-3 rounded-xl text-sm font-extrabold flex items-center gap-2" style="background:#087d74;color:#fff;"><i data-lucide="copy" class="w-4 h-4"></i>複製我的料理提問</button>
+                <p class="text-xs leading-relaxed" style="color:#475569;">複製後貼進 ChatGPT；這個網站只負責幫你組合提問，不會自行產生 AI 食譜。</p>
+              </div>
+            </div>
+            <div class="rounded-xl p-4 border" style="background:#f0f9f4;border-color:#afd7bc;">
+              <p class="font-extrabold text-sm mb-2" style="color:#155e59;">🍳 用這 4 種食材可以試試</p>
+              <ul class="grid grid-cols-1 sm:grid-cols-2 gap-2 text-sm list-disc pl-5" style="color:#1e4235;">
+                <li>高麗菜炒蛋</li><li>豆腐金針菇湯</li><li>金針菇蛋花湯</li><li>家常燴高麗菜</li><li>清燉高麗菜豆腐</li>
+              </ul>
+              <p class="text-xs mt-3" style="color:#476653;">想做麻婆豆腐、味噌湯，也可以請 AI 說明需要另外準備哪些醬料或材料；不要假設冰箱裡一定有。</p>
+            </div>
+            <p class="rounded-xl p-3 text-sm leading-relaxed border" style="background:#fff3d5;border-color:#e5bd70;color:#7c4900;"><strong>飲食安全提醒：</strong>長輩若有吞嚥困難、糖尿病、腎臟病或其他需限制的飲食，食譜必須由醫師或營養師依個人狀況調整。生鮮食材須確認保鮮狀態並煮熟。</p>
+          </section>
           <p class="rounded-xl border p-4 text-sm leading-relaxed" style="background:#fff4da;border-color:#ebc886;color:#774700;"><strong>老師提醒：</strong>AI 是好幫手，不是醫師、藥師、即時公車系統或事實查核結果；關鍵資訊應再向可靠的官方或專業來源確認。</p>
         </section>
 
@@ -665,6 +708,51 @@
           <div id="fraud-flags" class="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs"></div>
           <div id="fraud-result" class="mt-3 p-3 rounded-xl border text-xs leading-relaxed"></div>
         </div>
+          <!-- 課堂總複習：AI 安全問答 -->
+          <section id="ai-safety-faq" class="scroll-mt-32 rounded-2xl p-4 sm:p-6 space-y-3" style="background:#f4f9ff;border:2px solid #98b9d5;">
+            <div class="flex items-center gap-2"><i data-lucide="shield-check" class="w-6 h-6" style="color:#075985;"></i><h3 class="text-xl font-extrabold" style="color:#17324c;">長輩使用 AI｜5 個安全問答</h3></div>
+            <p class="text-sm" style="color:#334155;">上課可以先請大家回答，再點開答案；也可當成課後複習。</p>
+            <details class="group rounded-xl border-2 overflow-hidden" style="background:#fff;border-color:#b8cfdf;" open>
+              <summary class="cursor-pointer p-4 flex items-center gap-3">
+                <span class="shrink-0 rounded-lg px-2 py-1 text-sm font-extrabold" style="background:#e0f2fe;color:#075985;">Q1</span>
+                <span class="flex-1 text-base font-extrabold" style="color:#17324c;">AI 可以直接判斷藥物用途與用量嗎？</span>
+                <i data-lucide="chevron-down" class="w-5 h-5 group-open:rotate-180 transition-transform" style="color:#075985;"></i>
+              </summary>
+              <div class="p-4 pt-2 border-t text-sm leading-relaxed" style="background:#f8fcff;border-color:#dceaf3;color:#334155;"><strong style="color:#087d74;">答：</strong>AI 只能協助整理文字，不能取代醫師或藥師。藥名、劑量與服用方式，應以清楚的藥袋標示及專業指示為準；不清楚就向開立藥物的醫療院所或藥師確認。</div>
+            </details>
+            <details class="group rounded-xl border-2 overflow-hidden" style="background:#fff;border-color:#b8cfdf;" >
+              <summary class="cursor-pointer p-4 flex items-center gap-3">
+                <span class="shrink-0 rounded-lg px-2 py-1 text-sm font-extrabold" style="background:#e0f2fe;color:#075985;">Q2</span>
+                <span class="flex-1 text-base font-extrabold" style="color:#17324c;">把藥袋照片上傳 AI 安全嗎？</span>
+                <i data-lucide="chevron-down" class="w-5 h-5 group-open:rotate-180 transition-transform" style="color:#075985;"></i>
+              </summary>
+              <div class="p-4 pt-2 border-t text-sm leading-relaxed" style="background:#f8fcff;border-color:#dceaf3;color:#334155;"><strong style="color:#087d74;">答：</strong>上傳前應遮住姓名、身分證字號、病歷號、院所條碼及其他可識別個資，並確認服務的隱私設定；不需上傳完整藥袋才能問一般知識。</div>
+            </details>
+            <details class="group rounded-xl border-2 overflow-hidden" style="background:#fff;border-color:#b8cfdf;" >
+              <summary class="cursor-pointer p-4 flex items-center gap-3">
+                <span class="shrink-0 rounded-lg px-2 py-1 text-sm font-extrabold" style="background:#e0f2fe;color:#075985;">Q3</span>
+                <span class="flex-1 text-base font-extrabold" style="color:#17324c;">AI 翻譯可以完全相信嗎？</span>
+                <i data-lucide="chevron-down" class="w-5 h-5 group-open:rotate-180 transition-transform" style="color:#075985;"></i>
+              </summary>
+              <div class="p-4 pt-2 border-t text-sm leading-relaxed" style="background:#f8fcff;border-color:#dceaf3;color:#334155;"><strong style="color:#087d74;">答：</strong>日常內容可以當參考；醫療資訊、合約、交通規則等重要內容，仍須對照官方文件、專業翻譯或向相關人員確認。</div>
+            </details>
+            <details class="group rounded-xl border-2 overflow-hidden" style="background:#fff;border-color:#b8cfdf;" >
+              <summary class="cursor-pointer p-4 flex items-center gap-3">
+                <span class="shrink-0 rounded-lg px-2 py-1 text-sm font-extrabold" style="background:#e0f2fe;color:#075985;">Q4</span>
+                <span class="flex-1 text-base font-extrabold" style="color:#17324c;">AI 提供的健康食譜適合慢性病患者嗎？</span>
+                <i data-lucide="chevron-down" class="w-5 h-5 group-open:rotate-180 transition-transform" style="color:#075985;"></i>
+              </summary>
+              <div class="p-4 pt-2 border-t text-sm leading-relaxed" style="background:#f8fcff;border-color:#dceaf3;color:#334155;"><strong style="color:#087d74;">答：</strong>不一定。糖尿病、腎臟病或其他疾病的營養需求，應由醫師或營養師依個人狀況評估，AI 不能直接保證食譜合適。</div>
+            </details>
+            <details class="group rounded-xl border-2 overflow-hidden" style="background:#fff;border-color:#b8cfdf;" >
+              <summary class="cursor-pointer p-4 flex items-center gap-3">
+                <span class="shrink-0 rounded-lg px-2 py-1 text-sm font-extrabold" style="background:#e0f2fe;color:#075985;">Q5</span>
+                <span class="flex-1 text-base font-extrabold" style="color:#17324c;">長輩使用 AI 最需要注意什麼？</span>
+                <i data-lucide="chevron-down" class="w-5 h-5 group-open:rotate-180 transition-transform" style="color:#075985;"></i>
+              </summary>
+              <div class="p-4 pt-2 border-t text-sm leading-relaxed" style="background:#f8fcff;border-color:#dceaf3;color:#334155;"><strong style="color:#087d74;">答：</strong>不要輸入帳號密碼、驗證碼、金融資料或完整個資；涉及健康、金錢、法律與安全的重要答案，都要再次查證。</div>
+            </details>
+          </section>
         </section>
 
         <!-- 11:05–11:25 現場互動 -->
@@ -2275,6 +2363,22 @@
       showToast('提問已複製，可貼到 ChatGPT 練習！');
     }
 
+    // 冰箱食材練習：只組合文字，不傳送使用者內容
+    function updateRecipePromptPreview() {
+      const ingredients = document.getElementById('recipe-ingredients');
+      const servings = document.getElementById('recipe-servings');
+      const preference = document.getElementById('recipe-preference');
+      const output = document.getElementById('recipe-prompt-preview');
+      if (!ingredients || !servings || !preference || !output) return;
+      const list = ingredients.value.trim() || '高麗菜、雞蛋、豆腐、金針菇';
+      output.textContent = '請利用我冰箱裡的食材：' + list + '，設計 ' + servings.value + ' 人份的家常晚餐。飲食偏好：' + preference.value + '。\n請提供 3 道容易完成的菜色，每道列出食材份量、做法與約需時間，優先用現有食材。若需額外調味料或材料，請另外列購物清單，不要假裝我已經有。也請提醒食品保存、過敏原及充分加熱的注意事項。';
+    }
+    function copyRecipePrompt() {
+      updateRecipePromptPreview();
+      const prompt = document.getElementById('recipe-prompt-preview');
+      if (prompt) { copyToClipboard(prompt.textContent); showToast('食材提問已複製，貼到 ChatGPT 試試！'); }
+    }
+
     // --- Bootstrap ---
     window.onload = function() {
       loadState();
@@ -2285,6 +2389,7 @@
       applyQuickPromptTemplate();
       renderFraudChecker();
       updateBuilder();
+      updateRecipePromptPreview();
       updateHUD();
       lucide.createIcons();
       const isNew = userState.totalXP === 0 && Object.keys(userState.levelAnswers).length === 0;
