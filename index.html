@@ -351,19 +351,72 @@
 
         <!-- 09:40–10:05 AI 生活應用 -->
         <section id="session-life" class="scroll-mt-32 space-y-4">
-          
           <div class="rounded-2xl border border-teal-500/30 bg-teal-500/10 px-5 py-4">
             <div class="text-sm font-extrabold text-tealMint tracking-wide">09:40–10:05｜第二單元</div>
-            <h2 class="text-xl sm:text-2xl font-bold text-white mt-1">AI 生活應用</h2>
-            <p class="text-sm text-slate-300 mt-2 leading-relaxed">翻譯、照片辨識、旅遊規劃、生活安排：從每天真會遇到的問題練起。</p>
+            <h2 class="text-xl sm:text-2xl font-bold text-white mt-1">AI 生活應用｜最實用的 5 大功能</h2>
+            <p class="text-sm text-slate-300 mt-2 leading-relaxed">拍照翻譯、健康百科、文章摘要、寫祝福語、旅遊路線。每張卡都能直接複製 AI 提問範例，跟著練習！</p>
           </div>
-          <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
-            <div class="rounded-2xl bg-deepSea-900 border border-slate-700 p-4"><h3 class="text-base font-bold text-white">🌏 翻譯看得懂</h3><p class="text-sm text-slate-300 leading-relaxed mt-2">拍下外語菜單或輸入一段英文：「翻成繁體中文，告訴我重點與需要注意的地方。」</p><p class="text-sm text-tealMint mt-3">1. 開啟 ChatGPT → 2. 按附加照片／上傳 → 3. 問想知道的事。</p></div>
-<div class="rounded-2xl bg-deepSea-900 border border-slate-700 p-4"><h3 class="text-base font-bold text-white">📷 拍照認物品</h3><p class="text-sm text-slate-300 leading-relaxed mt-2">拍家電面板或植物：「這張照片看得到什麼？請說明可能用途；不確定請告訴我。」</p><p class="text-sm text-tealMint mt-3">上傳前先遮住姓名、電話、帳號與條碼。</p></div>
-<div class="rounded-2xl bg-deepSea-900 border border-slate-700 p-4"><h3 class="text-base font-bold text-white">🧳 安排出遊</h3><p class="text-sm text-slate-300 leading-relaxed mt-2">「幫我規劃桃園出發的一日遊，兩位大人，喜歡散步，總預算 2000 元，列交通與用餐建議。」</p><p class="text-sm text-tealMint mt-3">旅館、車次、營業時間與價格仍要查官方最新資訊。</p></div>
-<div class="rounded-2xl bg-deepSea-900 border border-slate-700 p-4"><h3 class="text-base font-bold text-white">📝 日常生活規劃</h3><p class="text-sm text-slate-300 leading-relaxed mt-2">「我今天要買菜、繳費、接小孩，幫我依先後順序排成簡單待辦清單。」</p><p class="text-sm text-tealMint mt-3">也能請 AI 把雜亂語音或筆記整理成重點。</p></div>
+          <div class="rounded-xl border p-4 flex flex-wrap justify-between gap-3" style="background:#eaf8f3;border-color:#99cfc3;color:#155e59;">
+            <p class="text-sm font-bold">課堂任務：選一項自己最需要的生活應用，複製提問後貼到 AI，看看能得到什麼幫助。</p>
+            <a class="text-sm font-bold underline" href="https://chatgpt.com/" target="_blank" rel="noopener noreferrer">開啟 ChatGPT ↗</a>
           </div>
-          <p class="rounded-xl border border-amber-500/30 bg-amber-500/10 p-4 text-sm text-amber-900">小提醒：AI 的翻譯、辨識與建議可能出錯。過敏原、藥品、醫療、金錢或法律資訊請再向專業人士或官方來源確認。</p>
+          <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
+            <article class="rounded-2xl border p-4 sm:p-5 space-y-3" style="background:#fff;border:2px solid #acc2d6;color:#18324c;">
+              <div class="flex items-center gap-3"><span class="rounded-xl p-3" style="background:#e8f5f9;color:#086b82;"><i data-lucide="camera" class="w-6 h-6"></i></span><div><p class="text-xs font-bold" style="color:#087d74;">生活 AI 功能 1/5</p><h3 class="text-lg font-extrabold" style="color:#18324c;">拍照識物與翻譯</h3></div></div>
+              <p class="text-sm leading-relaxed" style="color:#334155;"><strong>生活應用：</strong>國外藥妝說明、路牌、花草或家電面板</p>
+              <div class="rounded-xl p-3 border" style="background:#eff8ff;border-color:#b3d4e8;">
+                <p class="text-sm font-extrabold mb-2" style="color:#075985;">💬 怎麼跟 AI 說？</p>
+                <p data-ai-use-prompt class="text-sm leading-relaxed select-text" style="color:#18324c;">請讀取我上傳照片中的文字並翻譯成繁體中文，告訴我用途和注意事項。如果是藥品，請只整理包裝上能看清楚的標示，不要猜測用量；我會再問醫師或藥師。</p>
+                <button type="button" onclick="copyAiUsePrompt(this)" class="mt-3 px-4 py-2.5 rounded-xl font-extrabold text-sm flex items-center gap-2" style="background:#087d74;color:#fff;"><i data-lucide="copy" class="w-4 h-4"></i>複製這段提問</button>
+              </div>
+              <p class="text-sm" style="color:#155e59;"><strong>現場練習：</strong>拍一張無個資的產品說明或菜單，請 AI 翻譯。</p>
+              <p class="text-xs leading-relaxed rounded-xl p-3" style="background:#fff4da;color:#774700;border:1px solid #ebc886;"><strong>注意：</strong>藥物用量及副作用不能只憑 AI 判斷，務必向醫師或藥師確認。</p>
+            </article>
+            <article class="rounded-2xl border p-4 sm:p-5 space-y-3" style="background:#fff;border:2px solid #acc2d6;color:#18324c;">
+              <div class="flex items-center gap-3"><span class="rounded-xl p-3" style="background:#e8f5f9;color:#086b82;"><i data-lucide="heart-pulse" class="w-6 h-6"></i></span><div><p class="text-xs font-bold" style="color:#087d74;">生活 AI 功能 2/5</p><h3 class="text-lg font-extrabold" style="color:#18324c;">健康與生活百科</h3></div></div>
+              <p class="text-sm leading-relaxed" style="color:#334155;"><strong>生活應用：</strong>查詢食材營養、節氣養生或生活冷知識</p>
+              <div class="rounded-xl p-3 border" style="background:#eff8ff;border-color:#b3d4e8;">
+                <p class="text-sm font-extrabold mb-2" style="color:#075985;">💬 怎麼跟 AI 說？</p>
+                <p data-ai-use-prompt class="text-sm leading-relaxed select-text" style="color:#18324c;">我想了解這種水果的營養特點。高血壓患者可能有哪些一般飲食注意事項？請說明可能涉及藥物或腎功能的情形，提醒我何時要向醫師或藥師確認，不要替我個人診斷。</p>
+                <button type="button" onclick="copyAiUsePrompt(this)" class="mt-3 px-4 py-2.5 rounded-xl font-extrabold text-sm flex items-center gap-2" style="background:#087d74;color:#fff;"><i data-lucide="copy" class="w-4 h-4"></i>複製這段提問</button>
+              </div>
+              <p class="text-sm" style="color:#155e59;"><strong>現場練習：</strong>說一種喜歡的水果，請 AI 列三個營養重點。</p>
+              <p class="text-xs leading-relaxed rounded-xl p-3" style="background:#fff4da;color:#774700;border:1px solid #ebc886;"><strong>注意：</strong>健康建議不能取代個別醫療評估；慢性病與用藥者尤其要查證。</p>
+            </article>
+            <article class="rounded-2xl border p-4 sm:p-5 space-y-3" style="background:#fff;border:2px solid #acc2d6;color:#18324c;">
+              <div class="flex items-center gap-3"><span class="rounded-xl p-3" style="background:#e8f5f9;color:#086b82;"><i data-lucide="file-search" class="w-6 h-6"></i></span><div><p class="text-xs font-bold" style="color:#087d74;">生活 AI 功能 3/5</p><h3 class="text-lg font-extrabold" style="color:#18324c;">閱讀摘要與長輩圖查證</h3></div></div>
+              <p class="text-sm leading-relaxed" style="color:#334155;"><strong>生活應用：</strong>快速看懂親友傳來的長文章或網路訊息</p>
+              <div class="rounded-xl p-3 border" style="background:#eff8ff;border-color:#b3d4e8;">
+                <p class="text-sm font-extrabold mb-2" style="color:#075985;">💬 怎麼跟 AI 說？</p>
+                <p data-ai-use-prompt class="text-sm leading-relaxed select-text" style="color:#18324c;">請用三句話摘要這篇文章，再列出兩個需要事實查證的主張，並告訴我適合查看哪些官方或可靠資料。如果沒有查到證據，請明確說尚未查證，不要直接判定真假。</p>
+                <button type="button" onclick="copyAiUsePrompt(this)" class="mt-3 px-4 py-2.5 rounded-xl font-extrabold text-sm flex items-center gap-2" style="background:#087d74;color:#fff;"><i data-lucide="copy" class="w-4 h-4"></i>複製這段提問</button>
+              </div>
+              <p class="text-sm" style="color:#155e59;"><strong>現場練習：</strong>貼一篇公開文章，試著請 AI 摘要，再自行比對原始來源。</p>
+              <p class="text-xs leading-relaxed rounded-xl p-3" style="background:#fff4da;color:#774700;border:1px solid #ebc886;"><strong>注意：</strong>AI 摘要不等於完成查核；勿直接轉傳未證實的訊息。</p>
+            </article>
+            <article class="rounded-2xl border p-4 sm:p-5 space-y-3" style="background:#fff;border:2px solid #acc2d6;color:#18324c;">
+              <div class="flex items-center gap-3"><span class="rounded-xl p-3" style="background:#e8f5f9;color:#086b82;"><i data-lucide="gift" class="w-6 h-6"></i></span><div><p class="text-xs font-bold" style="color:#087d74;">生活 AI 功能 4/5</p><h3 class="text-lg font-extrabold" style="color:#18324c;">寫祝福語與訊息</h3></div></div>
+              <p class="text-sm leading-relaxed" style="color:#334155;"><strong>生活應用：</strong>生日、節日、老朋友早安問候</p>
+              <div class="rounded-xl p-3 border" style="background:#eff8ff;border-color:#b3d4e8;">
+                <p class="text-sm font-extrabold mb-2" style="color:#075985;">💬 怎麼跟 AI 說？</p>
+                <p data-ai-use-prompt class="text-sm leading-relaxed select-text" style="color:#18324c;">幫我寫一段給老朋友的早安問候，要提到天氣變冷、注意保暖，語氣親切自然，不要太制式，約 60 字，適合傳 LINE。</p>
+                <button type="button" onclick="copyAiUsePrompt(this)" class="mt-3 px-4 py-2.5 rounded-xl font-extrabold text-sm flex items-center gap-2" style="background:#087d74;color:#fff;"><i data-lucide="copy" class="w-4 h-4"></i>複製這段提問</button>
+              </div>
+              <p class="text-sm" style="color:#155e59;"><strong>現場練習：</strong>把對象改成自己的朋友，試試溫馨版、幽默版。</p>
+              <p class="text-xs leading-relaxed rounded-xl p-3" style="background:#fff4da;color:#774700;border:1px solid #ebc886;"><strong>注意：</strong>可以加入共同回憶，讓文字更真誠；不要附上私人敏感資訊。</p>
+            </article>
+            <article class="rounded-2xl border p-4 sm:p-5 space-y-3" style="background:#fff;border:2px solid #acc2d6;color:#18324c;">
+              <div class="flex items-center gap-3"><span class="rounded-xl p-3" style="background:#e8f5f9;color:#086b82;"><i data-lucide="route" class="w-6 h-6"></i></span><div><p class="text-xs font-bold" style="color:#087d74;">生活 AI 功能 5/5</p><h3 class="text-lg font-extrabold" style="color:#18324c;">旅遊與路線規劃</h3></div></div>
+              <p class="text-sm leading-relaxed" style="color:#334155;"><strong>生活應用：</strong>安排少走路、轉乘簡單的休閒行程</p>
+              <div class="rounded-xl p-3 border" style="background:#eff8ff;border-color:#b3d4e8;">
+                <p class="text-sm font-extrabold mb-2" style="color:#075985;">💬 怎麼跟 AI 說？</p>
+                <p data-ai-use-prompt class="text-sm leading-relaxed select-text" style="color:#18324c;">我想從桃園火車站搭公車去大溪老街，請比較轉乘少、步行距離短的路線，列出可供查詢的路線和上下車站；時刻、票價及營運狀況請提醒我到官方即時交通資訊確認，不要猜測。</p>
+                <button type="button" onclick="copyAiUsePrompt(this)" class="mt-3 px-4 py-2.5 rounded-xl font-extrabold text-sm flex items-center gap-2" style="background:#087d74;color:#fff;"><i data-lucide="copy" class="w-4 h-4"></i>複製這段提問</button>
+              </div>
+              <p class="text-sm" style="color:#155e59;"><strong>現場練習：</strong>改成自己想去的地方，提出少走路或無障礙需求。</p>
+              <p class="text-xs leading-relaxed rounded-xl p-3" style="background:#fff4da;color:#774700;border:1px solid #ebc886;"><strong>注意：</strong>班次、票價及路線可能調整，出發前要查官方公車動態。</p>
+            </article></div>
+          <p class="rounded-xl border p-4 text-sm leading-relaxed" style="background:#fff4da;border-color:#ebc886;color:#774700;"><strong>老師提醒：</strong>AI 是好幫手，不是醫師、藥師、即時公車系統或事實查核結果；關鍵資訊應再向可靠的官方或專業來源確認。</p>
         </section>
 
         <!-- 10:05–10:25 AI 提問技巧 -->
@@ -2211,6 +2264,15 @@
     function resetLinePracticeProgress() {
       document.querySelectorAll('[data-line-practice]').forEach(box => box.checked = false);
       updateLinePracticeProgress();
+    }
+
+    // 五大生活 AI 功能：複製示範提問到剪貼簿
+    function copyAiUsePrompt(button) {
+      const card = button.closest('article');
+      const prompt = card && card.querySelector('[data-ai-use-prompt]');
+      if (!prompt) return;
+      copyToClipboard(prompt.textContent.trim());
+      showToast('提問已複製，可貼到 ChatGPT 練習！');
     }
 
     // --- Bootstrap ---
