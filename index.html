@@ -665,7 +665,42 @@
           <div class="rounded-2xl border border-teal-500/30 bg-teal-500/10 px-5 py-4">
             <div class="text-sm font-extrabold text-tealMint tracking-wide">10:25–10:50｜第四單元</div>
             <h2 class="text-xl sm:text-2xl font-bold text-white mt-1">LINE 手機實用功能</h2>
-            <p class="text-sm text-slate-300 mt-2 leading-relaxed">照片轉文字、無聲訊息、匿名截圖、一人群組等。打開自己的 LINE，照著卡片一步一步練。</p>
+            <p class="text-sm text-slate-300 mt-2 leading-relaxed">本單元分兩部分：先<strong class="text-white">看教學影片</strong>了解怎麼做，再<strong class="text-white">打開自己的 LINE 實作</strong>，照著卡片一步一步練。</p>
+            <div class="grid grid-cols-2 gap-3 mt-4">
+              <a href="#line-videos" class="flex items-center gap-3 rounded-xl bg-deepSea-950 border-2 border-teal-500/40 hover:border-teal-500 px-4 py-3 transition-all">
+                <span class="text-2xl">🎬</span>
+                <span><span class="block text-xs font-bold text-tealMint">第一部分</span><span class="block text-base font-bold text-white">看教學影片</span></span>
+              </a>
+              <a href="#line-handson" class="flex items-center gap-3 rounded-xl bg-deepSea-950 border-2 border-teal-500/40 hover:border-teal-500 px-4 py-3 transition-all">
+                <span class="text-2xl">✋</span>
+                <span><span class="block text-xs font-bold text-tealMint">第二部分</span><span class="block text-base font-bold text-white">打開手機實作</span></span>
+              </a>
+            </div>
+          </div>
+
+          <!-- 第一部分：教學影片 -->
+          <div id="line-videos" class="scroll-mt-32 space-y-4">
+            <div class="flex items-center gap-3 border-l-4 border-teal-500 pl-3">
+              <span class="text-2xl">🎬</span>
+              <div>
+                <div class="text-sm font-extrabold text-tealMint">第一部分</div>
+                <h3 class="text-xl font-bold text-white">先看教學影片：看別人怎麼做</h3>
+              </div>
+            </div>
+            <p class="text-sm text-slate-300 leading-relaxed">每支影片 3–7 分鐘，點畫面就能播放。看完再到第二部分自己動手做。影片來自 YouTube 上的教學頻道，畫面可能和你的 LINE 版本略有不同。</p>
+            <div id="line-video-grid" class="grid grid-cols-1 md:grid-cols-2 gap-4"></div>
+            <div class="text-center">
+              <a href="#line-handson" class="inline-flex items-center gap-2 px-5 py-3 rounded-xl bg-gradient-to-r from-tealMint to-cyanPop text-deepSea-950 font-bold text-sm shadow-lg transition-all active:scale-95">看完了，進入第二部分實作 ✋</a>
+            </div>
+          </div>
+
+          <!-- 第二部分：實作 -->
+          <div id="line-handson" class="scroll-mt-32 flex items-center gap-3 border-l-4 border-teal-500 pl-3 pt-4">
+            <span class="text-2xl">✋</span>
+            <div>
+              <div class="text-sm font-extrabold text-tealMint">第二部分</div>
+              <h3 class="text-xl font-bold text-white">打開手機實作：跟著卡片一步一步練</h3>
+            </div>
           </div>
           <div class="rounded-xl border border-teal-500/25 bg-teal-500/10 p-4">
             <h3 class="text-base text-white font-bold">本堂建議先練 4 項</h3>
@@ -2557,6 +2592,43 @@
       13: '🏆 13 招全破！恭喜成為「LINE 全能王」，回家當家裡的手機老師吧！'
     };
     let lpLastCount = null;
+    // --- LINE 第一部分：教學影片（點縮圖才載入播放器，手機比較順） ---
+    const LINE_VIDEOS = [
+      { id: 'xJYGaMWzSM8', title: '照片轉文字：圖片上的字直接複製', channel: '程曦資訊', len: '5:15', card: '先練 ①' },
+      { id: 'xCL0jqrMlP4', title: '快速截圖＋一鍵匿名', channel: '分享家-羽', len: '4:15', card: '對應實作 06' },
+      { id: 'Qp1zDNYoJQ8', title: '找回聊天室裡的舊訊息、照片、連結', channel: '愛蓁 AiZhen（有字幕）', len: '7:05', card: '對應實作 01' },
+      { id: 'xLYfCwHkYSM', title: '一個帳號兩支手機：追加裝置', channel: '蘋果仁', len: '3:24', card: '對應實作 03' },
+      { id: '0B9ftrzEtK8', title: '2026 新功能：LINE 通話錄製', channel: '蘋果仁', len: '2:39', card: '對應實作 11' }
+    ];
+    function renderLineVideos() {
+      const grid = document.getElementById('line-video-grid');
+      if (!grid) return;
+      grid.innerHTML = LINE_VIDEOS.map((v, i) => `
+        <div class="rounded-2xl overflow-hidden border-2 border-teal-500/30 bg-deepSea-950 shadow-sm">
+          <button type="button" class="relative block w-full aspect-video bg-black group" onclick="playLineVideo(this, '${v.id}')" aria-label="播放：${v.title}">
+            <img src="https://i.ytimg.com/vi/${v.id}/hqdefault.jpg" alt="" loading="lazy" class="w-full h-full object-cover opacity-90 group-hover:opacity-100 transition-opacity">
+            <span class="absolute inset-0 flex items-center justify-center">
+              <span class="w-16 h-16 rounded-full bg-red-600 text-white text-2xl flex items-center justify-center shadow-xl group-hover:scale-110 transition-transform" style="color:#fff">▶</span>
+            </span>
+            <span class="absolute bottom-2 right-2 px-2 py-0.5 rounded bg-black/75 text-xs font-mono" style="color:#fff">${v.len}</span>
+          </button>
+          <div class="p-3">
+            <div class="flex items-center gap-2 flex-wrap">
+              <span class="px-2 py-0.5 rounded-full bg-teal-500/15 text-tealMint text-xs font-bold">影片 ${i + 1}</span>
+              <span class="text-xs text-slate-400">${v.card}</span>
+            </div>
+            <h4 class="text-base font-bold text-white mt-1.5">${v.title}</h4>
+            <p class="text-xs text-slate-400 mt-0.5">YouTube｜${v.channel}　<a href="https://www.youtube.com/watch?v=${v.id}" target="_blank" rel="noopener noreferrer" class="underline text-cyanPop">在 YouTube 開啟 ↗</a></p>
+          </div>
+        </div>`).join('');
+    }
+    function playLineVideo(btn, id) {
+      const wrap = document.createElement('div');
+      wrap.className = 'w-full aspect-video bg-black';
+      wrap.innerHTML = `<iframe class="w-full h-full" src="https://www.youtube-nocookie.com/embed/${id}?autoplay=1&rel=0" title="LINE 教學影片" allow="autoplay; encrypted-media; picture-in-picture; fullscreen" allowfullscreen></iframe>`;
+      btn.replaceWith(wrap);
+    }
+
     function decorateLinePractice() {
       document.querySelectorAll('[data-line-practice]').forEach(box => {
         const label = box.closest('label');
@@ -2734,6 +2806,7 @@
     // --- Bootstrap ---
     window.onload = function() {
       loadState();
+      renderLineVideos();
       loadLinePracticeProgress();
       renderLifeStamps(null);
       sound.enabled = userState.soundEnabled;
